@@ -86,6 +86,27 @@
     '';
   };
 
+  programs.git = {
+    enable = true;
+    userName = "Aditya Ramanathan";
+    userEmail = "adit99@live.com";
+    extraConfig = {
+      init = {
+        defaultBranch = "main";
+      };
+      push = {
+        autoSetupRemote = true;
+      };
+      pull = {
+        rebase = true;
+      };
+    };
+  };
+
+  programs.rclone = {
+    enable = true;
+  };
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
