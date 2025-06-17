@@ -110,39 +110,53 @@
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
+
+    # general productivity
     librewolf
     vscodium
     git
-    gnomeExtensions.blur-my-shell
-    fastfetch
     _1password-gui
-    onlyoffice-desktopeditors
-    krita
-    flameshot
-    audacity
-    spotify
-    musescore
-    prismlauncher
-    frescobaldi
-    reaper
-    davinci-resolve
     protonmail-desktop
     brave
-    blender
-    gnome-tweaks
-    sunshine
-    inkscape
+    thunderbird
+    onlyoffice-desktopeditors
     vlc
+    discord
+    signal-desktop
     protonvpn-gui
+
+    # customizations 
+    gnomeExtensions.blur-my-shell
+    fastfetch
+    gnome-tweaks
     solaar
     openrgb
     syncthing
-    qbittorrent
+    dconf-editor
+
+    # musicy things
+    audacity
+    spotify
+    musescore
+    frescobaldi
+    reaper
     muse-sounds-manager
+
+    # other creative tools 
+    krita
+    flameshot
+    # davinci-resolve #  this one takes a long time so it can be added later once needed
+    blender
+    inkscape
+
+    # games
+    prismlauncher
+    sunshine
+
+    # other 
+    qbittorrent
     nomachine-client
     libation
-    signal-desktop
-    dconf-editor
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
