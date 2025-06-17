@@ -1,0 +1,3 @@
+# nix-conf
+
+Nix configuration
