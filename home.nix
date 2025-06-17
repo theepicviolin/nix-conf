@@ -107,6 +107,28 @@
     enable = true;
   };
 
+  dconf.settings = {
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+      binding = "<Super>t";
+      command = "kgx";
+      name = "Launch Console Super+T";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+      binding = "<Ctrl><Alt>t";
+      command = "kgx";
+      name = "Launch Console Ctrl+Alt+T";
+    };
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      home = ["<Super>e"];
+    };
+    "org/gnome/shell/keybindings" = {
+      toggle-message-tray = ["<Super>c"];
+      move-to-workspace-left = ["<Shift><Control><Alt><Super>Return"];
+      move-to-workspace-right = ["<Shift><Control><Alt>Return"];
+    };
+  
+  };
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
