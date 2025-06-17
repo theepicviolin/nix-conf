@@ -7,3 +7,4 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.dotfiles
 cd ~/.dotfiles
 git add ~/.dotfiles/hardware-configuration.nix
 sudo nixos-rebuild switch --flake ~/.dotfiles
+home-manager switch --flake ~/.dotfiles

@@ -77,8 +77,8 @@
       md = "mkdir";
       ll = "ls -l";
       "." = "start .";
-      rebuildn = "sudo nixos-rebuild switch --flake /home/aditya/.dotfiles";
-      rebuildh = "home-manager switch --flake /home/aditya/.dotfiles";
+      rebuildn = "sudo nixos-rebuild switch --flake ~/.dotfiles";
+      rebuildh = "home-manager switch --flake ~/.dotfiles";
       rebuild = "rebuildn; rebuildh";
     };
     bashrcExtra = ''
