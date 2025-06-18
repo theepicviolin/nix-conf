@@ -14,6 +14,15 @@ git add ~/.dotfiles/hardware-configuration.nix
 sudo nixos-rebuild switch --flake ~/.dotfiles
 home-manager switch --flake ~/.dotfiles
 
+#1password -w >/dev/null 2>&1
+
+# start librewolf and kill it after a second, to generate the profile
+librewolf & 
+PID=$!
+sleep 1
+kill $PID 2>/dev/null
+wait $$PID 2>/dev/null
+
 # get librewolf settings
 PROFILE_DIR="$HOME/.librewolf"
 LWTMP_DIR="$HOME/.lwtmp"
