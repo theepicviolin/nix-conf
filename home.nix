@@ -266,6 +266,10 @@
         use-custom-duration=true;
       };
 
+      "org/gnome/shell/extensions/custom-hot-corners-extended/misc" = {
+        panel-menu-enable = false;
+      };
+
       "org/gnome/shell/extensions/clipboard-indicator" = {
         display-mode = 3;
         toggle-menu = ["<Super>v"];

@@ -18,9 +18,18 @@ echo "# Initial rebuild finished #"
 echo "# Cloning nix conf ...     #"
 echo "############################"
 git clone https://github.com/theepicviolin/nix-conf.git ~/.dotfiles
+sudo cp /etc/nixos/configuration.nix ~/.dotfiles/configuration.nix.bak
 sudo cp /etc/nixos/hardware-configuration.nix ~/.dotfiles
 cd ~/.dotfiles
 git add ~/.dotfiles/hardware-configuration.nix
+
+echo "###########################################"
+echo "# MAKE NECESSARY CHANGES TO CONFIGURATION #" 
+echo "# (BOOT LOADER DEVICE, HOST NAME, ETC.)   #"
+echo "# PRESS ENTER TO CONFIRM AND CONTINUE     #"
+echo "###########################################"
+read -p "Press Enter to continue..."
+
 echo "##########################"
 echo "# Full system rebuild... #"
 echo "##########################"

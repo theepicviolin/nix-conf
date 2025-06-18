@@ -88,13 +88,26 @@
     ];
   };
 
-  # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
+  # Disable automatic login for the user.
+  services.displayManager.autoLogin.enable = false;
   services.displayManager.autoLogin.user = "aditya";
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
+
+  system.autoUpgrade = {
+    enable = true; 
+    flake = inputs.self.outPath;
+    flags = [
+      "--update-input" 
+      "nixpkgs" 
+      "--commit-lock-file"
+      "-L" # print build logs
+    ];
+    dates = "02:00"; # run daily at 2:00 AM
+    randomizedDelaySec = "45min";
+  };
 
   # Install firefox.
   programs.firefox.enable = false;
