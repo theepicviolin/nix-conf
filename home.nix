@@ -130,7 +130,7 @@
   };
 
   dconf.enable = true;
-  dconf.settings = {
+  dconf.settings = with lib.hm.gvariant;{
     "org/gnome/settings-daemon/plugins/media-keys" = {
       custom-keybindings = ["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" 
                             "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"];
@@ -178,11 +178,6 @@
       ];
     };
 
-    "org/gnome/shell/extensions/clipboard-indicator" = {
-      display-mode = 3;
-      toggle-menu = ["<Super>v"];
-    };
-
     "org/gnome/shell/extensions/advanced-alttab-window-switcher" = {
       app-switcher-popup-fav-apps = false;
       app-switcher-popup-filter = 2;
@@ -200,7 +195,7 @@
 
     "org/gnome/shell/extensions/appindicator" = {
       icon-saturation = 1;
-      custom-icons = [ (lib.hm.gvariant.mkTuple ["indicator-solaar" "/home/aditya/Pictures/solaaricon.png" ""]) ];
+      custom-icons = [ (mkTuple ["indicator-solaar" "/home/aditya/Pictures/solaaricon.png" ""]) ];
     };
 
     "org/gnome/shell/extensions/bluetooth-quick-connect" = {
@@ -211,6 +206,97 @@
       duration-timer-list=[1800 3600 7200]; # 30 minutes, 1 hour, 2 hours
       use-custom-duration=true;
     };
+
+    "org/gnome/shell/extensions/clipboard-indicator" = {
+      display-mode = 3;
+      toggle-menu = ["<Super>v"];
+    };
+
+    "org/gnome/shell/extensions/color-picker" = {
+      color-picker-shortcut = ["<Shift><Super>c"];
+      enable-notify = true;
+      enable-shortcut = true;
+      enable-sound = false;
+      enable-systray = false;
+      notify-style = mkUint32 1;
+    };
+
+    "org/gnome/shell/extensions/fullscreen-avoider" = {
+      move-hot-corners = false;
+      move-notifications = false;
+    };
+
+    "org/gnome/shell/extensions/just-perfection" = {
+      accessibility-menu = true;
+      animation = 4;
+      clock-menu = true;
+      keyboard-layout = true;
+      quick-settings-dark-mode = false;
+      quick-settings-night-light = false;
+      startup-status = 0;
+      support-notifier-showed-version = 34;
+      support-notifier-type = 0;
+      switcher-popup-delay = false;
+      theme = true;
+      window-demands-attention-focus = true;
+    };
+
+    "org/gnome/shell/extensions/search-light" = {
+      animation-speed = 100.0;
+      background-color = mkTuple [0.1 0.1 0.1 0.8];
+      blur-brightness=0.6;
+      blur-sigma=30.0;
+      border-radius=1;
+      entry-font-size=1;
+      preferred-monitor=0;
+      scale-height=0.1;
+      scale-width=0.1;
+      shortcut-search=["<Control>space"];
+    };
+
+    "org/gnome/shell/extensions/unblank" = {
+      time = 300;
+    };
+
+    /*
+    /org/gnome/desktop/session/idle-delay
+  uint32 600
+
+
+/org/gnome/mutter/workspaces-only-on-primary
+  false
+
+/org/gnome/desktop/interface/accent-color
+  'purple'
+
+/org/gnome/desktop/background/color-shading-type
+  'solid'
+/org/gnome/desktop/background/picture-options
+  'zoom'
+/org/gnome/desktop/background/picture-uri
+  'file:///run/current-system/sw/share/backgrounds/gnome/vnc-l.png'
+/org/gnome/desktop/background/picture-uri-dark
+  'file:///run/current-system/sw/share/backgrounds/gnome/vnc-d.png'
+/org/gnome/desktop/background/primary-color
+  '#77767B'
+/org/gnome/desktop/background/secondary-color
+  '#000000'
+
+/org/gnome/desktop/screensaver/color-shading-type
+  'solid'
+/org/gnome/desktop/screensaver/picture-options
+  'zoom'
+/org/gnome/desktop/screensaver/picture-uri
+  'file:///run/current-system/sw/share/backgrounds/gnome/vnc-l.png'
+/org/gnome/desktop/screensaver/primary-color
+  '#77767B'
+/org/gnome/desktop/screensaver/secondary-color
+  '#000000'
+
+/org/gnome/desktop/notifications/show-in-lock-screen
+  false
+
+    */
   };
 
   # Let Home Manager install and manage itself.

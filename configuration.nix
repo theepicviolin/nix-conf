@@ -112,6 +112,7 @@
     librewolf
     vscodium
     git
+    go
     _1password-gui
     protonmail-desktop
     # brave
