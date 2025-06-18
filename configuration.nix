@@ -117,6 +117,7 @@
     protonmail-desktop
     # brave
     thunderbird
+    obsidian
     onlyoffice-desktopeditors
     vlc
     discord
@@ -156,9 +157,11 @@
     # other creative tools 
     krita
     flameshot
+    inkscape
     # davinci-resolve #  this one takes a long time so it can be added later once needed
     blender
-    inkscape
+    freecad
+    orca-slicer
 
     # games
     prismlauncher
