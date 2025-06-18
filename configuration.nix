@@ -108,9 +108,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-
     # general productivity
     librewolf
     vscodium
@@ -126,14 +123,27 @@
     protonvpn-gui
 
     # customizations 
-    gnomeExtensions.blur-my-shell
     fastfetch
-    gnome-tweaks
     solaar
     openrgb
     syncthing
     dconf-editor
-
+    gnome-tweaks
+    gnomeExtensions.advanced-alttab-window-switcher
+    gnomeExtensions.appindicator
+    gnomeExtensions.bluetooth-quick-connect
+    gnomeExtensions.blur-my-shell
+    gnomeExtensions.caffeine
+    gnomeExtensions.custom-hot-corners-extended
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.color-picker
+    gnomeExtensions.fullscreen-avoider
+    gnomeExtensions.just-perfection
+    gnomeExtensions.rounded-window-corners-reborn
+    gnomeExtensions.search-light
+    gnomeExtensions.syncthing-toggle
+    gnomeExtensions.unblank
+    
     # musicy things
     audacity
     spotify
@@ -159,6 +169,19 @@
     libation
   ];
 
+  # Remove unwanted GNOME applications.
+  environment.gnome.excludePackages = (with pkgs; [
+    epiphany
+    gnome-maps
+    geary
+    gnome-calendar
+    gnome-contacts
+    gnome-tour
+    gnome-music
+    gnome-weather
+    gnome-clocks
+  ]);
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -170,7 +193,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

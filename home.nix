@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -15,13 +15,12 @@
   # release notes.
   home.stateVersion = "25.05"; # Please read the comment before changing.
 
+
+  nixpkgs.config.allowUnfree = true;
+
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -107,8 +106,35 @@
     enable = true;
   };
 
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscodium;
+    profiles.default.extensions = with pkgs.vscode-extensions; [
+      #atlassian.atlascode
+      #synedra.auto-run-command
+      dbaeumer.vscode-eslint
+      github.copilot
+      eamodio.gitlens
+      golang.go
+      haskell.haskell
+      justusadam.language-haskell
+      jnoortheen.nix-ide
+      esbenp.prettier-vscode
+      mads-hartmann.bash-ide-vscode
+      ms-python.python
+      ms-python.debugpy
+      #msjsdiag.vscode-react-native
+      coolbear.systemd-unit-file
+      redhat.vscode-yaml
+    ];
+  };
+
   dconf.enable = true;
   dconf.settings = {
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      custom-keybindings = ["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" 
+                            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"];
+    };
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
       binding = "<Super>t";
       command = "kgx";
@@ -130,6 +156,60 @@
 
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
+    };
+
+    "org/gnome/shell" = {
+      disable-user-extensions = false;
+      enabled-extensions = with pkgs.gnomeExtensions; [
+        advanced-alttab-window-switcher.extensionUuid
+        appindicator.extensionUuid
+        bluetooth-quick-connect.extensionUuid
+        blur-my-shell.extensionUuid
+        caffeine.extensionUuid
+        custom-hot-corners-extended.extensionUuid
+        clipboard-indicator.extensionUuid
+        color-picker.extensionUuid
+        fullscreen-avoider.extensionUuid
+        just-perfection.extensionUuid
+        rounded-window-corners-reborn.extensionUuid
+        search-light.extensionUuid
+        syncthing-toggle.extensionUuid
+        unblank.extensionUuid
+      ];
+    };
+
+    "org/gnome/shell/extensions/clipboard-indicator" = {
+      display-mode = 3;
+      toggle-menu = ["<Super>v"];
+    };
+
+    "org/gnome/shell/extensions/advanced-alttab-window-switcher" = {
+      app-switcher-popup-fav-apps = false;
+      app-switcher-popup-filter = 2;
+      app-switcher-popup-include-show-apps-icon = false;
+      app-switcher-popup-titles = true;
+      app-switcher-popup-win-counter = false;
+      switcher-popup-preview-selected = 2;
+      switcher-popup-scroll-in = 1;
+      switcher-popup-scroll-out = 1;
+      switcher-popup-start-search = false;
+      win-switcher-popup-filter = 2;
+      win-switcher-popup-scroll-item = 1;
+      win-switcher-popup-search-apps = false;
+    };
+
+    "org/gnome/shell/extensions/appindicator" = {
+      icon-saturation = 1;
+      custom-icons = [ (lib.hm.gvariant.mkTuple ["indicator-solaar" "/home/aditya/Pictures/solaaricon.png" ""]) ];
+    };
+
+    "org/gnome/shell/extensions/bluetooth-quick-connect" = {
+      show-battery-value-on = true;
+    };
+
+    "org/gnome/shell/extensions/caffeine" = {
+      duration-timer-list=[1800 3600 7200]; # 30 minutes, 1 hour, 2 hours
+      use-custom-duration=true;
     };
   };
 

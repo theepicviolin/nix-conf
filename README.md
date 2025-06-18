@@ -28,3 +28,5 @@ time source <(curl -s https://raw.githubusercontent.com/theepicviolin/nix-conf/r
 Open LibreWolf and enable all the extensions. Go to Userchrome's settings and enable Styles 2 and 3 and enable "Allow multiple styles to be active together"
 
 Log into Firefox sync and in the LibreWolf Sidebery settings, go down to Sync and "View synced data" and import styles and settings. Optionally enable "Save settings to sync storage" and "Save styles to sync storage"
+ 
+ Disable all of Proton Pass's auto saving stuff. 
