@@ -27,21 +27,21 @@ echo "##########################"
 sudo nixos-rebuild switch --flake ~/.dotfiles
 echo "################################"
 echo "# Full system rebuild finished #"
+echo "# Starting 1Password...        #"
 echo "################################"
 
 # start 1password so the user can set it up while other stuff is installing 
-nohup 1password -w >/dev/null 2>&1
+nohup 1password -w >/dev/null 2>&1 &
 
 echo "################################"
 echo "# Full Home Manager rebuild... #"
 echo "################################"
 home-manager switch --flake ~/.dotfiles
-echo "######################################"
-echo "# Full Home Manager rebuild finished #"
-echo "######################################"
+echo "#############################################"
+echo "# Full Home Manager rebuild finished        #"
 
 # start librewolf and kill it after a second, to generate the profile
-echo "Starting LibreWolf to generate profile..."
+echo "# Starting LibreWolf to generate profile... #"
 librewolf & 
 PID=$!
 sleep 1
@@ -49,10 +49,15 @@ kill $PID 2>/dev/null
 wait $$PID 2>/dev/null
 
 # get librewolf settings
-echo "Copying LibreWolf settings..."
+echo "# Copying LibreWolf settings...             #"
+echo "#############################################"
 PROFILE_DIR="$HOME/.librewolf"
 LWTMP_DIR="$HOME/.lwtmp"
 git clone https://github.com/theepicviolin/LibreWolfCustomization.git $LWTMP_DIR
 DEFAULT_PROFILE=$(find "$PROFILE_DIR" -maxdepth 1 -type d -name "*.default" -printf "%f\n")
 cp "$LWTMP_DIR/". "$PROFILE_DIR/$DEFAULT_PROFILE" -a
 rm "$LWTMP_DIR" -r -f
+echo "############"
+echo "# Finished #"
+echo "############"
+exit 0

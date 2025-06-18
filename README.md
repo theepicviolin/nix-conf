@@ -18,7 +18,7 @@ nix.settings.download-buffer-size = 268435456;
 Save the file, then run the following:
 
 ```
-source <(curl -s https://raw.githubusercontent.com/theepicviolin/nix-conf/refs/heads/main/install.sh)
+time source <(curl -s https://raw.githubusercontent.com/theepicviolin/nix-conf/refs/heads/main/install.sh)
 ```
 
 ## Misc setup steps that I can't make into a script :(
