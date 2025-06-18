@@ -129,8 +129,8 @@
     };
 
     "org/gnome/desktop/interface" = {
-      col
-    }
+      color-scheme = "prefer-dark";
+    };
   };
 
   # Let Home Manager install and manage itself.
