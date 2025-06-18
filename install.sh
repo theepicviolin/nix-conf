@@ -12,9 +12,11 @@ sudo cp /etc/nixos/hardware-configuration.nix ~/.dotfiles
 cd ~/.dotfiles
 git add ~/.dotfiles/hardware-configuration.nix
 sudo nixos-rebuild switch --flake ~/.dotfiles
-home-manager switch --flake ~/.dotfiles
 
-#1password -w >/dev/null 2>&1
+# start 1password so the user can set it up while other stuff is installing 
+nohup 1password -w >/dev/null 2>&1
+
+home-manager switch --flake ~/.dotfiles
 
 # start librewolf and kill it after a second, to generate the profile
 librewolf & 

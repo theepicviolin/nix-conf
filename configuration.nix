@@ -117,7 +117,7 @@
     git
     _1password-gui
     protonmail-desktop
-    brave
+    # brave
     thunderbird
     onlyoffice-desktopeditors
     vlc

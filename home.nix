@@ -107,6 +107,7 @@
     enable = true;
   };
 
+  dconf.enable = true;
   dconf.settings = {
     "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
       binding = "<Super>t";
@@ -126,7 +127,10 @@
       move-to-workspace-left = ["<Shift><Control><Alt><Super>Return"];
       move-to-workspace-right = ["<Shift><Control><Alt>Return"];
     };
-  
+
+    "org/gnome/desktop/interface" = {
+      col
+    }
   };
 
   # Let Home Manager install and manage itself.
