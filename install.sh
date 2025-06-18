@@ -60,4 +60,4 @@ rm "$LWTMP_DIR" -r -f
 echo "############"
 echo "# Finished #"
 echo "############"
-exit 0
+echo "Close this terminal and open a new one to start using your new NixOS system."

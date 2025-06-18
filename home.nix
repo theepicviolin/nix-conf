@@ -158,6 +158,40 @@
       color-scheme = "prefer-dark";
     };
 
+    "org/gnome/desktop/session" = {
+      idle-delay = mkUint32 600; # 10 minutes
+    };
+
+    "org/gnome/mutter" = {
+      workspaces-only-on-primary = false;
+    };
+
+    "org/gnome/desktop/interface" = {
+      accent-color = "purple";
+    };
+
+    "org/gnome/desktop/background" = {
+      picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/vnc-l.png";
+      picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/vnc-d.png";
+      color-shading-type = "solid";
+      primary-color = "#77767B";
+      secondary-color = "#000000";
+      picture-options = "zoom";
+    };
+
+    "org/gnome/desktop/screensaver" = {
+      color-shading-type = "solid";
+      picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/vnc-l.png";
+      primary-color = "#77767B";
+      secondary-color = "#000000";
+      picture-options = "zoom";
+    };
+
+        "org/gnome/desktop/notifications" = {
+      show-in-lock-screen = false;
+    };
+
+    # Gnome Shell Extensions 
     "org/gnome/shell" = {
       disable-user-extensions = false;
       enabled-extensions = with pkgs.gnomeExtensions; [
@@ -257,46 +291,6 @@
     "org/gnome/shell/extensions/unblank" = {
       time = 300;
     };
-
-    /*
-    /org/gnome/desktop/session/idle-delay
-  uint32 600
-
-
-/org/gnome/mutter/workspaces-only-on-primary
-  false
-
-/org/gnome/desktop/interface/accent-color
-  'purple'
-
-/org/gnome/desktop/background/color-shading-type
-  'solid'
-/org/gnome/desktop/background/picture-options
-  'zoom'
-/org/gnome/desktop/background/picture-uri
-  'file:///run/current-system/sw/share/backgrounds/gnome/vnc-l.png'
-/org/gnome/desktop/background/picture-uri-dark
-  'file:///run/current-system/sw/share/backgrounds/gnome/vnc-d.png'
-/org/gnome/desktop/background/primary-color
-  '#77767B'
-/org/gnome/desktop/background/secondary-color
-  '#000000'
-
-/org/gnome/desktop/screensaver/color-shading-type
-  'solid'
-/org/gnome/desktop/screensaver/picture-options
-  'zoom'
-/org/gnome/desktop/screensaver/picture-uri
-  'file:///run/current-system/sw/share/backgrounds/gnome/vnc-l.png'
-/org/gnome/desktop/screensaver/primary-color
-  '#77767B'
-/org/gnome/desktop/screensaver/secondary-color
-  '#000000'
-
-/org/gnome/desktop/notifications/show-in-lock-screen
-  false
-
-    */
   };
 
   # Let Home Manager install and manage itself.
