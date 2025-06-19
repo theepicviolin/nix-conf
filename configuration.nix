@@ -119,7 +119,9 @@
       randomizedDelaySec = "45min";
     };
 
-    hardware.logitech.wireless.enable = true;
+    # Startup solaar on boot.
+    #hardware.logitech.wireless.enable = true;
+    services.solaar.enable = true;
 
     # Install firefox.
     programs.firefox.enable = false;
@@ -151,7 +153,7 @@
 
       # customizations 
       fastfetch
-      solaar
+      #solaar
       openrgb
       syncthing
       dconf-editor
@@ -211,6 +213,9 @@
       gnome-weather
       gnome-clocks
     ]);
+
+    # Remove xterm
+    services.xserver.excludePackages = [pkgs.xterm];
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.

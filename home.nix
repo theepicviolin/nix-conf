@@ -2,11 +2,12 @@
 
 {
   options = {
-    wallpaper = lib.mkOption {
-      type = lib.types.str;
-      default = config.home.homeDirectory + "/.dotfiles/wallpaper.jpg";
-      description = "Path to the wallpaper image.";
-    };
+    # Define options here, e.g.:
+    # myOption = lib.mkOption {
+    #   type = lib.types.str;
+    #   default = "default value";
+    #   description = "An example option.";
+    # };
   };
 
   config = {
@@ -107,6 +108,45 @@
       enable = true;
     };
 
+    services.syncthing = {
+      enable = true;
+      overrideDevices = true;
+      overrideFolders = true;
+      settings = {
+        folders = {
+          "${settings.homedir}/Proton" = {
+            label = "Proton Drive";
+            id = "vhwys-cspch";
+            devices = [ "Harmony Host" ];
+          };
+          "${settings.homedir}/Documents/Obsidian" = {
+            label = "Obsidian";
+            id = "txpxx-3pgud";
+            devices = [ "Cosmic Communicator" "Symphony Scribe" "Gaming Gateway" "Harmony Host" ];
+          };
+
+        };
+        devices = {
+          "Harmony Host" = {
+            id = "DRUIO77-3KOGL7S-IPZWW3A-WB3PTFH-EIFQPBI-OGCQZ6G-UI46K3G-WD552QP";
+          };
+          "Cosmic Communicator" = {
+            id = "4DEABWB-EIXG52R-SB2D7FX-ADQM3FA-VV5T4V6-HD55MZ5-NB6EJH4-3T4X2QZ";
+          };
+          "Symphony Scribe" = {
+            id = "2ZOEOS6-ZYDGC6T-W63AEYR-OJWRY44-PW6PNN6-AS7YZZO-J4WOIQZ-D7GZOAE";
+          };
+          "Gaming Gateway" = {
+            id = "AT2S45P-GGZEREE-M6XG2Z2-5TPTGF5-SPZLNHD-IIQWUEH-6KVJLNU-DL7RLQH";
+          };
+          "Numerical Nexus" = {
+            id = "HOGUXNL-5T266FP-H3AX6JB-ZSQV4LD-IND5BGQ-X42UL45-SVDQN7R-REBUSQQ";
+          };
+        };
+        options.urAccepted = -1; 
+      };
+    };
+
     programs.vscode = {
       enable = true;
       package = pkgs.vscodium;
@@ -191,12 +231,12 @@
 
       "org/gnome/desktop/interface" = {
         accent-color = "purple";
+        clock-format = "12h";
       };
 
-      
       "org/gnome/desktop/background" = {
-        picture-uri = "file://" + config.wallpaper;
-        picture-uri-dark = "file://" + config.wallpaper;
+        picture-uri = "file://" + settings.wallpaper;
+        picture-uri-dark = "file://" + settings.wallpaper;
         color-shading-type = "solid";
         primary-color = "#77767B";
         secondary-color = "#000000";
@@ -205,7 +245,7 @@
 
       "org/gnome/desktop/screensaver" = {
         color-shading-type = "solid";
-        picture-uri = "file://" + config.wallpaper;
+        picture-uri = "file://" + settings.wallpaper;
         primary-color = "#77767B";
         secondary-color = "#000000";
         picture-options = "zoom";
@@ -213,6 +253,14 @@
 
       "org/gnome/desktop/notifications" = {
         show-in-lock-screen = false;
+      };
+
+      "org/gnome/nautilus/icon-view" = {
+        default-zoom-level = "small-plus";
+      };
+
+      "org/gtk/settings/file-chooser" = {
+        clock-format = "12h";
       };
 
       "ca/desrt/dconf-editor" = {
