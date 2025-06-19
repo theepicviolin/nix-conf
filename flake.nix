@@ -12,10 +12,17 @@
     lib = nixpkgs.lib;
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
+    settings = rec {
+      hostname = "numerical-nexus";
+      username = "aditya";
+      fullname = "Aditya Ramanathan";
+      homedir = "/home/" + username;
+      dotdir = "${homedir}/.dotfiles";
+    };
   in {
-    nixosConfigurations.nixos = lib.nixosSystem {
+    nixosConfigurations.${settings.hostname} = lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit inputs; };
+      specialArgs = { inherit inputs settings; };
       modules = [
         ./configuration.nix
       ];
@@ -24,10 +31,10 @@
     homeConfigurations = {
       aditya = inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = { inherit settings; };
         modules = [ ./home.nix ];
       };
     };
 
   };
 }
-

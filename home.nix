@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, settings, ... }:
 
 {
   options = {
@@ -10,20 +10,10 @@
   };
 
   config = {
-    # Home Manager needs a bit of information about you and the paths it should
-    # manage.
-    home.username = "aditya";
-    home.homeDirectory = "/home/aditya";
+    home.username = settings.username; 
+    home.homeDirectory = settings.homedir;
 
-    # This value determines the Home Manager release that your configuration is
-    # compatible with. This helps avoid breakage when a new Home Manager release
-    # introduces backwards incompatible changes.
-    #
-    # You should not change this value, even if you update Home Manager. If you do
-    # want to update the value, then make sure to first check the Home Manager
-    # release notes.
-    home.stateVersion = "25.05"; # Please read the comment before changing.
-
+    home.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
 
     nixpkgs.config.allowUnfree = true;
 
@@ -47,6 +37,8 @@
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
     home.file = {
+      ".config/solaar/config.yaml".source = ./solaar/config.yaml;
+      ".config/solaar/rules.yaml".source = ./solaar/rules.yaml;
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in
       # # the Nix store. Activating the configuration will then make '~/.screenrc' a
       # # symlink to the Nix store copy.
@@ -96,7 +88,7 @@
 
     programs.git = {
       enable = true;
-      userName = "Aditya Ramanathan";
+      userName = settings.fullname;
       userEmail = "adit99@live.com";
       extraConfig = {
         init = {
@@ -174,8 +166,15 @@
       };
       "org/gnome/shell/keybindings" = {
         toggle-message-tray = ["<Super>c"];
+      };
+
+      "org/gnome/desktop/wm/keybindings" = {
         move-to-workspace-left = ["<Shift><Control><Alt><Super>Return"];
         move-to-workspace-right = ["<Shift><Control><Alt>Return"];
+        switch-windows = ["<Alt>Tab"];
+        switch-windows-backward = ["<Shift><Alt>Tab"];
+        switch-applications = ["<Super>Tab"];
+        switch-applications-backward = ["<Shift><Super>Tab"];
       };
 
       "org/gnome/desktop/interface" = {
@@ -216,6 +215,10 @@
         show-in-lock-screen = false;
       };
 
+      "ca/desrt/dconf-editor" = {
+        show-warning = false;
+      };
+
       # Gnome Shell Extensions 
       "org/gnome/shell" = {
         disable-user-extensions = false;
@@ -237,7 +240,7 @@
         ];
       };
 
-      "org/gnome/shell/extensions/advanced-alttab-window-switcher" = {
+      "org/gnome/shell/extensions/advanced-alt-tab-window-switcher" = {
         app-switcher-popup-fav-apps = false;
         app-switcher-popup-filter = 2;
         app-switcher-popup-include-show-apps-icon = false;
@@ -247,14 +250,14 @@
         switcher-popup-scroll-in = 1;
         switcher-popup-scroll-out = 1;
         switcher-popup-start-search = false;
-        win-switcher-popup-filter = 2;
+        win-switcher-popup-filter = 1;
         win-switcher-popup-scroll-item = 1;
         win-switcher-popup-search-apps = false;
       };
 
       "org/gnome/shell/extensions/appindicator" = {
         icon-saturation = 1;
-        custom-icons = [ (mkTuple ["indicator-solaar" "/home/aditya/Pictures/solaaricon.png" ""]) ];
+        custom-icons = [ (mkTuple ["indicator-solaar" "${settings.dotdir}/solaar/icon.png" ""]) ];
       };
 
       "org/gnome/shell/extensions/bluetooth-quick-connect" = {
@@ -266,8 +269,15 @@
         use-custom-duration=true;
       };
 
+      
       "org/gnome/shell/extensions/custom-hot-corners-extended/misc" = {
         panel-menu-enable = false;
+      };
+      "org/gnome/shell/extensions/custom-hot-corners-extended/monitor-0-bottom-left-0" = {
+        action = "show-applications";
+      };
+      "org/gnome/shell/extensions/custom-hot-corners-extended/monitor-0-top-left-0" = {
+        action = "toggle-overview";
       };
 
       "org/gnome/shell/extensions/clipboard-indicator" = {
