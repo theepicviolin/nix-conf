@@ -1,14 +1,17 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, lib, settings, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  settings,
+  inputs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   options = {
     # Define options here, e.g.:
@@ -96,9 +99,12 @@
     users.users.${settings.username} = {
       isNormalUser = true;
       description = settings.fullname;
-      extraGroups = [ "networkmanager" "wheel" ];
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+      ];
       packages = with pkgs; [
-      #  thunderbird
+        #  thunderbird
       ];
     };
 
@@ -107,16 +113,27 @@
     systemd.services."autovt@tty1".enable = false;
 
     system.autoUpgrade = {
-      enable = true; 
+      enable = true;
       flake = inputs.self.outPath;
       flags = [
-        "--update-input" 
-        "nixpkgs" 
+        "--update-input"
+        "nixpkgs"
         "--commit-lock-file"
         "-L" # print build logs
       ];
       dates = "02:00"; # run daily at 2:00 AM
       randomizedDelaySec = "45min";
+    };
+
+    systemd.services.disable-gpp0 = {
+      enable = true;
+      description = "Disable GPP0 to allow system suspending";
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = ./disable-gpp0.sh;
+      };
+      wantedBy = [ "multi-user.target" ];
+      after = [ "network.target" ];
     };
 
     # Startup solaar on boot.
@@ -137,9 +154,6 @@
     environment.systemPackages = with pkgs; [
       # general productivity
       librewolf
-      vscodium
-      git
-      go
       _1password-gui
       protonmail-desktop
       # brave
@@ -151,7 +165,14 @@
       signal-desktop
       protonvpn-gui
 
-      # customizations 
+      # coding
+      vscodium
+      git
+      go
+      nil
+      nixfmt-rfc-style
+
+      # customizations
       fastfetch
       #solaar
       openrgb
@@ -172,7 +193,7 @@
       gnomeExtensions.search-light
       gnomeExtensions.syncthing-toggle
       gnomeExtensions.unblank
-      
+
       # musicy things
       audacity
       spotify
@@ -181,7 +202,7 @@
       reaper
       muse-sounds-manager
 
-      # other creative tools 
+      # other creative tools
       krita
       flameshot
       inkscape
@@ -194,7 +215,7 @@
       prismlauncher
       sunshine
 
-      # other 
+      # other
       qbittorrent
       nomachine-client
       libation
@@ -202,20 +223,23 @@
     ];
 
     # Remove unwanted GNOME applications.
-    environment.gnome.excludePackages = (with pkgs; [
-      epiphany
-      gnome-maps
-      geary
-      gnome-calendar
-      gnome-contacts
-      gnome-tour
-      gnome-music
-      gnome-weather
-      gnome-clocks
-    ]);
+    environment.gnome.excludePackages = (
+      with pkgs;
+      [
+        epiphany
+        gnome-maps
+        geary
+        gnome-calendar
+        gnome-contacts
+        gnome-tour
+        gnome-music
+        gnome-weather
+        gnome-clocks
+      ]
+    );
 
     # Remove xterm
-    services.xserver.excludePackages = [pkgs.xterm];
+    services.xserver.excludePackages = [ pkgs.xterm ];
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
@@ -244,7 +268,10 @@
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
     system.stateVersion = "25.05"; # Did you read the comment?
 
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    nix.settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     nix.settings.download-buffer-size = 268435456;
   };
 }

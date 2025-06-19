@@ -1,6 +1,16 @@
-{ config, pkgs, lib, settings, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  settings,
+  ...
+}:
 
 {
+  imports = [
+    ./syncthing.nix
+  ];
+
   options = {
     # Define options here, e.g.:
     # myOption = lib.mkOption {
@@ -11,7 +21,7 @@
   };
 
   config = {
-    home.username = settings.username; 
+    home.username = settings.username;
     home.homeDirectory = settings.homedir;
 
     home.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
@@ -76,11 +86,11 @@
       enable = true;
       shellAliases = {
         md = "mkdir";
-        ll = "ls -l";
         "." = "start .";
-        rebuildn = "sudo nixos-rebuild switch --flake ~/.dotfiles";
-        rebuildh = "home-manager switch --flake ~/.dotfiles";
+        rebuildn = "sudo nixos-rebuild switch --flake ${settings.dotdir}";
+        rebuildh = "home-manager switch --flake ${settings.dotdir}";
         rebuild = "rebuildn; rebuildh";
+        r = "rebuildn; rebuildh";
       };
       bashrcExtra = ''
         start() { nohup nautilus -w $1 >/dev/null 2>&1 & }
@@ -108,70 +118,34 @@
       enable = true;
     };
 
-    services.syncthing = {
-      enable = true;
-      overrideDevices = true;
-      overrideFolders = true;
-      settings = {
-        folders = {
-          "${settings.homedir}/Proton" = {
-            label = "Proton Drive";
-            id = "vhwys-cspch";
-            devices = [ "Harmony Host" ];
-          };
-          "${settings.homedir}/Documents/Obsidian" = {
-            label = "Obsidian";
-            id = "txpxx-3pgud";
-            devices = [ "Cosmic Communicator" "Symphony Scribe" "Gaming Gateway" "Harmony Host" ];
-          };
-
-        };
-        devices = {
-          "Harmony Host" = {
-            id = "DRUIO77-3KOGL7S-IPZWW3A-WB3PTFH-EIFQPBI-OGCQZ6G-UI46K3G-WD552QP";
-          };
-          "Cosmic Communicator" = {
-            id = "4DEABWB-EIXG52R-SB2D7FX-ADQM3FA-VV5T4V6-HD55MZ5-NB6EJH4-3T4X2QZ";
-          };
-          "Symphony Scribe" = {
-            id = "2ZOEOS6-ZYDGC6T-W63AEYR-OJWRY44-PW6PNN6-AS7YZZO-J4WOIQZ-D7GZOAE";
-          };
-          "Gaming Gateway" = {
-            id = "AT2S45P-GGZEREE-M6XG2Z2-5TPTGF5-SPZLNHD-IIQWUEH-6KVJLNU-DL7RLQH";
-          };
-          "Numerical Nexus" = {
-            id = "HOGUXNL-5T266FP-H3AX6JB-ZSQV4LD-IND5BGQ-X42UL45-SVDQN7R-REBUSQQ";
-          };
-        };
-        options.urAccepted = -1; 
-      };
-    };
-
     programs.vscode = {
       enable = true;
       package = pkgs.vscodium;
-      profiles.default.extensions = with pkgs.vscode-extensions; [
-        #atlassian.atlascode
-        #synedra.auto-run-command
-        dbaeumer.vscode-eslint
-        github.copilot
-        eamodio.gitlens
-        golang.go
-        haskell.haskell
-        justusadam.language-haskell
-        jnoortheen.nix-ide
-        esbenp.prettier-vscode
-        mads-hartmann.bash-ide-vscode
-        ms-python.python
-        ms-python.debugpy
-        #msjsdiag.vscode-react-native
-        coolbear.systemd-unit-file
-        redhat.vscode-yaml
-      ];
+      profiles.default = {
+        extensions = with pkgs.vscode-extensions; [
+          #atlassian.atlascode
+          #synedra.auto-run-command
+          dbaeumer.vscode-eslint
+          github.copilot
+          eamodio.gitlens
+          golang.go
+          haskell.haskell
+          justusadam.language-haskell
+          jnoortheen.nix-ide
+          esbenp.prettier-vscode
+          mads-hartmann.bash-ide-vscode
+          ms-python.python
+          ms-python.debugpy
+          #msjsdiag.vscode-react-native
+          coolbear.systemd-unit-file
+          redhat.vscode-yaml
+        ];
+        userSettings = lib.importJSON ./vscodium/settings.json;
+      };
     };
 
     dconf.enable = true;
-    dconf.settings = with lib.hm.gvariant;{
+    dconf.settings = with lib.hm.gvariant; {
       # Gnome Settings
 
       "org/gnome/shell" = {
@@ -188,8 +162,10 @@
       };
 
       "org/gnome/settings-daemon/plugins/media-keys" = {
-        custom-keybindings = ["/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/" 
-                              "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"];
+        custom-keybindings = [
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+        ];
       };
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         binding = "<Super>t";
@@ -202,19 +178,19 @@
         name = "Launch Console Ctrl+Alt+T";
       };
       "org/gnome/settings-daemon/plugins/media-keys" = {
-        home = ["<Super>e"];
+        home = [ "<Super>e" ];
       };
       "org/gnome/shell/keybindings" = {
-        toggle-message-tray = ["<Super>c"];
+        toggle-message-tray = [ "<Super>c" ];
       };
 
       "org/gnome/desktop/wm/keybindings" = {
-        move-to-workspace-left = ["<Shift><Control><Alt><Super>Return"];
-        move-to-workspace-right = ["<Shift><Control><Alt>Return"];
-        switch-windows = ["<Alt>Tab"];
-        switch-windows-backward = ["<Shift><Alt>Tab"];
-        switch-applications = ["<Super>Tab"];
-        switch-applications-backward = ["<Shift><Super>Tab"];
+        move-to-workspace-left = [ "<Shift><Control><Alt><Super>Return" ];
+        move-to-workspace-right = [ "<Shift><Control><Alt>Return" ];
+        switch-windows = [ "<Alt>Tab" ];
+        switch-windows-backward = [ "<Shift><Alt>Tab" ];
+        switch-applications = [ "<Super>Tab" ];
+        switch-applications-backward = [ "<Shift><Super>Tab" ];
       };
 
       "org/gnome/desktop/interface" = {
@@ -267,7 +243,7 @@
         show-warning = false;
       };
 
-      # Gnome Shell Extensions 
+      # Gnome Shell Extensions
       "org/gnome/shell" = {
         disable-user-extensions = false;
         enabled-extensions = with pkgs.gnomeExtensions; [
@@ -305,7 +281,13 @@
 
       "org/gnome/shell/extensions/appindicator" = {
         icon-saturation = 1;
-        custom-icons = [ (mkTuple ["indicator-solaar" "${settings.dotdir}/solaar/icon.png" ""]) ];
+        custom-icons = [
+          (mkTuple [
+            "indicator-solaar"
+            "${settings.dotdir}/solaar/icon.png"
+            ""
+          ])
+        ];
       };
 
       "org/gnome/shell/extensions/bluetooth-quick-connect" = {
@@ -313,11 +295,14 @@
       };
 
       "org/gnome/shell/extensions/caffeine" = {
-        duration-timer-list=[1800 3600 7200]; # 30 minutes, 1 hour, 2 hours
-        use-custom-duration=true;
+        duration-timer-list = [
+          1800
+          3600
+          7200
+        ]; # 30 minutes, 1 hour, 2 hours
+        use-custom-duration = true;
       };
 
-      
       "org/gnome/shell/extensions/custom-hot-corners-extended/misc" = {
         panel-menu-enable = false;
       };
@@ -330,11 +315,11 @@
 
       "org/gnome/shell/extensions/clipboard-indicator" = {
         display-mode = 3;
-        toggle-menu = ["<Super>v"];
+        toggle-menu = [ "<Super>v" ];
       };
 
       "org/gnome/shell/extensions/color-picker" = {
-        color-picker-shortcut = ["<Shift><Super>c"];
+        color-picker-shortcut = [ "<Shift><Super>c" ];
         enable-notify = true;
         enable-shortcut = true;
         enable-sound = false;
@@ -364,15 +349,20 @@
 
       "org/gnome/shell/extensions/search-light" = {
         animation-speed = 100.0;
-        background-color = mkTuple [0.1 0.1 0.1 0.8];
-        blur-brightness=0.6;
-        blur-sigma=30.0;
-        border-radius=1;
-        entry-font-size=1;
-        preferred-monitor=0;
-        scale-height=0.1;
-        scale-width=0.1;
-        shortcut-search=["<Control>space"];
+        background-color = mkTuple [
+          0.1
+          0.1
+          0.1
+          0.8
+        ];
+        blur-brightness = 0.6;
+        blur-sigma = 30.0;
+        border-radius = 1;
+        entry-font-size = 1;
+        preferred-monitor = 0;
+        scale-height = 0.1;
+        scale-width = 0.1;
+        shortcut-search = [ "<Control>space" ];
       };
 
       "org/gnome/shell/extensions/unblank" = {
