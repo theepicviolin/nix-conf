@@ -157,7 +157,8 @@
         description = "Disable GPP0 to allow system suspending";
         serviceConfig = {
           Type = "simple";
-          ExecStart = ./disable-gpp0.sh;
+          # wrap this in a shell script instead of executing it directly to avoid some sort of permission issue
+          ExecStart = pkgs.writeShellScript "disable-gpp0" "echo 'GPP0' | tee /proc/acpi/wakeup";
         };
         wantedBy = [ "multi-user.target" ];
         after = [ "network.target" ];
