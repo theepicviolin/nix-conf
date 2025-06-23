@@ -31,6 +31,7 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     home.packages = [
+
       # # It is sometimes useful to fine-tune packages, for example, by applying
       # # overrides. You can do that directly here, just don't forget the
       # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -90,6 +91,8 @@
         rebuildn = "sudo nixos-rebuild switch --flake ${settings.dotdir}";
         rebuildh = "home-manager switch --flake ${settings.dotdir}";
         rebuild = "rebuildn; rebuildh";
+        rn = "rebuildn";
+        rh = "rebuildh";
         r = "rebuildn; rebuildh";
       };
       bashrcExtra = ''
@@ -97,11 +100,156 @@
       '';
     };
 
+    systemd.user.services.steam = {
+      Unit = {
+        Description = "Open Steam in the background at boot";
+      };
+      Service = {
+        ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent %U";
+        Restart = "on-failure";
+        RestartSec = "5s";
+      };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+    };
+
+    systemd.user.services.hw_rgb = {
+      Unit = {
+        Description = "Control RGB lights with OpenRGB based on the CPU and GPU status";
+        After = [ "network.target" ];
+        #Conflicts = [ "suspend.target" ];
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${
+          pkgs.python313.withPackages (p: [
+            p.openrgb-python
+            p.psutil
+            p.numpy
+          ])
+        }/bin/python ${settings.dotdir}/hw_rgb.py";
+      };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
+
+    /*
+      systemd.user.services.suspend_hw_rgb = {
+        Unit = {
+          PartOf = [ "sleep.target" ];
+
+          StopWhenUnneeded = "yes";
+          Description = "Stop OpenRGB service during suspend and resume after";
+        };
+        Service = {
+          Type = "oneshot";
+          ExecStart = "systemctl --user stop hw_rgb.service";
+          #ExecStartPost = "/usr/bin/env sleep 5";
+          #ExecStop = "systemctl --user start hw_rgb.service";
+          #User = "%I";
+          Environment = "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus";
+          RemainAfterExit = "yes";
+        };
+        Install = {
+          WantedBy = [ "sleep.target" ];
+        };
+      };
+    */
+    systemd.user.targets.user-pre-sleep = {
+      Unit.Description = "User pre-sleep target";
+      Install.WantedBy = [ "default.target" ];
+    };
+
+    systemd.user.targets.user-post-sleep = {
+      Unit.Description = "User post-sleep target";
+      Install.WantedBy = [ "default.target" ];
+    };
+
+    systemd.user.services.script1-pre-sleep = {
+      Unit = {
+        Description = "Stop OpenRGB lights before sleep";
+        PartOf = [ "user-pre-sleep.target" ];
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = "systemctl --user stop hw_rgb.service";
+      };
+      Install.WantedBy = [ "user-pre-sleep.target" ];
+    };
+
+    systemd.user.services.script2-post-sleep = {
+      Unit = {
+        Description = "Start OpenRGB lights after sleep";
+        PartOf = [ "user-post-sleep.target" ];
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = "systemctl --user start hw_rgb.service";
+      };
+      Install.WantedBy = [ "user-post-sleep.target" ];
+    };
+
+    services.borgmatic.enable = true;
+    services.borgmatic.frequency = "*-*-* 23:55:00";
+    programs.borgmatic = {
+      enable = true;
+      backups.${settings.hostnamedisplay} = {
+        location = {
+          repositories = [
+            {
+              path = settings.backups.path;
+              label = "Seagate Expansion Drive";
+            }
+          ];
+          patterns = [
+            "+ ${settings.homedir}"
+            "- ${settings.homedir}/Proton"
+            "- ${settings.homedir}/.cache"
+            "- ${settings.homedir}/.local/share/Steam/steamapps/common"
+          ];
+        };
+        retention = {
+          keepDaily = 14;
+          keepWeekly = 4;
+          keepMonthly = 12;
+          keepYearly = 10;
+          extraConfig = {
+            skip_actions = [ "prune" ];
+            archive_name_format = "${settings.backups.prefix}{hostname}-{now:%Y-%m-%dT%Hh%M}";
+          };
+        };
+        consistency.checks = [
+          {
+            name = "repository";
+            frequency = "2 weeks";
+          }
+          {
+            name = "archives";
+            frequency = "4 weeks";
+          }
+          {
+            name = "data";
+            frequency = "6 weeks";
+          }
+          {
+            name = "extract";
+            frequency = "6 weeks";
+          }
+        ];
+      };
+    };
+
     programs.git = {
       enable = true;
       userName = settings.fullname;
-      userEmail = "adit99@live.com";
+      userEmail = settings.email;
+      aliases = {
+        s = "status";
+      };
       extraConfig = {
+        credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
         init = {
           defaultBranch = "main";
         };
@@ -135,6 +283,8 @@
           esbenp.prettier-vscode
           mads-hartmann.bash-ide-vscode
           ms-python.python
+          ms-python.pylint
+          ms-python.black-formatter
           ms-python.debugpy
           #msjsdiag.vscode-react-native
           coolbear.systemd-unit-file
@@ -229,6 +379,10 @@
 
       "org/gnome/desktop/notifications" = {
         show-in-lock-screen = false;
+      };
+
+      "org/gnome/gnome-session" = {
+        logout-prompt = false;
       };
 
       "org/gnome/nautilus/icon-view" = {

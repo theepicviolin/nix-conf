@@ -23,14 +23,21 @@
         hostnamedisplay = "Numerical Nexus";
         username = "aditya";
         fullname = "Aditya Ramanathan";
+        email = "adit99@live.com";
         homedir = "/home/" + username;
         dotdir = "${homedir}/.dotfiles";
-        wallpaper = "${dotdir}/wallpaper.jpg";
+        wallpaper = "${dotdir}/wallpaper.png";
         sync = {
           proton = true;
           obsidian = true;
           phonecamera = true;
           media = true;
+        };
+        backups = {
+          # shuf -er -n6  {a..f} {0..9} | tr -d '\n'
+          # to get a random 6 character hex prefix
+          prefix = "e60643-";
+          path = "/run/media/${username}/Seagate Expansion Drive/Linux/backup-${hostname}-${username}";
         };
       };
     in
