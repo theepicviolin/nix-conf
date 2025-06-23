@@ -23,7 +23,7 @@
         hostnamedisplay = "Numerical Nexus";
         username = "aditya";
         fullname = "Aditya Ramanathan";
-        email = "adit99@live.com";
+        email = "dev@adityarama.com";
         homedir = "/home/" + username;
         dotdir = "${homedir}/.dotfiles";
         wallpaper = "${dotdir}/wallpaper.png";

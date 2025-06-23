@@ -1,7 +1,7 @@
 {
-  config,
+  #config,
   pkgs,
-  lib,
+  #lib,
   settings,
   inputs,
   ...
@@ -130,9 +130,9 @@
           "networkmanager"
           "wheel"
         ];
-        packages = with pkgs; [
-          #  thunderbird
-        ];
+        #packages = with pkgs; [
+        #  thunderbird
+        #];
       };
 
       # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
@@ -226,20 +226,6 @@
         syncthing
         dconf-editor
         gnome-tweaks
-        gnomeExtensions.advanced-alttab-window-switcher
-        gnomeExtensions.appindicator
-        gnomeExtensions.bluetooth-quick-connect
-        gnomeExtensions.blur-my-shell
-        gnomeExtensions.caffeine
-        gnomeExtensions.custom-hot-corners-extended
-        gnomeExtensions.clipboard-indicator
-        gnomeExtensions.color-picker
-        gnomeExtensions.fullscreen-avoider
-        gnomeExtensions.just-perfection
-        gnomeExtensions.rounded-window-corners-reborn
-        gnomeExtensions.search-light
-        gnomeExtensions.syncthing-toggle
-        gnomeExtensions.unblank
 
         # musicy things
         audacity

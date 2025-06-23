@@ -1,5 +1,5 @@
 {
-  config,
+  #config,
   pkgs,
   lib,
   settings,
@@ -9,6 +9,7 @@
 {
   imports = [
     ./syncthing.nix
+    ./gnome.nix
   ];
 
   options = {
@@ -31,7 +32,6 @@
     # The home.packages option allows you to install Nix packages into your
     # environment.
     home.packages = [
-
       # # It is sometimes useful to fine-tune packages, for example, by applying
       # # overrides. You can do that directly here, just don't forget the
       # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -291,236 +291,6 @@
           redhat.vscode-yaml
         ];
         userSettings = lib.importJSON ./vscodium/settings.json;
-      };
-    };
-
-    dconf.enable = true;
-    dconf.settings = with lib.hm.gvariant; {
-      # Gnome Settings
-
-      "org/gnome/shell" = {
-        favorite-apps = [
-          "librewolf.desktop"
-          "org.gnome.Nautilus.desktop"
-          "thunderbird.desktop"
-          "obsidian.desktop"
-          "discord.desktop"
-          "codium.desktop"
-          "org.freecad.FreeCAD.desktop"
-          "OrcaSlicer.desktop"
-        ];
-      };
-
-      "org/gnome/settings-daemon/plugins/media-keys" = {
-        custom-keybindings = [
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
-        ];
-      };
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-        binding = "<Super>t";
-        command = "kgx";
-        name = "Launch Console Super+T";
-      };
-      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
-        binding = "<Ctrl><Alt>t";
-        command = "kgx";
-        name = "Launch Console Ctrl+Alt+T";
-      };
-      "org/gnome/settings-daemon/plugins/media-keys" = {
-        home = [ "<Super>e" ];
-      };
-      "org/gnome/shell/keybindings" = {
-        toggle-message-tray = [ "<Super>c" ];
-      };
-
-      "org/gnome/desktop/wm/keybindings" = {
-        move-to-workspace-left = [ "<Shift><Control><Alt><Super>Return" ];
-        move-to-workspace-right = [ "<Shift><Control><Alt>Return" ];
-        switch-windows = [ "<Alt>Tab" ];
-        switch-windows-backward = [ "<Shift><Alt>Tab" ];
-        switch-applications = [ "<Super>Tab" ];
-        switch-applications-backward = [ "<Shift><Super>Tab" ];
-      };
-
-      "org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-      };
-
-      "org/gnome/desktop/session" = {
-        idle-delay = mkUint32 600; # 10 minutes
-      };
-
-      "org/gnome/mutter" = {
-        workspaces-only-on-primary = false;
-      };
-
-      "org/gnome/desktop/interface" = {
-        accent-color = "purple";
-        clock-format = "12h";
-      };
-
-      "org/gnome/desktop/background" = {
-        picture-uri = "file://" + settings.wallpaper;
-        picture-uri-dark = "file://" + settings.wallpaper;
-        color-shading-type = "solid";
-        primary-color = "#77767B";
-        secondary-color = "#000000";
-        picture-options = "zoom";
-      };
-
-      "org/gnome/desktop/screensaver" = {
-        color-shading-type = "solid";
-        picture-uri = "file://" + settings.wallpaper;
-        primary-color = "#77767B";
-        secondary-color = "#000000";
-        picture-options = "zoom";
-      };
-
-      "org/gnome/desktop/notifications" = {
-        show-in-lock-screen = false;
-      };
-
-      "org/gnome/gnome-session" = {
-        logout-prompt = false;
-      };
-
-      "org/gnome/nautilus/icon-view" = {
-        default-zoom-level = "small-plus";
-      };
-
-      "org/gtk/settings/file-chooser" = {
-        clock-format = "12h";
-      };
-
-      "ca/desrt/dconf-editor" = {
-        show-warning = false;
-      };
-
-      # Gnome Shell Extensions
-      "org/gnome/shell" = {
-        disable-user-extensions = false;
-        enabled-extensions = with pkgs.gnomeExtensions; [
-          advanced-alttab-window-switcher.extensionUuid
-          appindicator.extensionUuid
-          bluetooth-quick-connect.extensionUuid
-          blur-my-shell.extensionUuid
-          caffeine.extensionUuid
-          custom-hot-corners-extended.extensionUuid
-          clipboard-indicator.extensionUuid
-          color-picker.extensionUuid
-          fullscreen-avoider.extensionUuid
-          just-perfection.extensionUuid
-          rounded-window-corners-reborn.extensionUuid
-          search-light.extensionUuid
-          syncthing-toggle.extensionUuid
-          unblank.extensionUuid
-        ];
-      };
-
-      "org/gnome/shell/extensions/advanced-alt-tab-window-switcher" = {
-        app-switcher-popup-fav-apps = false;
-        app-switcher-popup-filter = 2;
-        app-switcher-popup-include-show-apps-icon = false;
-        app-switcher-popup-titles = true;
-        app-switcher-popup-win-counter = false;
-        switcher-popup-preview-selected = 2;
-        switcher-popup-scroll-in = 1;
-        switcher-popup-scroll-out = 1;
-        switcher-popup-start-search = false;
-        win-switcher-popup-filter = 1;
-        win-switcher-popup-scroll-item = 1;
-        win-switcher-popup-search-apps = false;
-      };
-
-      "org/gnome/shell/extensions/appindicator" = {
-        icon-saturation = 1;
-        custom-icons = [
-          (mkTuple [
-            "indicator-solaar"
-            "${settings.dotdir}/solaar/icon.png"
-            ""
-          ])
-        ];
-      };
-
-      "org/gnome/shell/extensions/bluetooth-quick-connect" = {
-        show-battery-value-on = true;
-      };
-
-      "org/gnome/shell/extensions/caffeine" = {
-        duration-timer-list = [
-          1800
-          3600
-          7200
-        ]; # 30 minutes, 1 hour, 2 hours
-        use-custom-duration = true;
-      };
-
-      "org/gnome/shell/extensions/custom-hot-corners-extended/misc" = {
-        panel-menu-enable = false;
-      };
-      "org/gnome/shell/extensions/custom-hot-corners-extended/monitor-0-bottom-left-0" = {
-        action = "show-applications";
-      };
-      "org/gnome/shell/extensions/custom-hot-corners-extended/monitor-0-top-left-0" = {
-        action = "toggle-overview";
-      };
-
-      "org/gnome/shell/extensions/clipboard-indicator" = {
-        display-mode = 3;
-        toggle-menu = [ "<Super>v" ];
-      };
-
-      "org/gnome/shell/extensions/color-picker" = {
-        color-picker-shortcut = [ "<Shift><Super>c" ];
-        enable-notify = true;
-        enable-shortcut = true;
-        enable-sound = false;
-        enable-systray = false;
-        notify-style = mkUint32 1;
-      };
-
-      "org/gnome/shell/extensions/fullscreen-avoider" = {
-        move-hot-corners = false;
-        move-notifications = false;
-      };
-
-      "org/gnome/shell/extensions/just-perfection" = {
-        accessibility-menu = true;
-        animation = 4;
-        clock-menu = true;
-        keyboard-layout = true;
-        quick-settings-dark-mode = false;
-        quick-settings-night-light = false;
-        startup-status = 0;
-        support-notifier-showed-version = 34;
-        support-notifier-type = 0;
-        switcher-popup-delay = false;
-        theme = true;
-        window-demands-attention-focus = true;
-      };
-
-      "org/gnome/shell/extensions/search-light" = {
-        animation-speed = 100.0;
-        background-color = mkTuple [
-          0.1
-          0.1
-          0.1
-          0.8
-        ];
-        blur-brightness = 0.6;
-        blur-sigma = 30.0;
-        border-radius = 1;
-        entry-font-size = 1;
-        preferred-monitor = 0;
-        scale-height = 0.1;
-        scale-width = 0.1;
-        shortcut-search = [ "<Control>space" ];
-      };
-
-      "org/gnome/shell/extensions/unblank" = {
-        time = 300;
       };
     };
 
