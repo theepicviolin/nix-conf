@@ -47,7 +47,6 @@ def stop(*args):
     logger.info(args_str)
     client.clear()
     client.disconnect()
-    # loop.quit()
     sys.exit(0)
 
 
@@ -79,6 +78,14 @@ def setup():
 
 
 def get_colors(phase_cpu, phase_gpu):
+    gputimeout = 10
+    waittime = 0
+    while "amdgpu" not in psutil.sensors_temperatures():
+        time.sleep(0.1)
+        waittime += 0.1
+        if waittime > gputimeout:
+            logger.error("Timeout waiting for GPU temperature sensor")
+            return RGBColor(0, 0, 0), RGBColor(0, 0, 0), phase_cpu, phase_gpu
     gputemp = psutil.sensors_temperatures()["amdgpu"][0].current
     cputemp = psutil.sensors_temperatures()["gigabyte_wmi"][2].current
     gpufan = psutil.sensors_fans()["amdgpu"][0].current
@@ -114,51 +121,6 @@ def get_colors(phase_cpu, phase_gpu):
 
     return color_cpu, color_gpu, phase_cpu, phase_gpu
 
-
-"""
-for t in range(1000):
-    r = abs(((t * 2) % 510) - 255)
-    fan_bottom.set_color(RGBColor(r, 0, 0), True)
-    fan_top.set_color(RGBColor(0, r, 0), True)
-    time.sleep(0.01)
-"""
-
-"""
-for t in range(3600):
-    colors = [RGBColor.fromHSV((i * 30 + t*5) % 360, 100, 100) for i in range(12)]
-    fan_bottom.set_colors(colors, True)
-    fan_top.set_colors(colors[7:] + colors[:7], True)
-    time.sleep(0.01)
-"""
-
-"""
-colors_base = [RGBColor(255, 0, 0)] + [RGBColor(0, 0, 0)] * 11 #[RGBColor(int((2 ** i) * 255 / 2048), 0, 0) for i in range(12)]
-for t in range(100):
-    colors = rotate(colors_base, t % 12)
-    fan_bottom.set_colors(colors)
-    fan_top.set_colors(rotate(colors, 7))
-    time.sleep(0.0001)
-"""
-
-"""
-mobo.set_color(RGBColor(0, 255, 0))
-mobo.zones[0].set_color(RGBColor(255, 0, 0))
-mobo.zones[1].leds[0].set_color(RGBColor.fromHSV(0, 100, 100))
-mobo.set_mode("breathing")
-client.save_profile("profile1")
-"""
-
-# DBusGMainLoop(set_as_default=True)
-# bus = dbus.SystemBus()
-# bus.add_signal_receiver(
-#    handle_sleep,
-#    signal_name="PrepareForSleep",
-#    dbus_interface="org.freedesktop.login1.Manager",
-#    bus_name="org.freedesktop.login1",
-# )
-# loop = GLib.MainLoop()
-# context = loop.get_context()
-
 signal.signal(signal.SIGINT, stop)
 signal.signal(signal.SIGTERM, stop)
 
@@ -168,9 +130,6 @@ phase_cpu = 0
 phase_gpu = 0
 while True:
     try:
-        # while context.pending():
-        #    context.iteration(False)
-
         if not connected:
             connected, client, mobo, fan_bottom, fan_top, mobo_zone = setup()
         if not connected:

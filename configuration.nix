@@ -24,20 +24,19 @@
 
   config =
     let
-      notifyUserSleep = pkgs.writeShellScript "notify-user-sleep" ''
-        set -e
-        USER="${settings.username}"  # Change if needed
-        UID=$(id -u "$USER")
-        export XDG_RUNTIME_DIR="/run/user/$UID"
+      notifyUserTarget =
+        name: delay:
+        pkgs.writeShellScript "notify-${name}" ''
+          set -e
+          _USER="${settings.username}"  # Change if needed
+          _UID=$(id -u "$_USER")
+          export XDG_RUNTIME_DIR="/run/user/$_UID"
 
-        if loginctl show-user "$USER" | grep -q "State=active"; then
-          if [ "$1" = "pre" ]; then
-            systemctl --user -M "$USER@" start user-pre-sleep.target
-          elif [ "$1" = "post" ]; then
-            systemctl --user -M "$USER@" start user-post-sleep.target
+          if loginctl show-user "$_USER" | grep -q "State=active"; then
+            sleep ${delay}
+            systemctl --user -M "$_USER@" start ${name}.target
           fi
-        fi
-      '';
+        '';
     in
     {
 
@@ -125,6 +124,7 @@
       # Define a user account. Don't forget to set a password with ‘passwd’.
       users.users.${settings.username} = {
         isNormalUser = true;
+        linger = true;
         description = settings.fullname;
         extraGroups = [
           "networkmanager"
@@ -164,13 +164,24 @@
         after = [ "network.target" ];
       };
 
-      systemd.services."user-sleep-hook@" = {
-        description = "Notify user session of sleep/wake";
+      systemd.services.user-sleep-hook = {
+        description = "Notify user session of sleep";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${notifyUserSleep} %i";
+          ExecStart = "${notifyUserTarget "user-sleep" "0"} %i";
         };
         wantedBy = [ "sleep.target" ];
+        before = [ "sleep.target" ];
+      };
+
+      systemd.services.user-wake-hook = {
+        description = "Notify user session of wake";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${notifyUserTarget "user-wake" "1"} %i";
+        };
+        wantedBy = [ "sleep.target" ];
+        after = [ "sleep.target" ];
       };
 
       # Allow unfree packages

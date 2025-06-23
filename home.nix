@@ -105,6 +105,7 @@
         Description = "Open Steam in the background at boot";
       };
       Service = {
+        ExecStartPre = "/usr/bin/env sleep 1";
         ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent %U";
         Restart = "on-failure";
         RestartSec = "5s";
@@ -118,7 +119,6 @@
       Unit = {
         Description = "Control RGB lights with OpenRGB based on the CPU and GPU status";
         After = [ "network.target" ];
-        #Conflicts = [ "suspend.target" ];
       };
       Service = {
         Type = "simple";
@@ -135,60 +135,31 @@
       };
     };
 
-    /*
-      systemd.user.services.suspend_hw_rgb = {
-        Unit = {
-          PartOf = [ "sleep.target" ];
+    systemd.user.targets.user-sleep.Unit.Description = "User pre-sleep target";
+    systemd.user.targets.user-wake.Unit.Description = "User post-wake target";
 
-          StopWhenUnneeded = "yes";
-          Description = "Stop OpenRGB service during suspend and resume after";
-        };
-        Service = {
-          Type = "oneshot";
-          ExecStart = "systemctl --user stop hw_rgb.service";
-          #ExecStartPost = "/usr/bin/env sleep 5";
-          #ExecStop = "systemctl --user start hw_rgb.service";
-          #User = "%I";
-          Environment = "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus";
-          RemainAfterExit = "yes";
-        };
-        Install = {
-          WantedBy = [ "sleep.target" ];
-        };
-      };
-    */
-    systemd.user.targets.user-pre-sleep = {
-      Unit.Description = "User pre-sleep target";
-      Install.WantedBy = [ "default.target" ];
-    };
-
-    systemd.user.targets.user-post-sleep = {
-      Unit.Description = "User post-sleep target";
-      Install.WantedBy = [ "default.target" ];
-    };
-
-    systemd.user.services.script1-pre-sleep = {
+    systemd.user.services.stop-openrgb-sleep = {
       Unit = {
         Description = "Stop OpenRGB lights before sleep";
-        PartOf = [ "user-pre-sleep.target" ];
+        PartOf = [ "user-sleep.target" ];
       };
       Service = {
         Type = "oneshot";
         ExecStart = "systemctl --user stop hw_rgb.service";
       };
-      Install.WantedBy = [ "user-pre-sleep.target" ];
+      Install.WantedBy = [ "user-sleep.target" ];
     };
 
-    systemd.user.services.script2-post-sleep = {
+    systemd.user.services.start-openrgb-wake = {
       Unit = {
-        Description = "Start OpenRGB lights after sleep";
-        PartOf = [ "user-post-sleep.target" ];
+        Description = "Start OpenRGB lights after wake";
+        PartOf = [ "user-wake.target" ];
       };
       Service = {
         Type = "oneshot";
         ExecStart = "systemctl --user start hw_rgb.service";
       };
-      Install.WantedBy = [ "user-post-sleep.target" ];
+      Install.WantedBy = [ "user-wake.target" ];
     };
 
     services.borgmatic.enable = true;
