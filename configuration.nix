@@ -223,6 +223,7 @@
         discord
         signal-desktop
         protonvpn-gui
+        teams-for-linux
 
         # coding
         #vscodium
