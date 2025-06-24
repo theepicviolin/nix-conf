@@ -11,6 +11,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./system/sunshine.nix
   ];
 
   options = {
@@ -192,6 +193,7 @@
       services.solaar.enable = true;
 
       services.hardware.openrgb.enable = true;
+      hardware.spacenavd.enable = true;
 
       programs.steam.enable = true;
       programs._1password-gui.enable = true;
@@ -257,14 +259,12 @@
 
         # games
         prismlauncher
-        sunshine
 
         # other
         qbittorrent
         nomachine-client
         libation
         gparted
-        #pika-backup
       ];
 
       # Remove unwanted GNOME applications.

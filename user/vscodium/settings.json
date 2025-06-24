@@ -29,7 +29,8 @@
   "git.autofetch": true,
   "git.confirmSync": false,
   "github.copilot.advanced": {},
-  "gitlens.ai.model": "openai:gpt-4o",
+  "gitlens.ai.model": "gitkraken",
+  "gitlens.ai.gitkraken.model": "gemini:gemini-2.0-flash",
   "haskell.manageHLS": "GHCup",
   "python.createEnvironment.trigger": "off",
   "redhat.telemetry.enabled": false,
@@ -43,5 +44,6 @@
         "command": ["nixfmt"]
       }
     }
-  }
+  },
+  "explorer.confirmDragAndDrop": false
 }

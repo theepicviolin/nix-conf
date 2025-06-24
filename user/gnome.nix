@@ -151,11 +151,11 @@ in
     };
 
     "org/gnome/shell/extensions/appindicator" = {
-      icon-saturation = 1;
+      #icon-saturation = 1;
       custom-icons = [
         (mkTuple [
           "indicator-solaar"
-          "${settings.dotdir}/solaar/icon.png"
+          "${settings.dotdir}/user/solaar/icon.png"
           ""
         ])
       ];

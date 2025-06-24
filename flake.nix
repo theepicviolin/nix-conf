@@ -26,7 +26,7 @@
         email = "dev@adityarama.com";
         homedir = "/home/" + username;
         dotdir = "${homedir}/.dotfiles";
-        wallpaper = "${dotdir}/wallpaper.png";
+        wallpaper = "${dotdir}/user/wallpaper.png";
         sync = {
           proton = true;
           obsidian = true;
