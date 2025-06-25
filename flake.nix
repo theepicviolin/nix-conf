@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "nixpkgs/nixos-25.05";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     solaar = {
@@ -18,6 +19,7 @@
       lib = nixpkgs.lib;
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-stable = inputs.nixpkgs-stable.legacyPackages.${system};
       settings = rec {
         hostname = "numerical-nexus";
         hostnamedisplay = "Numerical Nexus";
@@ -44,7 +46,7 @@
     {
       nixosConfigurations.${settings.hostname} = lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit inputs settings; };
+        specialArgs = { inherit inputs settings pkgs-stable; };
         modules = [
           ./configuration.nix
           inputs.solaar.nixosModules.default

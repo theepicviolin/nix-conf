@@ -1,6 +1,7 @@
 {
   #config,
   pkgs,
+  #pkgs-stable,
   #lib,
   settings,
   inputs,
@@ -209,6 +210,8 @@
         };
       };
 
+      nixpkgs.overlays = [ (import ./overlays.nix) ];
+
       environment.systemPackages = with pkgs; [
         # general productivity
         librewolf
@@ -231,7 +234,6 @@
         go
         nil
         nixfmt-rfc-style
-        #(python3.withPackages (ps: [ ps.pygobject3 ]))
         python314
 
         # customizations

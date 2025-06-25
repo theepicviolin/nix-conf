@@ -53,6 +53,7 @@ let
       "1password.desktop"
       "org.gnome.SystemMonitor.desktop"
       "org.gnome.Settings.desktop"
+      "org.gnome.Console.desktop"
       "org.gnome.Extensions.desktop"
       "org.gnome.Calculator.desktop"
       "thunderbird.desktop"
@@ -74,7 +75,6 @@ let
       "Games"
     ]
     [
-      "org.gnome.Console.desktop"
       "ca.desrt.dconf-editor.desktop"
       "org.gnome.baobab.desktop"
       "gparted.desktop"
