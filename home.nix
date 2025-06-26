@@ -80,6 +80,9 @@
       home.file = {
         ".config/solaar/config.yaml".source = ./user/solaar/config.yaml;
         ".config/solaar/rules.yaml".source = ./user/solaar/rules.yaml;
+        ".local/share/Libation/appsettings.json".text =
+          "{\"LibationFiles\": \"${settings.homedir}/Proton/Music/Libation/\"}";
+        ".config/MuseScore/MuseScore4.ini".source = ./user/musescore/MuseScore4.ini;
 
         # # Building this configuration will create a copy of 'dotfiles/screenrc' in
         # # the Nix store. Activating the configuration will then make '~/.screenrc' a

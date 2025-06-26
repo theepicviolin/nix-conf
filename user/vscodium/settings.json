@@ -29,6 +29,7 @@
   "editor.formatOnSave": true,
   "editor.stickyScroll.defaultModel": "indentationModel",
   "explorer.confirmDragAndDrop": false,
+  "explorer.confirmPasteNative": false,
   "files.autoSave": "afterDelay",
   "git.autofetch": true,
   "git.confirmSync": false,
