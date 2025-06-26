@@ -33,9 +33,7 @@ final: prev: {
         tox -e linux-generate
       '';
 
-      postPatch = ''
-        sed -i '/license = {text =/d' pyproject.toml
-      '';
+      postPatch = "sed -i '/license = {text =/d' pyproject.toml";
 
       # no tests in shipped with upstream
       doCheck = false;

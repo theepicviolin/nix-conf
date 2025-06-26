@@ -12,6 +12,7 @@
     ./user/gnome.nix
     ./user/hw_rgb.nix
     ./user/syncthing.nix
+    ./user/orcaslicer.nix
   ];
 
   options = {
@@ -25,24 +26,27 @@
 
   config =
     let
-      mutableDotfile =
-        cfgDir: cfgFile: templateFile:
-        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
-            mkdir -p "${settings.homedir}/${cfgDir}"
-            cp "${settings.dotdir}/${templateFile}" "${settings.homedir}/${cfgDir}/${cfgFile}"
-          fi
-        '';
-      # mutableDottext =
-      #   cfgDir: cfgFile: text:
-      #   lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      #     if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
-      #       mkdir -p "${settings.homedir}/${cfgDir}"
-      #       echo "${text}" > "${settings.homedir}/${cfgDir}/${cfgFile}"
-      #     fi
-      #   '';
+      utils = {
+        mutableDotfile =
+          cfgDir: cfgFile: templateFile:
+          lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
+              mkdir -p "${settings.homedir}/${cfgDir}"
+              cp "${settings.dotdir}/${templateFile}" "${settings.homedir}/${cfgDir}/${cfgFile}"
+            fi
+          '';
+        mutableDottext =
+          cfgDir: cfgFile: text:
+          lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
+              mkdir -p "${settings.homedir}/${cfgDir}"
+              echo "${text}" > "${settings.homedir}/${cfgDir}/${cfgFile}"
+            fi
+          '';
+      };
     in
     {
+      orcaslicer = { inherit utils; };
       home.username = settings.username;
       home.homeDirectory = settings.homedir;
 
@@ -68,7 +72,7 @@
       ];
 
       home.activation = {
-        freecadUserCfg = mutableDotfile ".config/FreeCAD" "user.cfg" "user/freecad/user.cfg";
+        freecadUserCfg = utils.mutableDotfile ".config/FreeCAD" "user.cfg" "user/freecad/user.cfg";
       };
 
       # Home Manager is pretty good at managing dotfiles. The primary way to manage
