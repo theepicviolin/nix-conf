@@ -123,6 +123,8 @@
       # Enable touchpad support (enabled default in most desktopManager).
       # services.xserver.libinput.enable = true;
 
+      virtualisation.libvirtd.enable = true;
+
       # Define a user account. Don't forget to set a password with ‘passwd’.
       users.users.${settings.username} = {
         isNormalUser = true;
@@ -234,7 +236,8 @@
         go
         nil
         nixfmt-rfc-style
-        python314
+        #python314
+        gnome-boxes
 
         # customizations
         fastfetch

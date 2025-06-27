@@ -11,7 +11,7 @@ sudo nano /etc/nixos/configuration.nix
 Add the following to the nix configuration file:
 
 ```
-programs.git.enable;
+programs.git.enable = true;
 nix.settings.experimental-features = [ "nix-command" "flakes" ];
 nix.settings.download-buffer-size = 268435456;
 ```

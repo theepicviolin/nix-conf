@@ -9,7 +9,10 @@ let
     proton."${settings.homedir}/Proton" = {
       label = "Proton Drive";
       id = "vhwys-cspch";
-      devices = [ "Harmony Host" ];
+      devices = [
+        "Harmony Host"
+        "Numerical Nexus"
+      ];
     };
     obsidian."${settings.homedir}/Documents/Obsidian" = {
       label = "Obsidian";
@@ -19,6 +22,7 @@ let
         "Symphony Scribe"
         "Gaming Gateway"
         "Harmony Host"
+        "Numerical Nexus"
       ];
     };
     phonecamera."${settings.homedir}/Pictures/Phone Camera" = {
@@ -26,6 +30,7 @@ let
       id = "sm-s928u_s4pq-photos";
       devices = [
         "Cosmic Communicator"
+        "Numerical Nexus"
       ];
     };
     media."${settings.homedir}/Videos/Media" = {
@@ -33,6 +38,7 @@ let
       id = "txvrc-k9e3j";
       devices = [
         "Harmony Host"
+        "Numerical Nexus"
       ];
     };
   };

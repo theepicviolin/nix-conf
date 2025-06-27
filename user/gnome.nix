@@ -75,6 +75,7 @@ let
       "Games"
     ]
     [
+      "org.gnome.Boxes.desktop"
       "ca.desrt.dconf-editor.desktop"
       "org.gnome.baobab.desktop"
       "gparted.desktop"

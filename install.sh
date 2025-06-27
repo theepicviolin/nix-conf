@@ -22,7 +22,6 @@ sudo cp /etc/nixos/configuration.nix ~/.dotfiles/configuration.nix.bak
 sudo cp /etc/nixos/hardware-configuration.nix ~/.dotfiles
 cd ~/.dotfiles
 git add ~/.dotfiles/hardware-configuration.nix
-chmod +x ~/.dotfiles/disable-gpp0.sh
 
 echo "###########################################"
 echo "# MAKE NECESSARY CHANGES TO CONFIGURATION #" 
