@@ -103,6 +103,9 @@
 
       # Enable CUPS to print documents.
       services.printing.enable = true;
+      services.printing.drivers = [
+        pkgs.cups-brother-hll2340dw
+      ];
 
       # Enable sound with pipewire.
       services.pulseaudio.enable = false;
