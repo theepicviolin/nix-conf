@@ -48,7 +48,7 @@
         inherit system;
         specialArgs = { inherit inputs settings pkgs-stable; };
         modules = [
-          ./configuration.nix
+          ./system/configuration.nix
           inputs.solaar.nixosModules.default
         ];
       };
@@ -58,7 +58,7 @@
           inherit pkgs;
           extraSpecialArgs = { inherit settings; };
           modules = [
-            ./home.nix
+            ./user/home.nix
           ];
         };
       };

@@ -8,11 +8,14 @@
 
 {
   imports = [
-    ./user/backup.nix
-    ./user/gnome.nix
-    ./user/hw_rgb.nix
-    ./user/syncthing.nix
-    ./user/orcaslicer.nix
+    ./backup/borgmatic.nix
+    ./desktop-environments/gnome.nix
+    ./hw_rgb/hw_rgb.nix
+    ./musescore/musescore.nix
+    ./orcaslicer/orcaslicer.nix
+    ./solaar/solaar.nix
+    ./syncthing/syncthing.nix
+    ./vscodium/vscodium.nix
   ];
 
   options = {
@@ -47,6 +50,7 @@
     in
     {
       orcaslicer = { inherit utils; };
+      nixpkgs.overlays = [ (import ../overlays/frescobaldi.nix) ];
       home.username = settings.username;
       home.homeDirectory = settings.homedir;
 
@@ -54,64 +58,58 @@
 
       nixpkgs.config.allowUnfree = true;
 
-      # The home.packages option allows you to install Nix packages into your
-      # environment.
-      home.packages = [
-        # # It is sometimes useful to fine-tune packages, for example, by applying
-        # # overrides. You can do that directly here, just don't forget the
-        # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-        # # fonts?
-        # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+      home.packages = with pkgs; [
+        # general productivity
+        librewolf
+        protonmail-desktop
+        proton-pass
+        obsidian
+        onlyoffice-desktopeditors
+        vlc
+        discord
+        signal-desktop
+        protonvpn-gui
+        teams-for-linux
 
-        # # You can also create simple shell scripts directly inside your
-        # # configuration. For example, this adds a command 'my-hello' to your
-        # # environment:
-        # (pkgs.writeShellScriptBin "my-hello" ''
-        #   echo "Hello, ${config.home.username}!"
-        # '')
+        # coding
+        go
+        nil
+        nixfmt-rfc-style
+        python314
+        gnome-boxes
+
+        # musicy things
+        audacity
+        spotify
+        frescobaldi
+        reaper
+
+        # other creative tools
+        krita
+        flameshot
+        inkscape
+        #davinci-resolve # this one takes a long time so it can be added later once needed
+        blender
+        freecad
+
+        # games
+        prismlauncher
+
+        # other
+        qbittorrent
+        nomachine-client
+        libation
       ];
 
       home.activation = {
         freecadUserCfg = utils.mutableDotfile ".config/FreeCAD" "user.cfg" "user/freecad/user.cfg";
       };
 
-      # Home Manager is pretty good at managing dotfiles. The primary way to manage
-      # plain files is through 'home.file'.
       home.file = {
-        ".config/solaar/config.yaml".source = ./user/solaar/config.yaml;
-        ".config/solaar/rules.yaml".source = ./user/solaar/rules.yaml;
         ".local/share/Libation/appsettings.json".text =
           "{\"LibationFiles\": \"${settings.homedir}/Proton/Music/Libation/\"}";
-        ".config/MuseScore/MuseScore4.ini".source = ./user/musescore/MuseScore4.ini;
-
-        # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-        # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-        # # symlink to the Nix store copy.
-        # ".screenrc".source = dotfiles/screenrc;
-
-        # # You can also set the file content immediately.
-        # ".gradle/gradle.properties".text = ''
-        #   org.gradle.console=verbose
-        #   org.gradle.daemon.idletimeout=3600000
-        # '';
       };
 
-      # Home Manager can also manage your environment variables through
-      # 'home.sessionVariables'. These will be explicitly sourced when using a
-      # shell provided by Home Manager. If you don't want to manage your shell
-      # through Home Manager then you have to manually source 'hm-session-vars.sh'
-      # located at either
-      #
-      #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-      #
-      # or
-      #
-      #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-      #
-      # or
-      #
-      #  /etc/profiles/per-user/aditya/etc/profile.d/hm-session-vars.sh
-      #
       home.sessionVariables = {
         # EDITOR = "emacs";
       };
@@ -174,34 +172,6 @@
 
       programs.rclone = {
         enable = true;
-      };
-
-      programs.vscode = {
-        enable = true;
-        package = pkgs.vscodium;
-        profiles.default = {
-          extensions = with pkgs.vscode-extensions; [
-            #atlassian.atlascode
-            #synedra.auto-run-command
-            dbaeumer.vscode-eslint
-            github.copilot
-            eamodio.gitlens
-            golang.go
-            haskell.haskell
-            justusadam.language-haskell
-            jnoortheen.nix-ide
-            esbenp.prettier-vscode
-            mads-hartmann.bash-ide-vscode
-            ms-python.python
-            ms-python.pylint
-            ms-python.black-formatter
-            ms-python.debugpy
-            #msjsdiag.vscode-react-native
-            coolbear.systemd-unit-file
-            redhat.vscode-yaml
-          ];
-          userSettings = lib.importJSON ./user/vscodium/settings.json;
-        };
       };
 
       # Let Home Manager install and manage itself.

@@ -12,7 +12,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./system/sunshine.nix
+    ./sunshine.nix
   ];
 
   options = {
@@ -41,6 +41,7 @@
         '';
     in
     {
+      nixpkgs.overlays = [ (import ../overlays/printer.nix) ];
 
       # Bootloader.
       boot = {
@@ -62,10 +63,6 @@
 
       networking.hostName = settings.hostname; # Define your hostname.
       # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-      # Configure network proxy if necessary
-      # networking.proxy.default = "http://user:password@proxy:port/";
-      # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
       # Enable networking
       networking.networkmanager.enable = true;
@@ -215,65 +212,11 @@
         };
       };
 
-      nixpkgs.overlays = [ (import ./overlays.nix) ];
-
       environment.systemPackages = with pkgs; [
-        # general productivity
-        librewolf
-        #_1password-gui
-        protonmail-desktop
-        proton-pass
-        # brave
-        #thunderbird
-        obsidian
-        onlyoffice-desktopeditors
-        vlc
-        discord
-        signal-desktop
-        protonvpn-gui
-        teams-for-linux
-
-        # coding
-        #vscodium
-        #git
-        go
-        nil
-        nixfmt-rfc-style
-        #python314
-        gnome-boxes
-
-        # customizations
-        fastfetch
-        #solaar
-        syncthing
-        dconf-editor
-        gnome-tweaks
-
-        # musicy things
-        audacity
-        spotify
-        musescore
-        frescobaldi
-        reaper
-        muse-sounds-manager
-
-        # other creative tools
-        krita
-        flameshot
-        inkscape
-        #davinci-resolve # this one takes a long time so it can be added later once needed
-        blender
-        freecad
-        orca-slicer
-
-        # games
-        prismlauncher
-
-        # other
-        qbittorrent
-        nomachine-client
-        libation
         gparted
+        fastfetch
+        dconf-editor
+        tree
       ];
 
       # Remove unwanted GNOME applications.

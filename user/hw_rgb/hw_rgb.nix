@@ -19,7 +19,7 @@
           p.psutil
           p.numpy
         ])
-      }/bin/python ${settings.dotdir}/user/hw_rgb.py";
+      }/bin/python ${settings.dotdir}/user/hw_rgb/hw_rgb.py";
     };
     Install = {
       WantedBy = [ "default.target" ];

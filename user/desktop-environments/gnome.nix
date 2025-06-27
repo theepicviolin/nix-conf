@@ -131,7 +131,7 @@ let
 in
 {
   dconf.enable = true;
-  home.packages = extensions; # merges with packages from home.nix
+  home.packages = extensions ++ [ pkgs.gnome-tweaks ]; # merges with packages from home.nix
 
   dconf.settings =
     with lib.hm.gvariant;

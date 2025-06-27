@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  #pkgs,
+  pkgs,
   #settings,
   ...
 }:
@@ -112,6 +112,7 @@ in
         utils.mutableDotfile ".config/OrcaSlicer" "OrcaSlicer.conf"
           "user/orcaslicer/OrcaSlicer.conf";
     };
+    home.packages = [ pkgs.orca-slicer ];
     home.file =
       (
         with lib.attrsets;
