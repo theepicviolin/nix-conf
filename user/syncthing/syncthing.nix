@@ -1,6 +1,6 @@
 {
   #config,
-  pkgs,
+  # pkgs,
   settings,
   ...
 }:
@@ -44,7 +44,6 @@ let
   };
 in
 {
-  home.packages = [ pkgs.syncthing ];
   services.syncthing = {
     enable = true;
     overrideDevices = true;

@@ -125,10 +125,8 @@
           rn = "rebuildn";
           rh = "rebuildh";
           r = "rebuildn; rebuildh";
+          start = "xdg-open";
         };
-        bashrcExtra = ''
-          start() { nohup nautilus -w $1 >/dev/null 2>&1 & }
-        '';
       };
 
       systemd.user.services.steam = {

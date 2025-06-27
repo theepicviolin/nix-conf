@@ -28,6 +28,7 @@
         email = "dev@adityarama.com";
         homedir = "/home/" + username;
         dotdir = "${homedir}/.dotfiles";
+        desktop-environment = "gnome"; # "gnome" or "plasma"
         wallpaper = "${dotdir}/user/wallpaper.png";
         sync = {
           proton = true;

@@ -2,18 +2,22 @@
   #config,
   pkgs,
   #pkgs-stable,
-  #lib,
+  lib,
   settings,
   inputs,
   ...
 }:
 
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    ./sunshine.nix
-  ];
+  imports =
+    with lib.lists;
+    [
+      # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      ./sunshine.nix
+    ]
+    ++ (optional (settings.desktop-environment == "gnome") ./desktop-environments/gnome.nix)
+    ++ (optional (settings.desktop-environment == "plasma") ./desktop-environments/plasma.nix);
 
   options = {
     # Define options here, e.g.:
@@ -85,13 +89,6 @@
         LC_TIME = "en_US.UTF-8";
       };
 
-      # Enable the X11 windowing system.
-      services.xserver.enable = true;
-
-      # Enable the GNOME Desktop Environment.
-      services.displayManager.gdm.enable = true;
-      services.desktopManager.gnome.enable = true;
-
       # Configure keymap in X11
       services.xserver.xkb = {
         layout = "us";
@@ -134,9 +131,6 @@
           "networkmanager"
           "wheel"
         ];
-        #packages = with pkgs; [
-        #  thunderbird
-        #];
       };
 
       # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
@@ -219,22 +213,6 @@
         tree
       ];
 
-      # Remove unwanted GNOME applications.
-      environment.gnome.excludePackages = (
-        with pkgs;
-        [
-          epiphany
-          gnome-maps
-          geary
-          gnome-calendar
-          gnome-contacts
-          gnome-tour
-          gnome-music
-          gnome-weather
-          gnome-clocks
-        ]
-      );
-
       # Remove xterm
       services.xserver.excludePackages = [ pkgs.xterm ];
 
@@ -251,23 +229,13 @@
       # Enable the OpenSSH daemon.
       services.openssh.enable = true;
 
-      # Open ports in the firewall.
-      # networking.firewall.allowedTCPPorts = [ ... ];
-      # networking.firewall.allowedUDPPorts = [ ... ];
-      # Or disable the firewall altogether.
       networking.firewall.enable = true;
       networking.firewall.allowedUDPPorts = [
         1900 # orcaslicer
         2021 # orcaslicer
       ];
 
-      # This value determines the NixOS release from which the default
-      # settings for stateful data, like file locations and database versions
-      # on your system were taken. It‘s perfectly fine and recommended to leave
-      # this value at the release version of the first install of this system.
-      # Before changing this value read the documentation for this option
-      # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-      system.stateVersion = "25.05"; # Did you read the comment?
+      system.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
 
       nix.settings.experimental-features = [
         "nix-command"
