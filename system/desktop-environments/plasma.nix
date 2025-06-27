@@ -5,9 +5,6 @@
   # settings,
   ...
 }:
-let
-
-in
 {
   options = {
     plasma.utils = lib.mkOption {

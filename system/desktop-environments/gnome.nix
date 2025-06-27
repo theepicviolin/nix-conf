@@ -5,9 +5,6 @@
   # settings,
   ...
 }:
-let
-
-in
 {
   options = {
     gnome.utils = lib.mkOption {

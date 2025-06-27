@@ -7,16 +7,20 @@
 }:
 
 {
-  imports = [
-    ./backup/borgmatic.nix
-    ./desktop-environments/gnome.nix
-    ./hw_rgb/hw_rgb.nix
-    ./musescore/musescore.nix
-    ./orcaslicer/orcaslicer.nix
-    ./solaar/solaar.nix
-    ./syncthing/syncthing.nix
-    ./vscodium/vscodium.nix
-  ];
+  imports =
+    with lib.lists;
+    [
+      ./default-apps.nix
+      ./backup/borgmatic.nix
+      ./hw_rgb/hw_rgb.nix
+      ./musescore/musescore.nix
+      ./orcaslicer/orcaslicer.nix
+      ./solaar/solaar.nix
+      ./syncthing/syncthing.nix
+      ./vscodium/vscodium.nix
+    ]
+    ++ (optional (settings.desktop-environment == "gnome") ./desktop-environments/gnome.nix)
+    ++ (optional (settings.desktop-environment == "plasma") ./desktop-environments/plasma.nix);
 
   options = {
     # Define options here, e.g.:
@@ -46,10 +50,23 @@
               echo "${text}" > "${settings.homedir}/${cfgDir}/${cfgFile}"
             fi
           '';
+        mimeToAppMap =
+          appMimeMap:
+          (builtins.foldl' (
+            acc: app:
+            acc
+            // builtins.listToAttrs (
+              map (mime: {
+                name = mime;
+                value = [ app ];
+              }) appMimeMap.${app}
+            )
+          ) { } (builtins.attrNames appMimeMap));
       };
     in
     {
       orcaslicer = { inherit utils; };
+      default-apps = { inherit utils; };
       nixpkgs.overlays = [ (import ../overlays/frescobaldi.nix) ];
       home.username = settings.username;
       home.homeDirectory = settings.homedir;
@@ -61,6 +78,7 @@
       home.packages = with pkgs; [
         # general productivity
         librewolf
+        brave
         protonmail-desktop
         proton-pass
         obsidian

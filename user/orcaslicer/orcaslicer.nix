@@ -143,7 +143,7 @@ in
         ) filaments
       )
       // (
-        with lib.attrsets;
+        with lib;
         mapAttrs' (
           name: value:
           nameValuePair (".config/OrcaSlicer/user/default/process/${name}.json") ({
@@ -155,7 +155,7 @@ in
                 print_settings_id = name;
               }
               // mergeAttrsList (
-                lib.lists.map
+                map
                   (
                     attr:
                     optionalAttrs (hasAttrByPath [ attr ] value) {

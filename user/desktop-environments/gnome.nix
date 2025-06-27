@@ -76,6 +76,7 @@ let
     ]
     [
       "org.gnome.Boxes.desktop"
+      "com.brave.Browser.desktop"
       "ca.desrt.dconf-editor.desktop"
       "org.gnome.baobab.desktop"
       "gparted.desktop"

@@ -6,6 +6,11 @@
     nixpkgs-stable.url = "nixpkgs/nixos-25.05";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
     solaar = {
       url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz"; # For latest stable version
       # url = "github:Svenum/Solaar-Flake/main"; # Uncomment line for latest unstable version
@@ -28,6 +33,11 @@
         email = "dev@adityarama.com";
         homedir = "/home/" + username;
         dotdir = "${homedir}/.dotfiles";
+        # For switching DEs, switch the name then:
+        # sudo nixos-rebuild boot --flake ~/.dotfiles && reboot
+        # After booting into GNOME,
+        # dconf reset -f /org/ && rh
+        # Then log out and log back in
         desktop-environment = "gnome"; # "gnome" or "plasma"
         wallpaper = "${dotdir}/user/wallpaper.png";
         sync = {
@@ -59,10 +69,10 @@
           inherit pkgs;
           extraSpecialArgs = { inherit settings; };
           modules = [
+            inputs.plasma-manager.homeManagerModules.plasma-manager
             ./user/home.nix
           ];
         };
       };
-
     };
 }
