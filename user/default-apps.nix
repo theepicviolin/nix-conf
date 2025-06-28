@@ -112,7 +112,7 @@ in
   };
 
   config = with config.default-apps; {
-
+    # check /home/aditya/.config/mimeapps.list for current associations
     xdg.mimeApps = {
       enable = true;
       defaultApplications = utils.mimeToAppMap {
@@ -131,6 +131,7 @@ in
         ];
         "org.gnome.Decibels.desktop" = audioTypes;
         "org.gnome.Totem.desktop" = videoTypes;
+        "codium.desktop" = [ "application/xml" ];
       };
     };
   };

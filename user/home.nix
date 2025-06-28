@@ -121,6 +121,9 @@
 
       home.activation = {
         freecadUserCfg = utils.mutableDotfile ".config/FreeCAD" "user.cfg" "user/freecad/user.cfg";
+        onlyOfficeCfg =
+          utils.mutableDottext ".config/onlyoffice" "DesktopEditors.conf"
+            "[General]\nUITheme=theme-dark\nsavePath=${settings.homedir}/Proton/Documents";
       };
 
       home.file = {
