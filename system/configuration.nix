@@ -80,6 +80,15 @@
         options = "--delete-older-than 30d";
       };
 
+      nix.settings = {
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+        download-buffer-size = 268435456;
+        auto-optimise-store = true;
+      };
+
       #boot.loader.grub.enable = true;
       #boot.loader.grub.device = "/dev/nvme0n1";
       #boot.loader.grub.useOSProber = true;
@@ -243,11 +252,5 @@
       ];
 
       system.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
-
-      nix.settings.experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      nix.settings.download-buffer-size = 268435456;
     };
 }
