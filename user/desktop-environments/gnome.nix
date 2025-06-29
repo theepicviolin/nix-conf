@@ -156,6 +156,7 @@ in
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
         ];
+        home = [ "<Super>e" ];
       };
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         binding = "<Super>t";
@@ -166,9 +167,6 @@ in
         binding = "<Ctrl><Alt>t";
         command = "kgx";
         name = "Launch Console Ctrl+Alt+T";
-      };
-      "org/gnome/settings-daemon/plugins/media-keys" = {
-        home = [ "<Super>e" ];
       };
       "org/gnome/shell/keybindings" = {
         toggle-message-tray = [ "<Super>c" ];
@@ -188,7 +186,10 @@ in
       };
 
       "org/gnome/desktop/session" = {
-        idle-delay = mkUint32 600; # 10 minutes
+        idle-delay = mkUint32 900; # 15 minutes
+      };
+      "org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-timeout = mkUint32 900; # 15 minutes
       };
 
       "org/gnome/mutter" = {
