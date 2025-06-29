@@ -33,6 +33,7 @@
         email = "dev@adityarama.com";
         homedir = "/home/" + username;
         dotdir = "${homedir}/.dotfiles";
+        ethernet-interface = "eno1"; # for wake on lan. `ip a` to see all interfaces, pick the right IP and MAC address
         # For switching DEs, switch the name then:
         # sudo nixos-rebuild boot --flake ~/.dotfiles && reboot
         # After booting into GNOME,

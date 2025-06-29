@@ -95,6 +95,7 @@
         nixfmt-rfc-style
         python314
         gnome-boxes
+        swtpm
 
         # musicy things
         audacity
@@ -145,7 +146,8 @@
           rebuild = "rebuildn; rebuildh";
           rn = "rebuildn";
           rh = "rebuildh";
-          r = "rebuildn; rebuildh";
+          r = "rebuildn && rebuildh";
+          lg = "nixos-rebuild list-generations";
           start = "xdg-open";
         };
       };

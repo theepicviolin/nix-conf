@@ -51,6 +51,7 @@
       boot = {
         loader = {
           systemd-boot.enable = true;
+          systemd-boot.configurationLimit = 50;
           efi.canTouchEfiVariables = true;
           timeout = 1; # Timeout for bootloader menu
         };
@@ -59,6 +60,24 @@
           "quiet"
           "splash"
         ];
+      };
+
+      system.autoUpgrade = {
+        enable = true;
+        flake = inputs.self.outPath;
+        flags = [
+          "--update-input"
+          "nixpkgs"
+          "--commit-lock-file"
+          "-L" # print build logs
+        ];
+        dates = "02:00"; # run daily at 2:00 AM
+        randomizedDelaySec = "45min";
+      };
+      nix.gc = {
+        automatic = true;
+        dates = "01:00"; # run daily at 1:00 AM
+        options = "--delete-older-than 30d";
       };
 
       #boot.loader.grub.enable = true;
@@ -70,6 +89,7 @@
 
       # Enable networking
       networking.networkmanager.enable = true;
+      networking.interfaces.${settings.ethernet-interface}.wakeOnLan.enable = true; # Enable Wake-on-LAN for the wired interface
 
       # Set your time zone.
       time.timeZone = "America/Los_Angeles";
@@ -136,19 +156,6 @@
       # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
       systemd.services."getty@tty1".enable = false;
       systemd.services."autovt@tty1".enable = false;
-
-      system.autoUpgrade = {
-        enable = true;
-        flake = inputs.self.outPath;
-        flags = [
-          "--update-input"
-          "nixpkgs"
-          "--commit-lock-file"
-          "-L" # print build logs
-        ];
-        dates = "02:00"; # run daily at 2:00 AM
-        randomizedDelaySec = "45min";
-      };
 
       systemd.services.disable-gpp0 = {
         enable = true;
