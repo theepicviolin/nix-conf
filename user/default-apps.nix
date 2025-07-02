@@ -1,8 +1,8 @@
 {
   config,
   lib,
-  # pkgs,
-  # settings,
+  pkgs,
+  settings,
   ...
 }:
 let
@@ -101,6 +101,26 @@ let
     "video/x-mjpeg"
     "video/x-totem-stream"
   ];
+
+  makeCustomMime =
+    comment: pattern:
+    let
+      normalized = lib.strings.toLower (lib.strings.replaceStrings [ " " ] [ "-" ] comment);
+      mimeType = "text/x-${normalized}";
+    in
+    ''
+      <mime-type type="${mimeType}">
+        <comment>${comment}</comment>
+        <glob pattern="${pattern}"/>
+      </mime-type>
+    '';
+
+  ########################################################
+  ### Define custom MIME types per file extension here ###
+  ########################################################
+  customTypes = [
+    (makeCustomMime "Nix source code" "*.nix")
+  ];
 in
 {
   options = {
@@ -112,7 +132,23 @@ in
   };
 
   config = with config.default-apps; {
+
+    home.file = {
+      ".local/share/mime/packages/custom-code.xml".text =
+        ''
+          <?xml version="1.0" encoding="UTF-8"?>
+          <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+        ''
+        + lib.concatStringsSep "\n" customTypes
+        + "\n</mime-info>";
+    };
+    home.activation.updateMimeCache = lib.hm.dag.entryAfter [
+      "writeBoundary"
+    ] ''${pkgs.shared-mime-info}/bin/update-mime-database "${settings.homedir}/.local/share/mime"'';
+
     # check /home/aditya/.config/mimeapps.list for current associations
+    # ls ~/.nix-profile/share/applications && ls /run/current-system/sw/share/applications
+    # for available applications
     xdg.mimeApps = {
       enable = true;
       defaultApplications = utils.mimeToAppMap {
@@ -131,7 +167,10 @@ in
         ];
         "org.gnome.Decibels.desktop" = audioTypes;
         "org.gnome.Totem.desktop" = videoTypes;
-        "codium.desktop" = [ "application/xml" ];
+        "codium.desktop" = [
+          "application/xml"
+          "text/x-nix-source-code"
+        ];
       };
     };
   };
