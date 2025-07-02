@@ -48,6 +48,11 @@ let
     "org.freecad.FreeCAD.desktop"
     "OrcaSlicer.desktop"
   ];
+  # dconf read /org/gnome/shell/app-picker-layout
+  # to see the current layout
+  # ls ~/.nix-profile/share/applications && ls /run/current-system/sw/share/applications
+  # for available applications
+
   app-layout = [
     [
       "1password.desktop"
@@ -65,6 +70,7 @@ let
       "org.frescobaldi.Frescobaldi.desktop"
       "audacity.desktop"
       "cockos-reaper.desktop"
+      "davinci-resolve.desktop"
       "blender.desktop"
       "org.inkscape.Inkscape.desktop"
       "org.kde.krita.desktop"
@@ -109,6 +115,7 @@ let
       "Blue Prince.desktop"
       "Crypt of the NecroDancer.desktop"
       "DELTARUNE.desktop"
+      "Celeste.desktop"
     ];
     Other = [
       "org.gnome.Connections.desktop"

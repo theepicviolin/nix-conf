@@ -107,7 +107,7 @@
         krita
         flameshot
         inkscape
-        #davinci-resolve # this one takes a long time so it can be added later once needed
+        davinci-resolve # this one takes a long time so it can be added later once needed
         blender
         freecad
 
@@ -128,6 +128,7 @@
       };
 
       home.file = {
+        "Templates/New ASCII File".text = "";
         ".local/share/Libation/appsettings.json".text =
           "{\"LibationFiles\": \"${settings.homedir}/Proton/Music/Libation/\"}";
       };
