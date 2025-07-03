@@ -100,14 +100,14 @@
         # musicy things
         audacity
         spotify
-        frescobaldi
+        #frescobaldi
         reaper
 
         # other creative tools
         krita
         flameshot
         inkscape
-        davinci-resolve # this one takes a long time so it can be added later once needed
+        kdePackages.kdenlive
         blender
         freecad
 

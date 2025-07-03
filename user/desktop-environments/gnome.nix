@@ -70,7 +70,7 @@ let
       "org.frescobaldi.Frescobaldi.desktop"
       "audacity.desktop"
       "cockos-reaper.desktop"
-      "davinci-resolve.desktop"
+      "org.kde.kdenlive.desktop"
       "blender.desktop"
       "org.inkscape.Inkscape.desktop"
       "org.kde.krita.desktop"
