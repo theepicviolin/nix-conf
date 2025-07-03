@@ -207,6 +207,12 @@
 
       services.hardware.openrgb.enable = true;
       hardware.spacenavd.enable = true;
+      hardware.graphics = {
+        enable = true;
+        extraPackages = with pkgs; [
+          rocmPackages.clr.icd
+        ];
+      };
 
       programs.steam.enable = true;
       programs._1password-gui.enable = true;
