@@ -96,6 +96,7 @@
         python314
         gnome-boxes
         swtpm
+        devtoolbox
 
         # musicy things
         audacity
@@ -151,6 +152,7 @@
           lg = "nixos-rebuild list-generations";
           start = "xdg-open";
         };
+        bashrcExtra = ''try() { nix-shell -p "$1" --run "$1"; }'';
       };
 
       systemd.user.services.steam = {
