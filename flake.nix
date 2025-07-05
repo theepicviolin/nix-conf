@@ -12,8 +12,8 @@
       inputs.home-manager.follows = "home-manager";
     };
     solaar = {
-      url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz"; # For latest stable version
-      # url = "github:Svenum/Solaar-Flake/main"; # Uncomment line for latest unstable version
+      # url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz"; # For latest stable version
+      url = "github:Svenum/Solaar-Flake/main"; # Uncomment line for latest unstable version
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
