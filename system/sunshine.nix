@@ -95,6 +95,21 @@ in
           ];
           "wait-all" = true;
         }
+        {
+          "name" = "Lutris";
+          "auto-detach" = true;
+          "exclude-global-prep-cmd" = false;
+          "exit-timeout" = 5;
+          #"image-path" = "steam.png";
+          "cmd" = "lutris";
+          "prep-cmd" = [
+            {
+              "do" = "gnome-monitor-config set -Lp -M DP-3 -m 3840x2160@60.000 -s 2";
+              "undo" = "gnome-monitor-config set -Lp -M DP-1 -L -M HDMI-1 -x 1920 -L -M DP-2 -x 3840";
+            }
+          ];
+          "wait-all" = true;
+        }
       ];
     };
   };
