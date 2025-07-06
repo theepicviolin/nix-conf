@@ -100,6 +100,10 @@
       networking.networkmanager.enable = true;
       networking.interfaces.${settings.ethernet-interface}.wakeOnLan.enable = true; # Enable Wake-on-LAN for the wired interface
 
+      # Enable DNS to resolve local hostnames.
+      services.resolved.enable = true;
+      environment.etc."resolv.conf".source = lib.mkForce "/run/systemd/resolve/resolv.conf";
+
       # Set your time zone.
       time.timeZone = "America/Los_Angeles";
 
