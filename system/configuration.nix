@@ -103,6 +103,7 @@
       # Enable DNS to resolve local hostnames.
       services.resolved.enable = true;
       environment.etc."resolv.conf".source = lib.mkForce "/run/systemd/resolve/resolv.conf";
+      networking.enableIPv6 = false;
 
       # Set your time zone.
       time.timeZone = "America/Los_Angeles";
