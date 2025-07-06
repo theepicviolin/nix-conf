@@ -171,6 +171,9 @@ in
           "application/xml"
           "text/x-nix-source-code"
         ];
+        "org.gnome.FileRoller.desktop" = [
+          "application/zip"
+        ];
       };
     };
   };
