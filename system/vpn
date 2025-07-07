@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Directory containing WireGuard configs
+WG_DIR="/etc/wireguard"
+
+# Helper: list available VPN configs (without .conf)
+list_vpns() {
+  find "$WG_DIR" -maxdepth 1 -name '*.conf' -exec basename {} .conf \; | sort
+}
+
+# Helper: find best match for a given input (fuzzy, case-insensitive)
+match_vpn() {
+  local query="${1,,}"  # Lowercase the input
+  query="${query%.conf}"  # Remove .conf suffix if present
+
+  # First, try exact match
+  while IFS= read -r vpn; do
+    if [[ "${vpn,,}" == "$query" ]]; then
+      echo "$vpn"
+      return 0
+    fi
+  done < <(list_vpns)
+
+  # Then try partial match
+  while IFS= read -r vpn; do
+    if [[ "${vpn,,}" == *"$query"* ]]; then
+      echo "$vpn"
+      return 0
+    fi
+  done < <(list_vpns)
+
+  return 1
+}
+
+
+# Main command dispatch
+cmd="${1:-}"
+shift || true
+
+# Aliases
+case "$cmd" in
+  up) cmd="on" ;;
+  down) cmd="off" ;;
+esac
+
+case "$cmd" in
+  list)
+    echo "Available VPNs:"
+    list_vpns
+    ;;
+
+  on)
+    if [[ $# -eq 0 ]]; then
+      name="$(list_vpns | head -n1)"
+      if [[ -z "$name" ]]; then
+        echo "No VPN configurations found in $WG_DIR"
+        exit 1
+      fi
+      echo "Connecting to default VPN: $name"
+    else
+      if ! name="$(match_vpn "$1")"; then
+        echo "No matching VPN found for: $1"
+        exit 1
+      fi
+      echo "Connecting to VPN: $name"
+    fi
+
+    # Disconnect any active VPNs
+    for intf in $(wg show interfaces); do
+      echo "Disconnecting active VPN: $intf"
+      sudo wg-quick down "$intf" || true
+    done
+
+    sudo wg-quick up "$name"
+    ;;
+
+  off)
+    if [[ $# -eq 0 ]]; then
+      for intf in $(wg show interfaces); do
+        echo "Disconnecting active VPN: $intf"
+        sudo wg-quick down "$intf" || true
+      done
+    else
+      if ! name="$(match_vpn "$1")"; then
+        echo "No matching VPN found for: $1"
+        exit 1
+      fi
+      echo "Disconnecting VPN: $name"
+      sudo wg-quick down "$name" || true
+    fi
+    ;;
+
+  *)
+    echo "Usage: vpn {list|on|off|up|down} [name]"
+    echo
+    echo "Commands:"
+    echo "  list           List available VPNs"
+    echo "  on <name>      Connect to a VPN (fuzzy matching supported)"
+    echo "  off <name>     Disconnect a VPN"
+    echo "  on             Connect to the first available VPN"
+    echo "  off            Disconnect all active VPNs"
+    echo "  up / down      Aliases for on / off"
+    exit 1
+    ;;
+esac

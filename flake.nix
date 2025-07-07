@@ -16,6 +16,10 @@
       url = "github:Svenum/Solaar-Flake/main"; # Uncomment line for latest unstable version
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -28,6 +32,7 @@
       settings = rec {
         hostname = "numerical-nexus";
         hostnamedisplay = "Numerical Nexus";
+        inherit system;
         username = "aditya";
         fullname = "Aditya Ramanathan";
         email = "dev@adityarama.com";
@@ -62,6 +67,7 @@
         modules = [
           ./system/configuration.nix
           inputs.solaar.nixosModules.default
+          inputs.agenix.nixosModules.default
         ];
       };
 

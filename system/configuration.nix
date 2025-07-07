@@ -15,6 +15,7 @@
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./sunshine.nix
+      ./protonvpn.nix
     ]
     ++ (optional (settings.desktop-environment == "gnome") ./desktop-environments/gnome.nix)
     ++ (optional (settings.desktop-environment == "plasma") ./desktop-environments/plasma.nix);
