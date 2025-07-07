@@ -119,6 +119,7 @@
         qbittorrent
         nomachine-client
         libation
+        wireguard-tools
       ];
 
       home.activation = {

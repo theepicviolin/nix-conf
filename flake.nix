@@ -69,10 +69,11 @@
         aditya = inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = { inherit settings; };
-          modules = [
-            inputs.plasma-manager.homeManagerModules.plasma-manager
-            ./user/home.nix
-          ];
+          modules =
+            [ ./user/home.nix ]
+            ++ (lib.optional (
+              settings.desktop-environment == "plasma"
+            ) inputs.plasma-manager.homeManagerModules.plasma-manager);
         };
       };
     };

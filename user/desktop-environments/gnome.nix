@@ -190,10 +190,6 @@ in
         switch-applications-backward = [ "<Shift><Super>Tab" ];
       };
 
-      "org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-      };
-
       "org/gnome/desktop/session" = {
         idle-delay = mkUint32 900; # 15 minutes
       };
@@ -208,6 +204,8 @@ in
       "org/gnome/desktop/interface" = {
         accent-color = "purple";
         clock-format = "12h";
+        color-scheme = "prefer-dark";
+        clock-show-weekday = true;
       };
 
       "org/gnome/desktop/background" = {
