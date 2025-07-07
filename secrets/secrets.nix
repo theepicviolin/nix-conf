@@ -6,6 +6,14 @@ let
   systems = [ nn ];
 in
 {
+  "NN-US-UT-47.age".publicKeys = [
+    nn
+    aditya
+  ];
+  "NN-US-UT-139.age".publicKeys = [
+    nn
+    aditya
+  ];
   "NN-US-UT-182.age".publicKeys = [
     nn
     aditya

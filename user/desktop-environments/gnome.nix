@@ -337,20 +337,13 @@ in
       };
 
       "org/gnome/shell/extensions/search-light" = {
-        animation-speed = 100.0;
         background-color = mkTuple [
           0.1
           0.1
           0.1
           0.8
         ];
-        blur-brightness = 0.6;
-        blur-sigma = 30.0;
-        border-radius = 1;
-        entry-font-size = 1;
-        preferred-monitor = 0;
-        scale-height = 0.1;
-        scale-width = 0.1;
+        border-radius = 1.0;
         shortcut-search = [ "<Control>space" ];
       };
 

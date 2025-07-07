@@ -1,5 +1,5 @@
 {
-  config,
+  # config,
   lib,
   pkgs,
   inputs,
@@ -34,15 +34,43 @@ in
     # agenix -e NEWFILE.age
     age.secrets = builtins.listToAttrs (
       map mkWgEntry [
+        "NN-US-UT-47"
+        "NN-US-UT-139"
         "NN-US-UT-182"
         "NN-US-WA-216"
       ]
     );
 
-    environment.systemPackages = [
+    environment.systemPackages = with pkgs; [
       inputs.agenix.packages.${settings.system}.default
-      pkgs.wireguard-tools
-      (pkgs.writeShellScriptBin "vpn" (builtins.readFile ./vpn))
+      wireguard-tools
+      (writeShellScriptBin "vpn" (builtins.readFile ./vpn))
+      bc
     ];
+
+    environment.etc."bash_completion.d/vpn".text = ''
+      _vpn_completions() {
+        local cur prev commands vpn_names matches
+        COMPREPLY=()
+        cur="''${COMP_WORDS[COMP_CWORD]}"
+        prev="''${COMP_WORDS[COMP_CWORD-1]}"
+        commands="list on off up down"
+
+        if [[ $COMP_CWORD -eq 1 ]]; then
+          COMPREPLY=( $(compgen -W "$commands" -- "$cur") )
+          return 0
+        fi
+
+        if [[ $COMP_CWORD -eq 2 && ( $prev == on || $prev == off || $prev == up || $prev == down ) ]]; then
+          vpn_names=$(find /etc/wireguard -maxdepth 1 -name '*.conf' -exec basename {} .conf \;)
+          # Fuzzy match: case-insensitive substring match
+          matches=$(printf '%s\n' $vpn_names | grep -i -- "$cur")
+          COMPREPLY=( $(compgen -W "$matches") )
+          return 0
+        fi
+      }
+
+      complete -F _vpn_completions vpn
+    '';
   };
 }
