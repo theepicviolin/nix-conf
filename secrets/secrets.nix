@@ -18,6 +18,10 @@ in
     nn
     aditya
   ];
+  "NN-US-WA-206.age".publicKeys = [
+    nn
+    aditya
+  ];
   "NN-US-WA-216.age".publicKeys = [
     nn
     aditya

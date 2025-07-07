@@ -2,33 +2,46 @@
 
 WIREGUARD_DIR="/etc/wireguard"
 
+needs_sudo() {
+  [[ -r "$WIREGUARD_DIR" && -r "$WIREGUARD_DIR"/*.conf ]] 2>/dev/null
+}
+
+sudocmd() {
+  if needs_sudo; then
+    "$@"
+  else
+    sudo "$@"
+  fi
+}
+
 usage() {
   echo "Usage: vpn <command> [name]"
   echo "Commands:"
-  echo "  list           List available VPNs"
-  echo "  on|up [name]   Connect to a VPN (best match or lowest latency if omitted)"
+  echo "  list            List available VPNs"
+  echo "  on|up [name]    Connect to a VPN (best match or lowest latency if omitted)"
   echo "  off|down [name] Disconnect a VPN (or all if name is omitted)"
   exit 1
 }
 
 list_vpns() {
-  find "$WIREGUARD_DIR" -maxdepth 1 -name '*.conf' -printf '%f\n' | sed 's/\.conf$//' | sort
+  sudocmd find "$WIREGUARD_DIR" -maxdepth 1 -name '*.conf' -printf '%f\n' 2>/dev/null \
+    | sed 's/\.conf$//' | sort
 }
 
 find_best_vpn() {
   local best=""
   local lowest=9999
 
-  for conf in "$WIREGUARD_DIR"/*.conf; do
-    [[ -f "$conf" ]] || continue
-    local name=$(basename "$conf" .conf)
-    local endpoint=$(grep -i '^Endpoint' "$conf" | cut -d= -f2 | xargs | cut -d: -f1)
-
+  for conf in $(list_vpns); do
+    local file="$WIREGUARD_DIR/$conf.conf"
+    local endpoint
+    endpoint=$(sudocmd grep -i '^Endpoint' "$file" | cut -d= -f2 | xargs | cut -d: -f1)
     if [[ -n "$endpoint" ]]; then
-      local ping_time=$(ping -c1 -W1 "$endpoint" 2>/dev/null | awk -F'time=' '/time=/{print $2}' | cut -d' ' -f1)
+      local ping_time
+      ping_time=$(ping -c1 -W1 "$endpoint" 2>/dev/null | awk -F'time=' '/time=/{print $2}' | cut -d' ' -f1)
       if [[ -n "$ping_time" ]]; then
         if (( $(echo "$ping_time < $lowest" | bc -l) )); then
-          best="$name"
+          best="$conf"
           lowest="$ping_time"
         fi
       fi
@@ -73,27 +86,28 @@ vpn_on() {
     fi
   fi
 
-  # Disconnect any currently connected VPNs
+  # Disconnect any currently active VPNs
   for intf in $(wg show interfaces 2>/dev/null); do
-    sudo wg-quick down "$intf"
+    sudocmd wg-quick down "$intf"
   done
 
-  sudo wg-quick up "$match"
+  sudocmd wg-quick up "$match"
 }
 
 vpn_off() {
   local input="$1"
   if [[ -z "$input" ]]; then
     for intf in $(wg show interfaces 2>/dev/null); do
-      sudo wg-quick down "$intf"
+      sudocmd wg-quick down "$intf"
     done
   else
-    local match=$(fuzzy_match "$input")
+    local match
+    match=$(fuzzy_match "$input")
     if [[ -z "$match" ]]; then
       echo "No match for '$input'"
       exit 1
     fi
-    sudo wg-quick down "$match"
+    sudocmd wg-quick down "$match"
   fi
 }
 
