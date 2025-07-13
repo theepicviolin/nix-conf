@@ -97,6 +97,7 @@
         gnome-boxes
         swtpm
         devtoolbox
+        android-studio
 
         # musicy things
         audacity

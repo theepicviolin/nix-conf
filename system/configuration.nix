@@ -181,7 +181,7 @@
           ExecStart = pkgs.writeShellScript "disable-gpp0" "echo 'GPP0' | tee /proc/acpi/wakeup";
         };
         wantedBy = [ "multi-user.target" ];
-        after = [ "network.target" ];
+        after = [ "sleep.target" ];
       };
 
       systemd.services.user-sleep-hook = {
