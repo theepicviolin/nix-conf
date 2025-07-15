@@ -114,7 +114,7 @@
         freecad
 
         # games
-        prismlauncher
+        # prismlauncher
 
         # other
         qbittorrent

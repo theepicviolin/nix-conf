@@ -78,7 +78,7 @@
       nix.gc = {
         automatic = true;
         dates = "01:00"; # run daily at 1:00 AM
-        options = "--delete-older-than 30d";
+        options = "--delete-older-than 30d"; # nix-collect-garbage
       };
 
       nix.settings = {
@@ -87,7 +87,7 @@
           "flakes"
         ];
         download-buffer-size = 268435456;
-        auto-optimise-store = true;
+        auto-optimise-store = true; # nix store optimise
       };
 
       #boot.loader.grub.enable = true;

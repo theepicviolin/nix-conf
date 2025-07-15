@@ -81,6 +81,7 @@ let
       "Games"
     ]
     [
+      "android-studio.desktop"
       "org.gnome.Boxes.desktop"
       "brave-browser.desktop"
       "ca.desrt.dconf-editor.desktop"
@@ -94,7 +95,7 @@ let
       "org.qbittorrent.qBittorrent.desktop"
       "signal.desktop"
       "solaar.desktop"
-      "sunshine.desktop"
+      "dev.lizardbyte.app.Sunshine.desktop"
       "syncthing-ui.desktop"
       "org.gnome.TextEditor.desktop"
       "org.gnome.tweaks.desktop"
@@ -152,12 +153,61 @@ in
       };
     })) folders)
     // {
-      "org/gnome/shell" = {
-        favorite-apps = dash;
-        app-picker-layout = map (page: (lib.lists.imap0 (idx: name: (apl-entry name idx)) page)) app-layout;
-      };
       "org/gnome/desktop/app-folders" = {
         folder-children = lib.attrNames folders;
+      };
+
+      "org/gnome/desktop/background" = {
+        picture-uri = "file://" + settings.wallpaper;
+        picture-uri-dark = "file://" + settings.wallpaper;
+        color-shading-type = "solid";
+        primary-color = "#77767B";
+        secondary-color = "#000000";
+        picture-options = "zoom";
+      };
+
+      "org/gnome/desktop/interface" = {
+        accent-color = "purple";
+        clock-format = "12h";
+        color-scheme = "prefer-dark";
+        clock-show-weekday = true;
+      };
+
+      "org/gnome/desktop/notifications" = {
+        show-in-lock-screen = false;
+      };
+
+      "org/gnome/desktop/screensaver" = {
+        color-shading-type = "solid";
+        picture-uri = "file://" + settings.wallpaper;
+        primary-color = "#77767B";
+        secondary-color = "#000000";
+        picture-options = "zoom";
+      };
+
+      "org/gnome/desktop/session" = {
+        idle-delay = mkUint32 900; # 15 minutes
+      };
+
+      "org/gnome/desktop/wm/keybindings" = {
+        move-to-workspace-left = [ "<Shift><Control><Alt><Super>Return" ];
+        move-to-workspace-right = [ "<Shift><Control><Alt>Return" ];
+        switch-windows = [ "<Alt>Tab" ];
+        switch-windows-backward = [ "<Shift><Alt>Tab" ];
+        switch-applications = [ "<Super>Tab" ];
+        switch-applications-backward = [ "<Shift><Super>Tab" ];
+      };
+
+      "org/gnome/gnome-session" = {
+        logout-prompt = false;
+      };
+
+      "org/gnome/mutter" = {
+        workspaces-only-on-primary = false;
+      };
+
+      "org/gnome/nautilus/icon-view" = {
+        default-zoom-level = "small-plus";
       };
 
       "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -177,64 +227,18 @@ in
         command = "kgx";
         name = "Launch Console Ctrl+Alt+T";
       };
-      "org/gnome/shell/keybindings" = {
-        toggle-message-tray = [ "<Super>c" ];
-      };
 
-      "org/gnome/desktop/wm/keybindings" = {
-        move-to-workspace-left = [ "<Shift><Control><Alt><Super>Return" ];
-        move-to-workspace-right = [ "<Shift><Control><Alt>Return" ];
-        switch-windows = [ "<Alt>Tab" ];
-        switch-windows-backward = [ "<Shift><Alt>Tab" ];
-        switch-applications = [ "<Super>Tab" ];
-        switch-applications-backward = [ "<Shift><Super>Tab" ];
-      };
-
-      "org/gnome/desktop/session" = {
-        idle-delay = mkUint32 900; # 15 minutes
-      };
       "org/gnome/settings-daemon/plugins/power" = {
         sleep-inactive-ac-timeout = mkUint32 900; # 15 minutes
       };
 
-      "org/gnome/mutter" = {
-        workspaces-only-on-primary = false;
+      "org/gnome/shell" = {
+        favorite-apps = dash;
+        app-picker-layout = map (page: (lib.lists.imap0 (idx: name: (apl-entry name idx)) page)) app-layout;
       };
 
-      "org/gnome/desktop/interface" = {
-        accent-color = "purple";
-        clock-format = "12h";
-        color-scheme = "prefer-dark";
-        clock-show-weekday = true;
-      };
-
-      "org/gnome/desktop/background" = {
-        picture-uri = "file://" + settings.wallpaper;
-        picture-uri-dark = "file://" + settings.wallpaper;
-        color-shading-type = "solid";
-        primary-color = "#77767B";
-        secondary-color = "#000000";
-        picture-options = "zoom";
-      };
-
-      "org/gnome/desktop/screensaver" = {
-        color-shading-type = "solid";
-        picture-uri = "file://" + settings.wallpaper;
-        primary-color = "#77767B";
-        secondary-color = "#000000";
-        picture-options = "zoom";
-      };
-
-      "org/gnome/desktop/notifications" = {
-        show-in-lock-screen = false;
-      };
-
-      "org/gnome/gnome-session" = {
-        logout-prompt = false;
-      };
-
-      "org/gnome/nautilus/icon-view" = {
-        default-zoom-level = "small-plus";
+      "org/gnome/shell/keybindings" = {
+        toggle-message-tray = [ "<Super>c" ];
       };
 
       "org/gtk/settings/file-chooser" = {

@@ -20,7 +20,7 @@
         ];
         patterns = [
           "+ ${settings.homedir}"
-          "- ${settings.homedir}/Proton"
+          #"- ${settings.homedir}/Proton"
           "- ${settings.homedir}/.cache"
           "- ${settings.homedir}/.local/share/Steam/steamapps/common"
         ];
