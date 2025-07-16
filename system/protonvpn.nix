@@ -39,6 +39,7 @@ in
         "NN-US-UT-182"
         "NN-US-WA-206"
         "NN-US-WA-216"
+        "NN-CA-1150"
       ]
     );
 

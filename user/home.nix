@@ -1,6 +1,7 @@
 {
   #config,
   pkgs,
+  pkgs-stable,
   lib,
   settings,
   ...
@@ -111,7 +112,7 @@
         inkscape
         kdePackages.kdenlive
         blender
-        freecad
+        pkgs-stable.freecad
 
         # games
         # prismlauncher

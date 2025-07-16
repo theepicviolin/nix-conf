@@ -26,4 +26,8 @@ in
     nn
     aditya
   ];
+  "NN-CA-1150.age".publicKeys = [
+    nn
+    aditya
+  ];
 }

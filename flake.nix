@@ -74,7 +74,7 @@
       homeConfigurations = {
         aditya = inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit settings; };
+          extraSpecialArgs = { inherit settings pkgs-stable; };
           modules =
             [ ./user/home.nix ]
             ++ (lib.optional (
