@@ -16,6 +16,7 @@
       ./hardware-configuration.nix
       ./sunshine.nix
       ./protonvpn.nix
+      ./virtualisation.nix
     ]
     ++ (optional (settings.desktop-environment == "gnome") ./desktop-environments/gnome.nix)
     ++ (optional (settings.desktop-environment == "plasma") ./desktop-environments/plasma.nix);
@@ -154,8 +155,6 @@
 
       # Enable touchpad support (enabled default in most desktopManager).
       # services.xserver.libinput.enable = true;
-
-      virtualisation.libvirtd.enable = true;
 
       # Define a user account. Don't forget to set a password with ‘passwd’.
       users.users.${settings.username} = {

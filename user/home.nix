@@ -95,8 +95,6 @@
         nil
         nixfmt-rfc-style
         python314
-        gnome-boxes
-        swtpm
         devtoolbox
         android-studio
 
@@ -128,6 +126,19 @@
         onlyOfficeCfg =
           utils.mutableDottext ".config/onlyoffice" "DesktopEditors.conf"
             "[General]\nUITheme=theme-dark\nsavePath=${settings.homedir}/Proton/Documents";
+        qbittorrentCfg = utils.mutableDottext ".config/qBittorrent" "qBittorrent.conf" ''
+          [BitTorrent]
+          Session\GlobalMaxInactiveSeedingMinutes=180
+          Session\GlobalMaxRatio=1
+          Session\GlobalMaxSeedingMinutes=180
+          Session\Interface=proton0
+          Session\InterfaceName=proton0
+          [LegalNotice]
+          Accepted=true
+          [Preferences]
+          General\Locale=en
+          General\PreventFromSuspendWhenDownloading=true
+        '';
       };
 
       home.file = {

@@ -153,26 +153,32 @@ in
       enable = true;
       defaultApplications = utils.mimeToAppMap {
         "org.gnome.Loupe.desktop" = imageTypes;
+        "org.gnome.Decibels.desktop" = audioTypes;
+        "org.gnome.Totem.desktop" = videoTypes;
+
         "librewolf.desktop" = [
           "x-scheme-handler/http"
           "application/xhtml+xml"
           "text/html"
           "x-scheme-handler/https"
         ];
-        "org.gnome.Evince.desktop" = [ "application/pdf" ];
+        "org.gnome.Evince.desktop" = [
+          "application/pdf"
+        ];
         "proton-mail.desktop" = [
           "x-scheme-handler/mailto"
           "message/rfc822"
           "x-scheme-handler/mid"
         ];
-        "org.gnome.Decibels.desktop" = audioTypes;
-        "org.gnome.Totem.desktop" = videoTypes;
         "codium.desktop" = [
           "application/xml"
           "text/x-nix-source-code"
         ];
         "org.gnome.FileRoller.desktop" = [
           "application/zip"
+        ];
+        "org.gnome.TextEditor.desktop" = [
+          "application/x-trash"
         ];
       };
     };
