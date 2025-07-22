@@ -79,7 +79,7 @@
       nix.gc = {
         automatic = true;
         dates = "01:00"; # run daily at 1:00 AM
-        options = "--delete-older-than 30d"; # nix-collect-garbage
+        options = "--delete-older-than 30d"; # [sudo] nix-collect-garbage
       };
 
       nix.settings = {
