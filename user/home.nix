@@ -13,6 +13,7 @@
     [
       ./default-apps.nix
       ./backup/borgmatic.nix
+      ./games/games.nix
       ./hw_rgb/hw_rgb.nix
       ./musescore/musescore.nix
       ./orcaslicer/orcaslicer.nix
@@ -51,6 +52,18 @@
               echo "${text}" > "${settings.homedir}/${cfgDir}/${cfgFile}"
             fi
           '';
+        replaceFile =
+          cfgDir: cfgFile: file:
+          lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            if [ -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
+              if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}.bak" ]; then
+                mv "${settings.homedir}/${cfgDir}/${cfgFile}" "${settings.homedir}/${cfgDir}/${cfgFile}.bak"
+              fi
+              cp "${settings.dotdir}/${file}" "${settings.homedir}/${cfgDir}/${cfgFile}"
+              chmod 755 "${settings.homedir}/${cfgDir}/${cfgFile}"
+            fi
+          '';
+
         mimeToAppMap =
           appMimeMap:
           (builtins.foldl' (
@@ -68,6 +81,7 @@
     {
       orcaslicer = { inherit utils; };
       default-apps = { inherit utils; };
+      games = { inherit utils; };
       nixpkgs.overlays = [ (import ../overlays/frescobaldi.nix) ];
       home.username = settings.username;
       home.homeDirectory = settings.homedir;
@@ -112,9 +126,6 @@
         blender
         pkgs-stable.freecad
 
-        # games
-        # prismlauncher
-
         # other
         qbittorrent
         nomachine-client
@@ -151,10 +162,6 @@
         # EDITOR = "emacs";
       };
 
-      programs.lutris = {
-        enable = true;
-      };
-
       programs.bash = {
         enable = true;
         shellAliases = {
@@ -170,21 +177,6 @@
           start = "xdg-open";
         };
         bashrcExtra = ''try() { nix-shell -p "$1" --run "$1"; }'';
-      };
-
-      systemd.user.services.steam = {
-        Unit = {
-          Description = "Open Steam in the background at boot";
-        };
-        Service = {
-          ExecStartPre = "/usr/bin/env sleep 1";
-          ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent %U";
-          Restart = "on-failure";
-          RestartSec = "5s";
-        };
-        Install = {
-          WantedBy = [ "graphical-session.target" ];
-        };
       };
 
       systemd.user.targets.user-sleep.Unit.Description = "User pre-sleep target";

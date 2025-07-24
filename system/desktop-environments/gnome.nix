@@ -22,6 +22,8 @@
     services.displayManager.gdm.enable = true;
     services.desktopManager.gnome.enable = true;
 
+    environment.systemPackages = [ pkgs.dconf-editor ];
+
     # Remove unwanted GNOME applications.
     environment.gnome.excludePackages = (
       with pkgs;

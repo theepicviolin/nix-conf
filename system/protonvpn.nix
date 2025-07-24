@@ -44,7 +44,6 @@ in
     );
 
     environment.systemPackages = with pkgs; [
-      inputs.agenix.packages.${settings.system}.default
       wireguard-tools
       (writeShellScriptBin "vpn" (builtins.readFile ./vpn))
       bc

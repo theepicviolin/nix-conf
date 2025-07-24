@@ -215,7 +215,7 @@
 
       programs.steam.enable = true;
       programs._1password-gui.enable = true;
-      programs.thunderbird.enable = true;
+      # programs.thunderbird.enable = true;
       programs.git.enable = true;
 
       environment.etc = {
@@ -228,10 +228,11 @@
       };
 
       environment.systemPackages = with pkgs; [
+        inputs.agenix.packages.${settings.system}.default
         gparted
         fastfetch
-        dconf-editor
         tree
+        btrfs-progs
       ];
 
       # Remove xterm
