@@ -50,8 +50,10 @@ let
   ];
   # dconf read /org/gnome/shell/app-picker-layout
   # to see the current layout
-  # ls ~/.nix-profile/share/applications && ls /run/current-system/sw/share/applications
-  # for available applications
+
+  # ls ~/.nix-profile/share/applications          # Home Manager applications
+  # ls /run/current-system/sw/share/applications  # System applications
+  # ls ~/.local/share/applications                # Steam games
 
   app-layout = [
     [
@@ -99,12 +101,13 @@ let
       "syncthing-ui.desktop"
       "org.gnome.TextEditor.desktop"
       "org.gnome.tweaks.desktop"
+      "virt-manager.desktop"
       "vlc.desktop"
       "Other"
     ]
   ];
   folders = {
-    Games = [
+    Games = builtins.sort builtins.lessThan [
       "Dust An Elysian Tail.desktop"
       "Filament.desktop"
       "Golf With Your Friends.desktop"
@@ -119,6 +122,7 @@ let
       "Crypt of the NecroDancer.desktop"
       "DELTARUNE.desktop"
       "Celeste.desktop"
+      "Divinity Original Sin Enhanced Edition.desktop"
     ];
     Other = [
       "org.gnome.Connections.desktop"

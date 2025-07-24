@@ -167,6 +167,8 @@
         shellAliases = {
           md = "mkdir";
           "." = "start .";
+          ".." = "cd ..";
+          "..." = "cd ../..";
           rebuildn = "sudo nixos-rebuild switch --flake ${settings.dotdir}";
           rebuildh = "home-manager switch --flake ${settings.dotdir}";
           rebuild = "rebuildn; rebuildh";
