@@ -130,6 +130,7 @@
         qbittorrent
         nomachine-client
         libation
+        grayjay
       ];
 
       home.activation = {

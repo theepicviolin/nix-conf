@@ -134,13 +134,12 @@ in
   config = with config.default-apps; {
 
     home.file = {
-      ".local/share/mime/packages/custom-code.xml".text =
-        ''
-          <?xml version="1.0" encoding="UTF-8"?>
-          <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
-        ''
-        + lib.concatStringsSep "\n" customTypes
-        + "\n</mime-info>";
+      ".local/share/mime/packages/custom-code.xml".text = ''
+        <?xml version="1.0" encoding="UTF-8"?>
+        <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+      ''
+      + lib.concatStringsSep "\n" customTypes
+      + "\n</mime-info>";
     };
     home.activation.updateMimeCache = lib.hm.dag.entryAfter [
       "writeBoundary"
@@ -179,6 +178,7 @@ in
         ];
         "org.gnome.TextEditor.desktop" = [
           "application/x-trash"
+          "text/csv"
         ];
       };
     };

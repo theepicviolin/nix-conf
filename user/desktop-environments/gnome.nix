@@ -82,29 +82,33 @@ let
       "steam.desktop"
       "Games"
     ]
-    [
-      "android-studio.desktop"
-      "org.gnome.Boxes.desktop"
-      "brave-browser.desktop"
-      "ca.desrt.dconf-editor.desktop"
-      "me.iepure.devtoolbox.desktop"
-      "org.gnome.baobab.desktop"
-      "gparted.desktop"
-      "net.lutris.Lutris.desktop"
-      "muse-sounds-manager.desktop"
-      "NoMachine-player-base.desktop"
-      "OpenRGB.desktop"
-      "org.qbittorrent.qBittorrent.desktop"
-      "signal.desktop"
-      "solaar.desktop"
-      "dev.lizardbyte.app.Sunshine.desktop"
-      "syncthing-ui.desktop"
-      "org.gnome.TextEditor.desktop"
-      "org.gnome.tweaks.desktop"
-      "virt-manager.desktop"
-      "vlc.desktop"
-      "Other"
-    ]
+    (
+      # Do this to sort by display name
+      (builtins.attrValues {
+        AndroidStudio = "android-studio.desktop";
+        Boxes = "org.gnome.Boxes.desktop";
+        Brave = "brave-browser.desktop";
+        DconfEditor = "ca.desrt.dconf-editor.desktop";
+        DevToolbox = "me.iepure.devtoolbox.desktop";
+        DiskUsageAnalyzer = "org.gnome.baobab.desktop";
+        Gparted = "gparted.desktop";
+        Grayjay = "Grayjay.desktop";
+        Lutris = "net.lutris.Lutris.desktop";
+        MuseSoundsManager = "muse-sounds-manager.desktop";
+        NoMachine = "NoMachine-player-base.desktop";
+        OpenRGB = "OpenRGB.desktop";
+        QBittorrent = "org.qbittorrent.qBittorrent.desktop";
+        Signal = "signal.desktop";
+        Solaar = "solaar.desktop";
+        Sunshine = "dev.lizardbyte.app.Sunshine.desktop";
+        Syncthing = "syncthing-ui.desktop";
+        TextEditor = "org.gnome.TextEditor.desktop";
+        Tweaks = "org.gnome.tweaks.desktop";
+        VirtualMachineManager = "virt-manager.desktop";
+        VLC = "vlc.desktop";
+      })
+      ++ [ "Other" ]
+    )
   ];
   folders = {
     Games = builtins.sort builtins.lessThan [

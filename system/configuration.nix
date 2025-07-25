@@ -233,6 +233,7 @@
         fastfetch
         tree
         btrfs-progs
+        openssl
       ];
 
       # Remove xterm
