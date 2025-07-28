@@ -13,10 +13,10 @@
     with lib.lists;
     [
       # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./sunshine.nix
-      ./protonvpn.nix
-      ./virtualisation.nix
+      ./hardware-configuration-hh.nix
+      # ./sunshine.nix
+      # ./protonvpn.nix
+      # ./virtualisation.nix
     ]
     ++ (optional (settings.desktop-environment == "gnome") ./desktop-environments/gnome.nix)
     ++ (optional (settings.desktop-environment == "plasma") ./desktop-environments/plasma.nix);
@@ -47,7 +47,6 @@
         '';
     in
     {
-      nixpkgs.overlays = [ (import ../overlays/printer.nix) ];
 
       # Bootloader.
       boot = {
@@ -57,30 +56,25 @@
           efi.canTouchEfiVariables = true;
           timeout = 1; # Timeout for bootloader menu
         };
-        plymouth.enable = true;
-        kernelParams = [
-          "quiet"
-          "splash"
-        ];
       };
 
-      system.autoUpgrade = {
-        enable = true;
-        flake = inputs.self.outPath;
-        flags = [
-          "--update-input"
-          "nixpkgs"
-          "--commit-lock-file"
-          "-L" # print build logs
-        ];
-        dates = "02:00"; # run daily at 2:00 AM
-        randomizedDelaySec = "45min";
-      };
-      nix.gc = {
-        automatic = true;
-        dates = "01:00"; # run daily at 1:00 AM
-        options = "--delete-older-than 30d"; # [sudo] nix-collect-garbage
-      };
+      # system.autoUpgrade = {
+      #   enable = false;
+      #   flake = inputs.self.outPath;
+      #   flags = [
+      #     "--update-input"
+      #     "nixpkgs"
+      #     "--commit-lock-file"
+      #     "-L" # print build logs
+      #   ];
+      #   dates = "02:00"; # run daily at 2:00 AM
+      #   randomizedDelaySec = "45min";
+      # };
+      # nix.gc = {
+      #   automatic = false;
+      #   dates = "01:00"; # run daily at 1:00 AM
+      #   options = "--delete-older-than 30d"; # [sudo] nix-collect-garbage
+      # };
 
       nix.settings = {
         experimental-features = [
@@ -100,7 +94,7 @@
 
       # Enable networking
       networking.networkmanager.enable = true;
-      networking.interfaces.${settings.ethernet-interface}.wakeOnLan.enable = true; # Enable Wake-on-LAN for the wired interface
+      # networking.interfaces.${settings.ethernet-interface}.wakeOnLan.enable = true; # Enable Wake-on-LAN for the wired interface
 
       # Enable DNS to resolve local hostnames.
       services.resolved.enable = true;
@@ -132,26 +126,26 @@
       };
 
       # Enable CUPS to print documents.
-      services.printing.enable = true;
-      services.printing.drivers = [
-        pkgs.cups-brother-hll2340dw
-      ];
+      # services.printing.enable = true;
+      # services.printing.drivers = [
+      #   pkgs.cups-brother-hll2340dw
+      # ];
 
       # Enable sound with pipewire.
-      services.pulseaudio.enable = false;
-      security.rtkit.enable = true;
-      services.pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-        # If you want to use JACK applications, uncomment this
-        #jack.enable = true;
+      # services.pulseaudio.enable = false;
+      # security.rtkit.enable = true;
+      # services.pipewire = {
+      #   enable = true;
+      #   alsa.enable = true;
+      #   alsa.support32Bit = true;
+      #   pulse.enable = true;
+      #   # If you want to use JACK applications, uncomment this
+      #   #jack.enable = true;
 
-        # use the example session manager (no others are packaged yet so this is enabled by default,
-        # no need to redefine it in your config for now)
-        #media-session.enable = true;
-      };
+      #   # use the example session manager (no others are packaged yet so this is enabled by default,
+      #   # no need to redefine it in your config for now)
+      #   #media-session.enable = true;
+      # };
 
       # Enable touchpad support (enabled default in most desktopManager).
       # services.xserver.libinput.enable = true;
@@ -169,77 +163,75 @@
       };
 
       # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-      systemd.services."getty@tty1".enable = false;
-      systemd.services."autovt@tty1".enable = false;
+      # systemd.services."getty@tty1".enable = false;
+      # systemd.services."autovt@tty1".enable = false;
 
-      systemd.services.disable-gpp0 = {
-        enable = true;
-        description = "Disable GPP0 to allow system suspending";
-        serviceConfig = {
-          Type = "simple";
-          # wrap this in a shell script instead of executing it directly to avoid some sort of permission issue
-          ExecStart = pkgs.writeShellScript "disable-gpp0" "echo 'GPP0' | tee /proc/acpi/wakeup";
-        };
-        wantedBy = [ "multi-user.target" ];
-        after = [ "sleep.target" ];
-      };
+      # systemd.services.disable-gpp0 = {
+      #   enable = true;
+      #   description = "Disable GPP0 to allow system suspending";
+      #   serviceConfig = {
+      #     Type = "simple";
+      #     # wrap this in a shell script instead of executing it directly to avoid some sort of permission issue
+      #     ExecStart = pkgs.writeShellScript "disable-gpp0" "echo 'GPP0' | tee /proc/acpi/wakeup";
+      #   };
+      #   wantedBy = [ "multi-user.target" ];
+      #   after = [ "sleep.target" ];
+      # };
 
-      systemd.services.user-sleep-hook = {
-        description = "Notify user session of sleep";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${notifyUserTarget "user-sleep" "0"} %i";
-        };
-        wantedBy = [ "sleep.target" ];
-        before = [ "sleep.target" ];
-      };
+      # systemd.services.user-sleep-hook = {
+      #   description = "Notify user session of sleep";
+      #   serviceConfig = {
+      #     Type = "oneshot";
+      #     ExecStart = "${notifyUserTarget "user-sleep" "0"} %i";
+      #   };
+      #   wantedBy = [ "sleep.target" ];
+      #   before = [ "sleep.target" ];
+      # };
 
-      systemd.services.user-wake-hook = {
-        description = "Notify user session of wake";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${notifyUserTarget "user-wake" "1"} %i";
-        };
-        wantedBy = [ "sleep.target" ];
-        after = [ "sleep.target" ];
-      };
+      # systemd.services.user-wake-hook = {
+      #   description = "Notify user session of wake";
+      #   serviceConfig = {
+      #     Type = "oneshot";
+      #     ExecStart = "${notifyUserTarget "user-wake" "1"} %i";
+      #   };
+      #   wantedBy = [ "sleep.target" ];
+      #   after = [ "sleep.target" ];
+      # };
 
       # Allow unfree packages
       nixpkgs.config.allowUnfree = true;
 
       # Startup solaar on boot.
       #hardware.logitech.wireless.enable = true;
-      services.solaar.enable = true;
+      # services.solaar.enable = true;
 
-      services.hardware.openrgb.enable = true;
-      hardware.spacenavd.enable = true;
+      # services.hardware.openrgb.enable = true;
+      # hardware.spacenavd.enable = true;
 
-      programs.steam.enable = true;
-      programs._1password-gui.enable = true;
+      # programs.steam.enable = true;
+      # programs._1password-gui.enable = true;
       # programs.thunderbird.enable = true;
       programs.git.enable = true;
       programs.fish.enable = true;
 
-      environment.etc = {
-        "1password/custom_allowed_browsers" = {
-          text = ''
-            librewolf
-          '';
-          mode = "0755";
-        };
-      };
+      # environment.etc = {
+      #   "1password/custom_allowed_browsers" = {
+      #     text = ''
+      #       librewolf
+      #     '';
+      #     mode = "0755";
+      #   };
+      # };
 
       environment.systemPackages = with pkgs; [
         inputs.agenix.packages.${settings.system}.default
-        gparted
         fastfetch
         tree
-        btrfs-progs
         openssl
       ];
 
       # Remove xterm
-      services.xserver.excludePackages = [ pkgs.xterm ];
+      # services.xserver.excludePackages = [ pkgs.xterm ];
 
       # Some programs need SUID wrappers, can be configured further or are
       # started in user sessions.
@@ -255,10 +247,10 @@
       services.openssh.enable = true;
 
       networking.firewall.enable = true;
-      networking.firewall.allowedUDPPorts = [
-        1900 # orcaslicer
-        2021 # orcaslicer
-      ];
+      # networking.firewall.allowedUDPPorts = [
+      #   1900 # orcaslicer
+      #   2021 # orcaslicer
+      # ];
 
       system.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
     };

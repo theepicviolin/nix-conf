@@ -20,6 +20,11 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
   };
 
   outputs =
@@ -29,58 +34,114 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       pkgs-stable = inputs.nixpkgs-stable.legacyPackages.${system};
-      settings = rec {
-        hostname = "numerical-nexus";
-        hostnamedisplay = "Numerical Nexus";
-        inherit system;
-        username = "aditya";
-        fullname = "Aditya Ramanathan";
-        email = "dev@adityarama.com";
-        homedir = "/home/" + username;
-        dotdir = "${homedir}/.dotfiles";
-        ethernet-interface = "eno1"; # for wake on lan. `ip a` to see all interfaces, pick the right IP and MAC address
-        # For switching DEs, switch the name then:
-        # sudo nixos-rebuild boot --flake ~/.dotfiles && reboot
-        # After booting into GNOME,
-        # dconf reset -f /org/ && rh
-        # Then log out and log back in
-        desktop-environment = "gnome"; # "gnome" or "plasma"
-        wallpaper = "${dotdir}/user/wallpaper.png";
-        sync = {
-          proton = true;
-          obsidian = true;
-          phonecamera = true;
-          media = true;
+      profile = "numerical-nexus";
+      settings = {
+        common = rec {
+          inherit system;
+          username = "aditya";
+          fullname = "Aditya Ramanathan";
+          email = "dev@adityarama.com";
+          homedir = "/home/" + username;
+          dotdir = "${homedir}/.dotfiles";
         };
-        backups = {
-          # shuf -er -n6  {a..f} {0..9} | tr -d '\n'
-          # to get a random 6 character hex prefix
-          prefix = "e60643-";
-          path = "/run/media/${username}/Seagate Expansion Drive/Linux/backup-${hostname}-${username}";
-        };
+
+        numerical-nexus = rec {
+          shortname = "nn";
+          hostname = "numerical-nexus";
+          hostnamedisplay = "Numerical Nexus";
+          ethernet-interface = "eno1"; # for wake on lan. `ip a` to see all interfaces, pick the right IP and MAC address
+          # For switching DEs, switch the name then:
+          # sudo nixos-rebuild boot --flake ~/.dotfiles && reboot
+          # After booting into GNOME,
+          # dconf reset -f /org/ && rh
+          # Then log out and log back in
+          desktop-environment = "gnome"; # "gnome" or "plasma"
+          wallpaper = "${settings.common.dotdir}/user/wallpaper.png";
+          sync = {
+            proton = true;
+            obsidian = true;
+            phonecamera = true;
+            media = true;
+          };
+          backups = {
+            # shuf -er -n6  {a..f} {0..9} | tr -d '\n'
+            # to get a random 6 character hex prefix
+            prefix = "e60643-";
+            path = "/run/media/${settings.common.username}/Seagate Expansion Drive/Linux/backup-${hostname}-${settings.common.username}";
+          };
+        }
+        // settings.common;
+
+        harmony-host = rec {
+          shortname = "hh";
+          hostname = "harmony-host";
+          hostnamedisplay = "Harmony Host";
+          desktop-environment = ""; # "gnome" or "plasma"
+          sync = {
+            proton = true;
+            obsidian = true;
+            phonecamera = true;
+            media = true;
+          };
+          backups = {
+            # shuf -er -n6  {a..f} {0..9} | tr -d '\n'
+            # to get a random 6 character hex prefix
+            prefix = "d32c7b-";
+            path = "/run/media/${settings.common.username}/Seagate Expansion Drive/Linux/backup-${hostname}-${settings.common.username}";
+          };
+        }
+        // settings.common;
       };
     in
     {
-      nixosConfigurations.${settings.hostname} = lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit inputs settings pkgs-stable; };
-        modules = [
-          ./system/configuration.nix
-          inputs.solaar.nixosModules.default
-          inputs.agenix.nixosModules.default
-        ];
-      };
+      nixosConfigurations.numerical-nexus =
+        if profile == "numerical-nexus" then
+          lib.nixosSystem {
+            inherit system;
+            specialArgs = {
+              inherit inputs pkgs-stable;
+              settings = settings.numerical-nexus;
+            };
+            modules = [
+              ./system/configuration-nn.nix
+              inputs.solaar.nixosModules.default
+              inputs.agenix.nixosModules.default
+            ];
+          }
+        else
+          { };
+
+      nixosConfigurations.harmony-host =
+        if profile == "harmony-host" then
+          lib.nixosSystem {
+            inherit system;
+            specialArgs = {
+              inherit inputs pkgs-stable;
+              settings = settings.harmony-host;
+            };
+            modules = [
+              ./system/configuration-hh.nix
+              inputs.agenix.nixosModules.default
+              inputs.disko.nixosModules.disko
+              inputs.proxmox-nixos.nixosModules.proxmox-ve
+            ];
+          }
+        else
+          { };
 
       homeConfigurations = {
         aditya = inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit settings pkgs-stable; };
+          extraSpecialArgs = {
+            inherit pkgs-stable;
+            settings = settings.${profile};
+          };
           modules = [
-            ./user/home.nix
+            ./user/home-${settings.${profile}.shortname}.nix
             inputs.agenix.homeManagerModules.default
           ]
           ++ (lib.optional (
-            settings.desktop-environment == "plasma"
+            settings.${profile}.desktop-environment == "plasma"
           ) inputs.plasma-manager.homeManagerModules.plasma-manager);
         };
       };
