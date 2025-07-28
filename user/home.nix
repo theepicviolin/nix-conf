@@ -17,6 +17,7 @@
       ./hw_rgb/hw_rgb.nix
       ./musescore/musescore.nix
       ./orcaslicer/orcaslicer.nix
+      ./shells/shells.nix
       ./solaar/solaar.nix
       ./syncthing/syncthing.nix
       ./vscodium/vscodium.nix
@@ -161,25 +162,6 @@
 
       home.sessionVariables = {
         # EDITOR = "emacs";
-      };
-
-      programs.bash = {
-        enable = true;
-        shellAliases = {
-          md = "mkdir";
-          "." = "start .";
-          ".." = "cd ..";
-          "..." = "cd ../..";
-          rebuildn = "sudo nixos-rebuild switch --flake ${settings.dotdir}";
-          rebuildh = "home-manager switch --flake ${settings.dotdir}";
-          rebuild = "rebuildn; rebuildh";
-          rn = "rebuildn";
-          rh = "rebuildh";
-          r = "rebuildn && rebuildh";
-          lg = "nixos-rebuild list-generations";
-          start = "xdg-open";
-        };
-        bashrcExtra = ''try() { nix-shell -p "$1" --run "$1"; }'';
       };
 
       systemd.user.targets.user-sleep.Unit.Description = "User pre-sleep target";

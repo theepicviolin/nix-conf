@@ -161,6 +161,7 @@
         isNormalUser = true;
         linger = true;
         description = settings.fullname;
+        shell = pkgs.fish;
         extraGroups = [
           "networkmanager"
           "wheel"
@@ -217,6 +218,7 @@
       programs._1password-gui.enable = true;
       # programs.thunderbird.enable = true;
       programs.git.enable = true;
+      programs.fish.enable = true;
 
       environment.etc = {
         "1password/custom_allowed_browsers" = {
