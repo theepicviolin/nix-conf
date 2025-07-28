@@ -19,12 +19,11 @@ let
           "pve-storage.target"
         ];
         script = ''
-          if [ ! -f "${imagepath}" ]; then
-            ${pkgs.xz}/bin/unxz "${imagepath}.xz"
-          fi
           mkdir -p "/var/lib/vz/images/${toString vmid}"
           if [ ! -f "${outpath}" ]; then
-            ${pkgs.qemu-utils}/bin/qemu-img convert "${imagepath}" -O raw "${outpath}"
+            ${pkgs.curl}/bin/curl ${imagepath} -o /tmp/haos.qcow2.xz
+            ${pkgs.xz}/bin/unxz /tmp/haos.qcow2.xz
+            ${pkgs.qemu-utils}/bin/qemu-img convert /tmp/haos.qcow2 -O raw "${outpath}"
           fi
         '';
 
@@ -67,7 +66,10 @@ in
         };
       };
     };
-    systemd.services = mkImportService 100 0 "${settings.dotdir}/system/haos_ova-16.0.qcow2"; # TODO: make this defined from a list alongside scsi
+    # TODO: make this defined from a list alongside scsi
+    systemd.services =
+      mkImportService 100 0
+        "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_ova-16.0.qcow2.xz";
     nixpkgs.overlays = [
       inputs.proxmox-nixos.overlays.${settings.system}
     ];
