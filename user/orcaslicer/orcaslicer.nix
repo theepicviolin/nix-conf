@@ -1,7 +1,8 @@
 {
   config,
   lib,
-  pkgs,
+  # pkgs,
+  pkgs-stable,
   #settings,
   ...
 }:
@@ -51,28 +52,36 @@ let
     };
     "Sunlu Silk PLA+ Black Blue 0.4mm Nozzle" = {
       color = "#1C71D8";
-    } // silk_defaults;
+    }
+    // silk_defaults;
     "Sunlu Silk PLA+ Black White 0.4mm Nozzle" = {
       color = "#5E5C64";
-    } // silk_defaults;
+    }
+    // silk_defaults;
     "Sunlu Silk PLA+ Blue Green 0.4mm Nozzle" = {
       color = "#40BF73";
-    } // silk_defaults;
+    }
+    // silk_defaults;
     "Sunlu Silk PLA+ Blue Green Purple 0.4mm Nozzle" = {
       color = "#57E389";
-    } // silk_defaults;
+    }
+    // silk_defaults;
     "Sunlu Silk PLA+ Pink Gold 0.4mm Nozzle" = {
       color = "#FFA348";
-    } // silk_defaults;
+    }
+    // silk_defaults;
     "Sunlu Silk PLA+ Red Blue 0.4mm Nozzle" = {
       color = "#ED333B";
-    } // silk_defaults;
+    }
+    // silk_defaults;
     "Sunlu Silk PLA+ Red Yellow Blue 0.4mm Nozzle" = {
       color = "#C061CB";
-    } // silk_defaults;
+    }
+    // silk_defaults;
     "Sunlu Silk PLA+ Red Yellow Green 0.4mm Nozzle" = {
       color = "#C061CB";
-    } // silk_defaults;
+    }
+    // silk_defaults;
   };
 
   processes = {
@@ -112,7 +121,7 @@ in
         utils.mutableDotfile ".config/OrcaSlicer" "OrcaSlicer.conf"
           "user/orcaslicer/OrcaSlicer.conf";
     };
-    home.packages = [ pkgs.orca-slicer ];
+    home.packages = [ pkgs-stable.orca-slicer ];
     home.file =
       (
         with lib.attrsets;

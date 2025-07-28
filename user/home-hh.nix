@@ -1,7 +1,7 @@
 {
   #config,
   pkgs,
-  pkgs-stable,
+  # pkgs-stable,
   lib,
   settings,
   ...
@@ -35,50 +35,50 @@
   };
 
   config =
-    let
-      utils = {
-        mutableDotfile =
-          cfgDir: cfgFile: templateFile:
-          lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-            if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
-              mkdir -p "${settings.homedir}/${cfgDir}"
-              cp "${settings.dotdir}/${templateFile}" "${settings.homedir}/${cfgDir}/${cfgFile}"
-            fi
-          '';
-        mutableDottext =
-          cfgDir: cfgFile: text:
-          lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-            if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
-              mkdir -p "${settings.homedir}/${cfgDir}"
-              echo "${text}" > "${settings.homedir}/${cfgDir}/${cfgFile}"
-            fi
-          '';
-        replaceFile =
-          cfgDir: cfgFile: file:
-          lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-            if [ -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
-              if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}.bak" ]; then
-                mv "${settings.homedir}/${cfgDir}/${cfgFile}" "${settings.homedir}/${cfgDir}/${cfgFile}.bak"
-              fi
-              cp "${settings.dotdir}/${file}" "${settings.homedir}/${cfgDir}/${cfgFile}"
-              chmod 755 "${settings.homedir}/${cfgDir}/${cfgFile}"
-            fi
-          '';
+    # let
+    #   utils = {
+    #     mutableDotfile =
+    #       cfgDir: cfgFile: templateFile:
+    #       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    #         if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
+    #           mkdir -p "${settings.homedir}/${cfgDir}"
+    #           cp "${settings.dotdir}/${templateFile}" "${settings.homedir}/${cfgDir}/${cfgFile}"
+    #         fi
+    #       '';
+    #     mutableDottext =
+    #       cfgDir: cfgFile: text:
+    #       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    #         if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
+    #           mkdir -p "${settings.homedir}/${cfgDir}"
+    #           echo "${text}" > "${settings.homedir}/${cfgDir}/${cfgFile}"
+    #         fi
+    #       '';
+    #     replaceFile =
+    #       cfgDir: cfgFile: file:
+    #       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    #         if [ -f "${settings.homedir}/${cfgDir}/${cfgFile}" ]; then
+    #           if [ ! -f "${settings.homedir}/${cfgDir}/${cfgFile}.bak" ]; then
+    #             mv "${settings.homedir}/${cfgDir}/${cfgFile}" "${settings.homedir}/${cfgDir}/${cfgFile}.bak"
+    #           fi
+    #           cp "${settings.dotdir}/${file}" "${settings.homedir}/${cfgDir}/${cfgFile}"
+    #           chmod 755 "${settings.homedir}/${cfgDir}/${cfgFile}"
+    #         fi
+    #       '';
 
-        mimeToAppMap =
-          appMimeMap:
-          (builtins.foldl' (
-            acc: app:
-            acc
-            // builtins.listToAttrs (
-              map (mime: {
-                name = mime;
-                value = [ app ];
-              }) appMimeMap.${app}
-            )
-          ) { } (builtins.attrNames appMimeMap));
-      };
-    in
+    #     mimeToAppMap =
+    #       appMimeMap:
+    #       (builtins.foldl' (
+    #         acc: app:
+    #         acc
+    #         // builtins.listToAttrs (
+    #           map (mime: {
+    #             name = mime;
+    #             value = [ app ];
+    #           }) appMimeMap.${app}
+    #         )
+    #       ) { } (builtins.attrNames appMimeMap));
+    #   };
+    # in
     {
       # orcaslicer = { inherit utils; };
       # default-apps = { inherit utils; };
@@ -91,7 +91,7 @@
 
       nixpkgs.config.allowUnfree = true;
 
-      home.packages = with pkgs; [
+      home.packages = [
         # general productivity
         # librewolf
         # brave

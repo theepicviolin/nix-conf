@@ -14,6 +14,7 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration-hh.nix
+      ./proxmox.nix
       # ./sunshine.nix
       # ./protonvpn.nix
       # ./virtualisation.nix
@@ -31,21 +32,21 @@
   };
 
   config =
-    let
-      notifyUserTarget =
-        name: delay:
-        pkgs.writeShellScript "notify-${name}" ''
-          set -e
-          _USER="${settings.username}"  # Change if needed
-          _UID=$(id -u "$_USER")
-          export XDG_RUNTIME_DIR="/run/user/$_UID"
+    # let
+    # notifyUserTarget =
+    #   name: delay:
+    #   pkgs.writeShellScript "notify-${name}" ''
+    #     set -e
+    #     _USER="${settings.username}"  # Change if needed
+    #     _UID=$(id -u "$_USER")
+    #     export XDG_RUNTIME_DIR="/run/user/$_UID"
 
-          if loginctl show-user "$_USER" | grep -q "State=active"; then
-            sleep ${delay}
-            systemctl --user -M "$_USER@" start ${name}.target
-          fi
-        '';
-    in
+    #     if loginctl show-user "$_USER" | grep -q "State=active"; then
+    #       sleep ${delay}
+    #       systemctl --user -M "$_USER@" start ${name}.target
+    #     fi
+    #   '';
+    # in
     {
 
       # Bootloader.

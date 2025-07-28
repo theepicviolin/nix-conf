@@ -114,7 +114,7 @@
         android-studio
 
         # musicy things
-        audacity
+        pkgs-stable.audacity
         spotify
         #frescobaldi
         reaper
