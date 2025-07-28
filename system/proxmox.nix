@@ -21,7 +21,7 @@ let
         script = ''
           mkdir -p "/var/lib/vz/images/${toString vmid}"
           if [ ! -f "${outpath}" ]; then
-            ${pkgs.curl}/bin/curl ${imagepath} -o /tmp/haos.qcow2.xz
+            ${pkgs.curl}/bin/curl ${imagepath} -L -o /tmp/haos.qcow2.xz
             ${pkgs.xz}/bin/unxz /tmp/haos.qcow2.xz
             ${pkgs.qemu-utils}/bin/qemu-img convert /tmp/haos.qcow2 -O raw "${outpath}"
           fi
