@@ -31,6 +31,10 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -38,7 +42,11 @@
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      #pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ inputs.nix-vscode-extensions.overlays.default ];
+      };
       pkgs-stable = inputs.nixpkgs-stable.legacyPackages.${system};
       profile = "numerical-nexus";
       home-manager =

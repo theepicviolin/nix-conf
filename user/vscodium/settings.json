@@ -49,5 +49,8 @@
   "python.createEnvironment.trigger": "off",
   "redhat.telemetry.enabled": false,
   "window.autoDetectColorScheme": true,
-  "window.autoDetectHighContrast": false
+  "window.autoDetectHighContrast": false,
+  "yaml.schemas": {
+    "file:///home/aditya/.vscode-oss/extensions/atlassian.atlascode/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+  }
 }
