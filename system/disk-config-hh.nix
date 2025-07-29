@@ -30,7 +30,7 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                mountOptions = [ "nofail" ];
+                mountOptions = [ "umask=0077" ];
               };
             };
             zfs = {
