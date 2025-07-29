@@ -122,7 +122,10 @@
       rclone
     ];
 
-    services.vscode-server.enable = true;
+    services.vscode-server = {
+      enable = true;
+      installPath = "$HOME/.vscodium-server";
+    };
 
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.

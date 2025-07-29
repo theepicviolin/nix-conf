@@ -116,7 +116,7 @@
     {
       nixosConfigurations.numerical-nexus =
         if profile == "numerical-nexus" then
-          inputs.nixpkgs-stable.lib.nixosSystem {
+          lib.nixosSystem {
             inherit system;
             specialArgs = {
               inherit inputs pkgs-stable;
@@ -133,7 +133,7 @@
 
       nixosConfigurations.harmony-host =
         if profile == "harmony-host" then
-          lib.nixosSystem {
+          inputs.nixpkgs-stable.lib.nixosSystem {
             inherit system;
             specialArgs = {
               inherit inputs pkgs-stable;
