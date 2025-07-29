@@ -4,8 +4,14 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "nixpkgs/nixos-25.05";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager-stable = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,7 +28,7 @@
     };
     disko = {
       url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
   };
@@ -35,6 +41,8 @@
       pkgs = nixpkgs.legacyPackages.${system};
       pkgs-stable = inputs.nixpkgs-stable.legacyPackages.${system};
       profile = "numerical-nexus";
+      home-manager =
+        if profile == "numerical-nexus" then inputs.home-manager else inputs.home-manager-stable;
       settings = {
         common = rec {
           inherit system;
@@ -130,7 +138,7 @@
           { };
 
       homeConfigurations = {
-        aditya = inputs.home-manager.lib.homeManagerConfiguration {
+        aditya = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
             inherit inputs pkgs-stable;

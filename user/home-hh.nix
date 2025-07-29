@@ -1,7 +1,6 @@
 {
   #config,
-  pkgs,
-  # pkgs-stable,
+  pkgs-stable,
   lib,
   settings,
   inputs,
@@ -92,7 +91,9 @@
           s = "status";
         };
         extraConfig = {
-          credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
+          credential.helper = "${
+            pkgs-stable.git.override { withLibsecret = true; }
+          }/bin/git-credential-libsecret";
           init = {
             defaultBranch = "main";
           };

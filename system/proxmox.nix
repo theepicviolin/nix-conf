@@ -46,7 +46,7 @@ in
   config = with config.proxmox; {
     services.proxmox-ve = {
       enable = true;
-      ipAddress = "192.168.1.2";
+      ipAddress = "192.168.1.125";
       bridges = [ "vmbr0" ];
       vms = {
         haos = {
