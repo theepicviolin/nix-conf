@@ -6,6 +6,9 @@
   #settings,
   ...
 }:
+# https://github.com/NixOS/nixpkgs/issues/345590
+# https://github.com/szymon-solak/nix-config/blob/main/home-manager/modules/orca-slicer.nix
+# https://github.com/SoftFever/OrcaSlicer/issues/7210
 let
   silk_defaults = {
     flow_ratio = 1;

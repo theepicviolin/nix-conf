@@ -133,7 +133,7 @@
         aditya = inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
-            inherit pkgs-stable;
+            inherit inputs pkgs-stable;
             settings = settings.${profile};
           };
           modules = [
