@@ -57,7 +57,7 @@
         if profile == "numerical-nexus" then inputs.home-manager else inputs.home-manager-stable;
       settings = {
         common = rec {
-          inherit system;
+          inherit system profile;
           username = "aditya";
           fullname = "Aditya Ramanathan";
           email = "dev@adityarama.com";
