@@ -35,6 +35,10 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vscode-server = {
+      url = "github:nix-community/nixos-vscode-server";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
   };
 
   outputs =
@@ -112,7 +116,7 @@
     {
       nixosConfigurations.numerical-nexus =
         if profile == "numerical-nexus" then
-          lib.nixosSystem {
+          inputs.nixpkgs-stable.lib.nixosSystem {
             inherit system;
             specialArgs = {
               inherit inputs pkgs-stable;
@@ -140,6 +144,7 @@
               inputs.agenix.nixosModules.default
               inputs.disko.nixosModules.disko
               inputs.proxmox-nixos.nixosModules.proxmox-ve
+              inputs.vscode-server.nixosModules.default
             ];
           }
         else

@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   lib,
   pkgs,
@@ -9,7 +10,7 @@ let
   mkImportService = vmid: diskid: imagepath: {
     "import-disk-${toString vmid}" =
       let
-        outpath = "/var/lib/vz/images/${toString vmid}/vm-${toString vmid}-disk-${diskid}.raw";
+        outpath = "/var/lib/vz/images/${toString vmid}/vm-${toString vmid}-disk-${toString diskid}.raw";
       in
       {
         description = "Import disk for VM ${toString vmid}";
