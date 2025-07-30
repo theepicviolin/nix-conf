@@ -20,6 +20,7 @@
       ./orcaslicer/orcaslicer.nix
       ./shells/shells.nix
       ./solaar/solaar.nix
+      ./ssh/ssh.nix
       ./syncthing/syncthing.nix
       ./vscodium/vscodium.nix
     ]

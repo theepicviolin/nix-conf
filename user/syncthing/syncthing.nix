@@ -1,5 +1,5 @@
 {
-  #config,
+  config,
   # pkgs,
   settings,
   ...
@@ -73,6 +73,19 @@ in
         };
       };
       options.urAccepted = -1;
+      gui = {
+        tls = "true";
+        theme = "dark";
+        user = "aditya";
+      };
     };
+    extraOptions = [ "--no-default-folder" ]; # Don't create default ~/Sync folder
+    passwordFile = builtins.toPath config.age.secrets.syncthing.path;
+  };
+
+  age.secretsDir = "/run/user/1000/agenix";
+  age.secrets.syncthing = {
+    file = ../../secrets/syncthing.age;
+    mode = "600";
   };
 }

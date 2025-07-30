@@ -141,6 +141,14 @@
     services.openssh.enable = true;
 
     networking.firewall.enable = true;
+    networking.firewall.allowedTCPPorts = [
+      8384 # syncthing
+      22000 # syncthing
+    ];
+    networking.firewall.allowedUDPPorts = [
+      22000 # syncthing
+      21027 # syncthing
+    ];
 
     system.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
   };

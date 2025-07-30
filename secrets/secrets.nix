@@ -3,7 +3,11 @@ let
   users = [ aditya ];
 
   nn = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAeOLhKV8gfax9fByekBbllXMEemke+nybHzN8LbHrAk";
-  systems = [ nn ];
+  hh = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRfhi2V25A+vuydU3NUBt0y14bFTgZLAWKGZ3lGjPN7";
+  systems = [
+    nn
+    hh
+  ];
 in
 {
   "NN-US-UT-47.age".publicKeys = [
@@ -28,6 +32,11 @@ in
   ];
   "NN-CA-1150.age".publicKeys = [
     nn
+    aditya
+  ];
+  "syncthing.age".publicKeys = [
+    nn
+    hh
     aditya
   ];
 }

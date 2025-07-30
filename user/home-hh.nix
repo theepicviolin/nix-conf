@@ -12,6 +12,7 @@
     with lib.lists;
     [
       ./shells/shells.nix
+      ./ssh/ssh.nix
       ./syncthing/syncthing.nix
     ]
     ++ (optional (settings.desktop-environment == "gnome") ./desktop-environments/gnome.nix)
