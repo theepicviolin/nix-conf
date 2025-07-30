@@ -119,7 +119,6 @@
       fastfetch
       tree
       openssl
-      rclone
     ];
 
     services.vscode-server = {

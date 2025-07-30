@@ -30,4 +30,5 @@ in
   "NN-US-WA-216.age".publicKeys = nn;
   "NN-CA-1150.age".publicKeys = nn;
   "syncthing.age".publicKeys = all;
+  "proton.age".publicKeys = all;
 }

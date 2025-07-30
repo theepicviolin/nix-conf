@@ -18,6 +18,7 @@
       ./hw_rgb/hw_rgb.nix
       ./musescore/musescore.nix
       ./orcaslicer/orcaslicer.nix
+      ./rclone/rclone.nix
       ./shells/shells.nix
       ./solaar/solaar.nix
       ./ssh/ssh.nix
@@ -85,6 +86,7 @@
       orcaslicer = { inherit utils; };
       default-apps = { inherit utils; };
       games = { inherit utils; };
+      rclone = { inherit utils; };
       nixpkgs.overlays = [ (import ../overlays/frescobaldi.nix) ];
       home.username = settings.username;
       home.homeDirectory = settings.homedir;
@@ -188,10 +190,6 @@
             rebase = true;
           };
         };
-      };
-
-      programs.rclone = {
-        enable = true;
       };
 
       # Let Home Manager install and manage itself.
