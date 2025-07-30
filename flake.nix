@@ -9,7 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-stable = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     plasma-manager = {
@@ -135,7 +135,6 @@
         if profile == "harmony-host" then
           lib.nixosSystem {
             inherit system;
-            pkgs = pkgs-stable; # Use stable pkgs for harmony-host
             specialArgs = {
               inherit inputs;
               settings = settings.harmony-host;
