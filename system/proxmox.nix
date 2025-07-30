@@ -52,8 +52,8 @@ in
       vms = {
         haos = {
           vmid = 100;
-          memory = 4096;
-          cores = 2;
+          memory = 8192;
+          cores = 4;
           sockets = 1;
           bios = "ovmf";
           kvm = false;
