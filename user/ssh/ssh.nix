@@ -22,7 +22,7 @@ in
     home.activation.generateSSHKey = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       if [ ! -f "$HOME/.ssh/id_ed25519" ]; then
         mkdir -p "$HOME/.ssh"
-        ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ""
+        ${pkgs.openssh}/bin/ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ""
         echo "Generated SSH key for $USER"
       fi
     '';

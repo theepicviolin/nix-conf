@@ -44,7 +44,7 @@
   outputs =
     { nixpkgs, ... }@inputs:
     let
-      lib = nixpkgs.lib;
+      lib = if profile == "numerical-nexus" then nixpkgs.lib else inputs.nixpkgs-stable.lib;
       system = "x86_64-linux";
       #pkgs = nixpkgs.legacyPackages.${system};
       pkgs = import nixpkgs {
@@ -100,14 +100,14 @@
           sync = {
             proton = true;
             obsidian = true;
-            phonecamera = true;
+            phonecamera = false;
             media = true;
           };
           backups = {
             # shuf -er -n6  {a..f} {0..9} | tr -d '\n'
             # to get a random 6 character hex prefix
             prefix = "d32c7b-";
-            path = "/run/media/${settings.common.username}/Seagate Expansion Drive/Linux/backup-${hostname}-${settings.common.username}";
+            path = "/mnt/backup/backup-${hostname}-${settings.common.username}";
           };
         }
         // settings.common;
@@ -133,11 +133,13 @@
 
       nixosConfigurations.harmony-host =
         if profile == "harmony-host" then
-          inputs.nixpkgs-stable.lib.nixosSystem {
+          lib.nixosSystem {
             inherit system;
+            pkgs = pkgs-stable; # Use stable pkgs for harmony-host
             specialArgs = {
-              inherit inputs pkgs-stable;
+              inherit inputs;
               settings = settings.harmony-host;
+              pkgs-unstable = pkgs;
             };
             modules = [
               ./system/configuration-hh.nix
@@ -152,7 +154,8 @@
 
       homeConfigurations = {
         aditya = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+          #inherit pkgs;
+          pkgs = if profile == "numerical-nexus" then pkgs else pkgs-stable;
           extraSpecialArgs = {
             inherit inputs pkgs-stable;
             settings = settings.${profile};
