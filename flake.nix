@@ -153,7 +153,6 @@
 
       homeConfigurations = {
         aditya = home-manager.lib.homeManagerConfiguration {
-          #inherit pkgs;
           pkgs = if profile == "numerical-nexus" then pkgs else pkgs-stable;
           extraSpecialArgs = {
             inherit inputs pkgs-stable;

@@ -1,6 +1,6 @@
 {
   #config,
-  pkgs-stable,
+  pkgs,
   lib,
   settings,
   inputs,
@@ -114,7 +114,7 @@
     programs.git.enable = true;
     programs.fish.enable = true;
 
-    environment.systemPackages = with pkgs-stable; [
+    environment.systemPackages = with pkgs; [
       inputs.agenix.packages.${settings.system}.default
       fastfetch
       tree
