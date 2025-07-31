@@ -44,23 +44,23 @@
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
-    snowfall-lib = {
-      url = "github:snowfallorg/lib";
+    flakelight = {
+      url = "github:nix-community/flakelight";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    snowfall-lib-stable = {
-      url = "github:snowfallorg/lib";
+    flakelight-stable = {
+      url = "github:nix-community/flakelight";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
-
   };
 
   outputs =
     { nixpkgs, ... }@inputs:
     let
+      flakelight = if profile == "numerical-nexus" then inputs.flakelight else inputs.flakelight-stable;
       # lib = if profile == "numerical-nexus" then nixpkgs.lib else inputs.nixpkgs-stable.lib;
-      snowfall-lib =
-        if profile == "numerical-nexus" then inputs.snowfall-lib else inputs.snowfall-lib-stable;
+      # snowfall-lib =
+      #   if profile == "numerical-nexus" then inputs.snowfall-lib else inputs.snowfall-lib-stable;
 
       system = "x86_64-linux";
       pkgs-stable = inputs.nixpkgs-stable.legacyPackages.${system};
@@ -96,22 +96,48 @@
         // settings.common;
       };
     in
-    snowfall-lib.mkFlake {
-      inherit inputs;
-      src = ./.;
-
-      snowfall = {
-        namespace = "ar";
+    flakelight ./. {
+      inputs = (builtins.removeAttrs inputs [ "nixpkgs" ]) // {
+        nixpkgs = if profile == "numerical-nexus" then nixpkgs else inputs.nixpkgs-stable;
       };
 
-      channels-config = {
+      nixpkgs.config = {
         allowUnfree = true;
       };
 
-      overlays = with inputs; [
+      withOverlays = with inputs; [
         nix-vscode-extensions.overlays.default
         proxmox-nixos.overlays.${system}
       ];
+
+      nixosConfigurations.numerical-nexus = {
+        inherit system;
+        specialArgs = {
+          inherit inputs pkgs-stable;
+          settings = settings.numerical-nexus;
+        };
+        modules = [
+          ./system/configuration-nn.nix
+          inputs.solaar.nixosModules.default
+          inputs.agenix.nixosModules.default
+        ];
+      };
+
+      nixosConfigurations.harmony-host = {
+        inherit system;
+        specialArgs = {
+          inherit inputs pkgs-unstable;
+          settings = settings.harmony-host;
+        };
+        modules = [
+          ./system/configuration-hh.nix
+          inputs.agenix.nixosModules.default
+          inputs.disko.nixosModules.disko
+          inputs.proxmox-nixos.nixosModules.proxmox-ve
+          inputs.vscode-server.nixosModules.default
+        ];
+      };
+      
 
       # Add modules to all NixOS systems.
       systems.modules.nixos = with inputs; [
