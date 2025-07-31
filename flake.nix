@@ -110,6 +110,7 @@
 
       overlays = with inputs; [
         nix-vscode-extensions.overlays.default
+        proxmox-nixos.overlays.${system}
       ];
 
       # Add modules to all NixOS systems.

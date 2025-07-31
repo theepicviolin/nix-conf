@@ -14,7 +14,7 @@ with lib.ar;
     ./disk-config.nix
   ];
 
-  boot.loader.efi.canTouchEfiVariables = lib.mkForce true; # otherwise installing bootloader fails
+  boot.loader.efi.canTouchEfiVariables = lib.mkForce false; # otherwise installing bootloader fails
 
   ar = {
     common = enabled;

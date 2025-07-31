@@ -74,9 +74,6 @@ in
     systemd.services =
       mkImportService 100 0
         "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_ova-16.0.qcow2.xz";
-    nixpkgs.overlays = [
-      inputs.proxmox-nixos.overlays.${settings.system}
-    ];
     networking.bridges.vmbr0.interfaces = [ "eno1" ];
     networking.interfaces.vmbr0.useDHCP = lib.mkDefault true;
   };

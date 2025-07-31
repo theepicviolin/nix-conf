@@ -21,13 +21,28 @@ with lib.ar;
         name = settings.fullname;
         email = settings.email;
       };
-      shells = enabled;
+      shells = {
+        enable = true;
+        dotdir = settings.dotdir;
+      };
       syncthing = {
         enable = true;
-        proton = true;
-        obsidian = true;
-        phonecamera = false;
-        media = true;
+        proton = {
+          enable = true;
+          folder = "${settings.homedir}/Proton";
+        };
+        obsidian = {
+          enable = true;
+          folder = "${settings.homedir}/Obsidian";
+        };
+        phonecamera = {
+          enable = false;
+          folder = "${settings.homedir}/Phone Camera";
+        };
+        media = {
+          enable = true;
+          folder = "${settings.homedir}/Media";
+        };
       };
     };
   };
