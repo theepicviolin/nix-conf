@@ -1,0 +1,56 @@
+{
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true,
+  "editor.stickyScroll.defaultModel": "indentationModel",
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmPasteNative": false,
+  "files.autoSave": "afterDelay",
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "github.copilot.advanced": {},
+  "gitlens.ai.gitkraken.model": "gemini:gemini-2.0-flash",
+  "gitlens.ai.model": "gitkraken",
+  "haskell.manageHLS": "GHCup",
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nil",
+  "nix.serverSettings": {
+    "nil": {
+      "formatting": {
+        "command": ["nixfmt"]
+      }
+    }
+  },
+  "python.createEnvironment.trigger": "off",
+  "redhat.telemetry.enabled": false,
+  "window.autoDetectColorScheme": true,
+  "window.autoDetectHighContrast": false,
+  "yaml.schemas": {
+    "file:///home/aditya/.vscode-oss/extensions/atlassian.atlascode-3.9.64-universal/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+  }
+}
