@@ -13,14 +13,13 @@ with flake.lib;
 {
   imports = [
     ./hardware-configuration.nix
-    inputs.solaar.nixosModules.default
   ]
   ++ lib.attrsets.attrValues flake.nixosModules
   ++ lib.attrsets.attrValues flake.modules.common;
 
   home-manager.users = lib.mkForce { };
 
-  #nixpkgs.overlays = [ (import ../overlays/printer.nix) ];
+  nixpkgs.hostPlatform = "x86_64-linux";
 
   ar =
     let
@@ -44,6 +43,7 @@ with flake.lib;
       proxmox = disabled;
       virtualisation = enabled;
       printer = enabled;
+      solaar = enabled;
       sound = enabled;
       gnome.enable = (settings.desktop-environment == "gnome");
       plasma.enable = (settings.desktop-environment == "plasma");
@@ -85,10 +85,6 @@ with flake.lib;
     wantedBy = [ "sleep.target" ];
     after = [ "sleep.target" ];
   };
-
-  # Startup solaar on boot.
-  #hardware.logitech.wireless.enable = true;
-  services.solaar.enable = true;
 
   services.hardware.openrgb.enable = true;
   hardware.spacenavd.enable = true;

@@ -12,6 +12,8 @@ let
   cfg = config.ar.rclone;
 in
 {
+  imports = [ inputs.agenix.homeManagerModules.default ];
+
   options.ar.rclone = {
     enable = mkEnableOption "Enable rclone and set remotes";
   };

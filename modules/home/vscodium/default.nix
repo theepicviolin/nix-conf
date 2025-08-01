@@ -3,6 +3,7 @@
   lib,
   pkgs,
   flake,
+  inputs,
   #settings,
   ...
 }:
@@ -45,5 +46,7 @@ in
         userSettings = lib.importJSON ./settings.json;
       };
     };
+
+    nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ];
   };
 }

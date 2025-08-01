@@ -105,10 +105,9 @@
       #   allowUnfree = true;
       # };
 
-      nixpkgs.overlays = with inputs; [
-        nix-vscode-extensions.overlays.default
-        proxmox-nixos.overlays.${system}
-      ];
+      # nixpkgs.overlays = with inputs; [
+      # proxmox-nixos.overlays.${system}
+      # ];
 
       #
 

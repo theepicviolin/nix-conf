@@ -13,17 +13,12 @@
 with lib;
 with flake.lib;
 {
-  imports = [
-  ]
-  ++ lib.attrsets.attrValues flake.homeModules
-  ++ lib.attrsets.attrValues flake.modules.common;
+  imports = lib.attrsets.attrValues flake.homeModules ++ lib.attrsets.attrValues flake.modules.common;
 
   config = {
     # nixpkgs.overlays = [ (import ../overlays/frescobaldi.nix) ];
     # home.username = settings.username;
     # home.homeDirectory = settings.homedir;
-
-    home.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
 
     ar =
       let
@@ -165,5 +160,7 @@ with flake.lib;
 
     systemd.user.targets.user-sleep.Unit.Description = "User pre-sleep target";
     systemd.user.targets.user-wake.Unit.Description = "User post-wake target";
+
+    home.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
   };
 }

@@ -4,27 +4,39 @@
   lib,
   settings,
   inputs,
+  flake,
   hostName,
   ...
 }:
-with lib.ar;
+with flake.lib;
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./disk-config.nix
-  ];
+    inputs.disko.nixosModules.disko
+    inputs.vscode-server.nixosModules.default
+  ]
+  ++ lib.attrsets.attrValues flake.nixosModules
+  ++ lib.attrsets.attrValues flake.modules.common;
+
+  home-manager.users = lib.mkForce { };
 
   boot.loader.efi.canTouchEfiVariables = lib.mkForce false; # otherwise installing bootloader fails
 
+  nixpkgs.hostPlatform = "x86_64-linux";
+
   ar = {
     common = enabled;
-    proxmox = enabled;
+    proxmox = {
+      enable = true;
+      system = "x86_64-linux"; # config.nixpkgs.hostPlatform;
+    };
   };
 
   networking.hostId = "d8712d14"; # needed for ZFS
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
   ];
 
   services.vscode-server = {

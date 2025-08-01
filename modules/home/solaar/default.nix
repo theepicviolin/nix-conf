@@ -21,5 +21,13 @@ in
       ".config/solaar/config.yaml".source = ./config.yaml;
       ".config/solaar/rules.yaml".source = ./rules.yaml;
     };
+
+    # dconf.settings."org/gnome/shell/extensions/appindicator".custom-icons = [
+    #   (lib.hm.gvariant.mkTuple [
+    #     "indicator-solaar"
+    #     (builtins.toString ./icon.png)
+    #     ""
+    #   ])
+    # ];
   };
 }
