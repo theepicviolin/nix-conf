@@ -17,9 +17,10 @@ with flake.lib;
   ++ lib.attrsets.attrValues flake.nixosModules
   ++ lib.attrsets.attrValues flake.modules.common;
 
-  home-manager.users = lib.mkForce { };
+  home-manager.users = lib.mkForce { }; # use standalone home-manager
 
   nixpkgs.hostPlatform = "x86_64-linux";
+  networking.hostName = "numerical-nexus";
 
   ar =
     let
@@ -45,46 +46,27 @@ with flake.lib;
       printer = enabled;
       solaar = enabled;
       sound = enabled;
+      user-sleep-wake = {
+        enable = true;
+        username = "aditya";
+      };
       gnome.enable = (settings.desktop-environment == "gnome");
       plasma.enable = (settings.desktop-environment == "plasma");
     };
 
+  users.users.aditya = {
+    isNormalUser = true;
+    linger = true;
+    description = "Aditya Ramanathan";
+    shell = pkgs.fish;
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+  };
+
   # Enable networking
   networking.interfaces.eno1.wakeOnLan.enable = true; # Enable Wake-on-LAN for the wired ethernet interface
-
-  systemd.services.user-sleep-hook = {
-    description = "Notify user session of sleep";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${
-        notifyUserTarget {
-          inherit pkgs;
-          username = "aditya";
-          name = "user-sleep";
-          delay = "0";
-        }
-      } %i";
-    };
-    wantedBy = [ "sleep.target" ];
-    before = [ "sleep.target" ];
-  };
-
-  systemd.services.user-wake-hook = {
-    description = "Notify user session of wake";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${
-        notifyUserTarget {
-          inherit pkgs;
-          username = "aditya";
-          name = "user-wake";
-          delay = "1";
-        }
-      } %i";
-    };
-    wantedBy = [ "sleep.target" ];
-    after = [ "sleep.target" ];
-  };
 
   services.hardware.openrgb.enable = true;
   hardware.spacenavd.enable = true;

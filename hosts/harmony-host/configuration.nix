@@ -34,6 +34,17 @@ with flake.lib;
     };
   };
 
+  users.users.aditya = {
+    isNormalUser = true;
+    linger = true;
+    description = "Aditya Ramanathan";
+    shell = pkgs.fish;
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+  };
+
   networking.hostId = "d8712d14"; # needed for ZFS
 
   environment.systemPackages = [

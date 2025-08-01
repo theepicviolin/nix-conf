@@ -59,25 +59,6 @@ in
       )
     ) { } (builtins.attrNames appMimeMap));
 
-  notifyUserTarget =
-    {
-      pkgs,
-      username,
-      name,
-      delay,
-    }:
-    pkgs.writeShellScript "notify-${name}" ''
-      set -e
-      _USER="${username}"  # Change if needed
-      _UID=$(id -u "$_USER")
-      export XDG_RUNTIME_DIR="/run/user/$_UID"
-
-      if loginctl show-user "$_USER" | grep -q "State=active"; then
-        sleep ${delay}
-        systemctl --user -M "$_USER@" start ${name}.target
-      fi
-    '';
-
   enabled = {
     enable = true;
   };
