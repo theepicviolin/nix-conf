@@ -6,7 +6,6 @@
   ...
 }:
 with lib;
-with lib.ar;
 let
   cfg = config.ar.hw_rgb;
 in

@@ -2,11 +2,12 @@
   config,
   lib,
   pkgs,
+  flake,
   # settings,
   ...
 }:
 with lib;
-with lib.ar;
+with flake.lib;
 let
   cfg = config.ar.games;
 in

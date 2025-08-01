@@ -1,18 +1,26 @@
 {
   # This is the merged library containing your namespaced library as well as all libraries from
   # your flake's inputs.
-  lib,
+  # lib,
+  flake,
 
   # Your flake inputs are also available.
   inputs,
+  self,
 
-  # The namespace used for your flake, defaulting to "internal" if not set.
-  namespace,
+# The namespace used for your flake, defaulting to "internal" if not set.
+# namespace,
 }:
+let
+  # lib = flake.outputs.nixpkgs.lib;
+  lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
+  # lib = inputs.home-manager.lib;
+in
 {
+  # hm = inputs.home-manager.lib.hm;
   mutableDotfile =
     cfgDir: cfgFile: templateFile:
-    lib.home-manager.hm.dag.entryAfter [ "writeBoundary" ] ''
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       if [ ! -f "$HOME/${cfgDir}/${cfgFile}" ]; then
         mkdir -p "$HOME/${cfgDir}"
         cp "${templateFile}" "$HOME/${cfgDir}/${cfgFile}"
@@ -20,7 +28,7 @@
     '';
   mutableDottext =
     cfgDir: cfgFile: text:
-    lib.home-manager.hm.dag.entryAfter [ "writeBoundary" ] ''
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       if [ ! -f "$HOME/${cfgDir}/${cfgFile}" ]; then
         mkdir -p "$HOME/${cfgDir}"
         echo "${text}" > "$HOME/${cfgDir}/${cfgFile}"
@@ -28,7 +36,7 @@
     '';
   replaceFile =
     cfgDir: cfgFile: file:
-    lib.home-manager.hm.dag.entryAfter [ "writeBoundary" ] ''
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       if [ -f "$HOME/${cfgDir}/${cfgFile}" ]; then
         if [ ! -f "$HOME/${cfgDir}/${cfgFile}.bak" ]; then
           mv "$HOME/${cfgDir}/${cfgFile}" "$HOME/${cfgDir}/${cfgFile}.bak"

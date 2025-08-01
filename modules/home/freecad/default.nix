@@ -3,10 +3,11 @@
   lib,
   pkgs,
   inputs,
+  flake,
   ...
 }:
 with lib;
-with lib.ar;
+with flake.lib;
 let
   cfg = config.ar.freecad;
 in

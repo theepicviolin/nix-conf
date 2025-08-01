@@ -6,7 +6,6 @@
   ...
 }:
 with lib;
-with lib.ar;
 let
   cfg = config.ar.gnome;
   extensions = with pkgs.gnomeExtensions; [
@@ -27,7 +26,7 @@ let
   ];
 
   apl-entry =
-    with lib.home-manager.hm.gvariant;
+    with lib.hm.gvariant;
     name:
     (
       position:
@@ -162,7 +161,7 @@ in
     dconf.enable = true;
 
     dconf.settings =
-      with lib.home-manager.hm.gvariant;
+      with lib.hm.gvariant;
       (lib.attrsets.concatMapAttrs (thisName: thisApps: ({
         "org/gnome/desktop/app-folders/folders/${thisName}" = {
           apps = thisApps;

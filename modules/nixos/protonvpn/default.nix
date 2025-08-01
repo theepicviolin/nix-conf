@@ -4,13 +4,13 @@
   pkgs,
   inputs,
   settings,
-  secretsdir,
+  flake,
   ...
 }:
-
 with lib;
-with lib.ar;
+with flake.lib;
 let
+  secretsdir = ../../../secrets;
   cfg = config.ar.protonvpn;
 
   mkWgEntry = name: {
@@ -26,6 +26,9 @@ let
   };
 in
 {
+  imports = [
+    inputs.agenix.nixosModules.default
+  ];
   options.ar.protonvpn = {
     enable = mkEnableOption "Enable custom Proton VPN command line tool (in case GUI app doesn't work)";
   };

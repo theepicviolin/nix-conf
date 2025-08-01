@@ -44,12 +44,12 @@
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
-    flakelight = {
-      url = "github:nix-community/flakelight";
+    blueprint = {
+      url = "github:numtide/blueprint";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flakelight-stable = {
-      url = "github:nix-community/flakelight";
+    blueprint-stable = {
+      url = "github:numtide/blueprint";
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
   };
@@ -57,10 +57,8 @@
   outputs =
     { nixpkgs, ... }@inputs:
     let
-      flakelight = if profile == "numerical-nexus" then inputs.flakelight else inputs.flakelight-stable;
+      blueprint = if profile == "numerical-nexus" then inputs.blueprint else inputs.blueprint-stable;
       # lib = if profile == "numerical-nexus" then nixpkgs.lib else inputs.nixpkgs-stable.lib;
-      # snowfall-lib =
-      #   if profile == "numerical-nexus" then inputs.snowfall-lib else inputs.snowfall-lib-stable;
 
       system = "x86_64-linux";
       pkgs-stable = inputs.nixpkgs-stable.legacyPackages.${system};
@@ -96,96 +94,103 @@
         // settings.common;
       };
     in
-    flakelight ./. {
+    blueprint {
       inputs = (builtins.removeAttrs inputs [ "nixpkgs" ]) // {
         nixpkgs = if profile == "numerical-nexus" then nixpkgs else inputs.nixpkgs-stable;
+        nixpkgs-unstable = inputs.nixpkgs;
       };
+      # inherit inputs;
 
-      nixpkgs.config = {
-        allowUnfree = true;
-      };
+      # nixpkgs.config = {
+      #   allowUnfree = true;
+      # };
 
-      withOverlays = with inputs; [
+      nixpkgs.overlays = with inputs; [
         nix-vscode-extensions.overlays.default
         proxmox-nixos.overlays.${system}
       ];
 
-      nixosConfigurations.numerical-nexus = {
-        inherit system;
-        specialArgs = {
-          inherit inputs pkgs-stable;
-          settings = settings.numerical-nexus;
-        };
-        modules = [
-          ./system/configuration-nn.nix
-          inputs.solaar.nixosModules.default
-          inputs.agenix.nixosModules.default
-        ];
-      };
+      #
 
-      nixosConfigurations.harmony-host = {
-        inherit system;
-        specialArgs = {
-          inherit inputs pkgs-unstable;
-          settings = settings.harmony-host;
-        };
-        modules = [
-          ./system/configuration-hh.nix
-          inputs.agenix.nixosModules.default
-          inputs.disko.nixosModules.disko
-          inputs.proxmox-nixos.nixosModules.proxmox-ve
-          inputs.vscode-server.nixosModules.default
-        ];
-      };
-      
+      #
 
-      # Add modules to all NixOS systems.
-      systems.modules.nixos = with inputs; [
-        agenix.nixosModules.default
-      ];
+      #
 
-      systems.hosts.numerical-nexus = {
-        modules = with inputs; [
-          solaar.nixosModules.default
-          nixos-hardware.nixosModules.gigabyte-b550
-        ];
-        specialArgs = {
-          inherit pkgs-stable secretsdir;
-          settings = settings.numerical-nexus;
-        };
-      };
+      # nixosConfigurations.numerical-nexus = {
+      #   inherit system;
+      #   specialArgs = {
+      #     inherit inputs pkgs-stable;
+      #     settings = settings.numerical-nexus;
+      #   };
+      #   modules = [
+      #     ./system/configuration-nn.nix
+      #     inputs.solaar.nixosModules.default
+      #     inputs.agenix.nixosModules.default
+      #   ];
+      # };
 
-      systems.hosts.harmony-host = {
-        modules = with inputs; [
-          disko.nixosModules.disko
-          # proxmox-nixos.nixosModules.proxmox-ve
-          vscode-server.nixosModules.default
-        ];
-        specialArgs = {
-          inherit pkgs-unstable secretsdir;
-          settings = settings.harmony-host;
-        };
-      };
+      # nixosConfigurations.harmony-host = {
+      #   inherit system;
+      #   specialArgs = {
+      #     inherit inputs pkgs-unstable;
+      #     settings = settings.harmony-host;
+      #   };
+      #   modules = [
+      #     ./system/configuration-hh.nix
+      #     inputs.agenix.nixosModules.default
+      #     inputs.disko.nixosModules.disko
+      #     inputs.proxmox-nixos.nixosModules.proxmox-ve
+      #     inputs.vscode-server.nixosModules.default
+      #   ];
+      # };
 
-      # Add modules to all homes.
-      homes.modules = with inputs; [
-        agenix.homeManagerModules.default
-      ];
+      # # Add modules to all NixOS systems.
+      # systems.modules.nixos = with inputs; [
+      #   agenix.nixosModules.default
+      # ];
 
-      homes.users."aditya@numerical-nexus" = {
-        modules = [ ];
-        specialArgs = {
-          settings = settings.numerical-nexus;
-          inherit pkgs-stable;
-        };
-      };
+      # systems.hosts.numerical-nexus = {
+      #   modules = with inputs; [
+      #     solaar.nixosModules.default
+      #     nixos-hardware.nixosModules.gigabyte-b550
+      #   ];
+      #   specialArgs = {
+      #     inherit pkgs-stable secretsdir;
+      #     settings = settings.numerical-nexus;
+      #   };
+      # };
 
-      homes.users."aditya@harmony-host" = {
-        modules = [ ];
-        specialArgs = {
-          settings = settings.harmony-host;
-          inherit pkgs-unstable;
-        };
-      };
+      # systems.hosts.harmony-host = {
+      #   modules = with inputs; [
+      #     disko.nixosModules.disko
+      #     # proxmox-nixos.nixosModules.proxmox-ve
+      #     vscode-server.nixosModules.default
+      #   ];
+      #   specialArgs = {
+      #     inherit pkgs-unstable secretsdir;
+      #     settings = settings.harmony-host;
+      #   };
+      # };
+
+      # # Add modules to all homes.
+      # homes.modules = with inputs; [
+      #   agenix.homeManagerModules.default
+      # ];
+
+      # homes.users."aditya@numerical-nexus" = {
+      #   modules = [ ];
+      #   specialArgs = {
+      #     settings = settings.numerical-nexus;
+      #     inherit pkgs-stable;
+      #   };
+      # };
+
+      # homes.users."aditya@harmony-host" = {
+      #   modules = [ ];
+      #   specialArgs = {
+      #     settings = settings.harmony-host;
+      #     inherit pkgs-unstable;
+      #   };
+      # };
     };
 }

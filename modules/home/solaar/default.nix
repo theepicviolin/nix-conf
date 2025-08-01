@@ -1,12 +1,13 @@
 {
   config,
   lib,
+  flake,
   # pkgs,
   # settings,
   ...
 }:
 with lib;
-with lib.ar;
+with flake.lib;
 let
   cfg = config.ar.solaar;
 in
