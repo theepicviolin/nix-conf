@@ -23,10 +23,8 @@ in
     home.packages = with pkgs; [ prismlauncher ];
 
     home.activation = {
-      moveLarianDir =
-        replaceFile ".local/share/Steam/steamapps/common/Divinity Original Sin Enhanced Edition" "runner.sh"
-          ./runner.sh;
-      prismLauncherCfg = mutableDottext ".local/share/PrismLauncher" "prismlauncher.cfg" ''
+      moveLarianDir = replaceFile ".local/share/Steam/steamapps/common/Divinity Original Sin Enhanced Edition/runner.sh" ./runner.sh;
+      prismLauncherCfg = mutableDottext ".local/share/PrismLauncher/prismlauncher.cfg" ''
         [General]
         ApplicationTheme=dark
         BackgroundCat=rory

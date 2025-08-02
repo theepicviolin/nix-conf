@@ -19,7 +19,7 @@ in
   config = mkIf cfg.enable {
     home.packages = [ pkgs.freecad ];
     home.activation = {
-      freecadUserCfg = mutableDotfile ".config/FreeCAD" "user.cfg" ./user.cfg;
+      freecadUserCfg = mutableDotfile ".config/FreeCAD/user.cfg" ./user.cfg;
     };
   };
 }

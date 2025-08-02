@@ -24,8 +24,6 @@ with flake.lib;
 
   boot.loader.efi.canTouchEfiVariables = lib.mkForce false; # otherwise installing bootloader fails
 
-  nixpkgs.hostPlatform = "x86_64-linux";
-
   ar = {
     common = enabled;
     proxmox = {
@@ -46,9 +44,6 @@ with flake.lib;
   };
 
   networking.hostId = "d8712d14"; # needed for ZFS
-
-  environment.systemPackages = [
-  ];
 
   services.vscode-server = {
     enable = true;

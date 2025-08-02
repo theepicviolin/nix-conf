@@ -149,6 +149,8 @@ let
       "org.gnome.Snapshot.desktop"
     ];
   };
+
+  wallpaper = "file://" + builtins.toString ./wallpaper.png;
 in
 {
   options.ar.gnome = {
@@ -157,9 +159,6 @@ in
 
   config = mkIf cfg.enable {
     home.packages = extensions ++ [ pkgs.gnome-tweaks ]; # merges with packages from home.nix
-    home.file = {
-      ".background-image".source = ./wallpaper.png;
-    };
 
     dconf.enable = true;
 
@@ -177,8 +176,8 @@ in
         };
 
         "org/gnome/desktop/background" = {
-          # picture-uri = "file://" + builtins.toString ./wallpaper.png;
-          # picture-uri-dark = "file://" + builtins.toString ./wallpaper.png;
+          picture-uri = wallpaper;
+          picture-uri-dark = wallpaper;
           color-shading-type = "solid";
           primary-color = "#77767B";
           secondary-color = "#000000";
@@ -198,7 +197,7 @@ in
 
         "org/gnome/desktop/screensaver" = {
           color-shading-type = "solid";
-          # picture-uri = "file://" + builtins.toString ./wallpaper.png;
+          picture-uri = wallpaper;
           primary-color = "#77767B";
           secondary-color = "#000000";
           picture-options = "zoom";
@@ -293,13 +292,6 @@ in
 
         "org/gnome/shell/extensions/appindicator" = {
           #icon-saturation = 1;
-          # custom-icons = [
-          #   (mkTuple [
-          #     "indicator-solaar"
-          #     (builtins.toString ../solaar/icon.png)
-          #     ""
-          #   ])
-          # ];
         };
 
         "org/gnome/shell/extensions/bluetooth-quick-connect" = {

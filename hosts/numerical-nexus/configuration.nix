@@ -13,14 +13,14 @@ with flake.lib;
 {
   imports = [
     ./hardware-configuration.nix
+    inputs.nixos-hardware.nixosModules.gigabyte-b550
   ]
   ++ lib.attrsets.attrValues flake.nixosModules
   ++ lib.attrsets.attrValues flake.modules.common;
 
   home-manager.users = lib.mkForce { }; # use standalone home-manager
 
-  nixpkgs.hostPlatform = "x86_64-linux";
-  networking.hostName = "numerical-nexus";
+  networking.hostName = builtins.baseNameOf ./.;
 
   ar =
     let

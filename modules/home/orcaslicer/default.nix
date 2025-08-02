@@ -120,7 +120,7 @@ in
   config = mkIf cfg.enable {
 
     home.activation = {
-      orcaslicerCfg = mutableDotfile ".config/OrcaSlicer" "OrcaSlicer.conf" ./OrcaSlicer.conf;
+      orcaslicerCfg = mutableDotfile ".config/OrcaSlicer/OrcaSlicer.conf" ./OrcaSlicer.conf;
     };
     home.packages = [ cfg.pkgsOverride.orca-slicer ];
     home.file =

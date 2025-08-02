@@ -38,7 +38,7 @@ in
       })
     ];
 
-    home.activation.rcloneCfg = mutableDottext ".config/rclone" "rclone.conf" ''
+    home.activation.rcloneCfg = mutableDottext ".config/rclone/rclone.conf" ''
       [proton]
       type = protondrive
       username = theepicviolin

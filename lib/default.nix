@@ -19,30 +19,37 @@ in
 {
   # hm = inputs.home-manager.lib.hm;
   mutableDotfile =
-    cfgDir: cfgFile: templateFile:
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      if [ ! -f "$HOME/${cfgDir}/${cfgFile}" ]; then
+    cfgPath: templateFile:
+    let
+      cfgDir = builtins.dirOf cfgPath;
+    in
+    (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      if [ ! -f "$HOME/${cfgPath}" ]; then
         mkdir -p "$HOME/${cfgDir}"
-        cp "${templateFile}" "$HOME/${cfgDir}/${cfgFile}"
+        cp -r "${templateFile}" "$HOME/${cfgPath}"
+        chmod +w "$HOME/${cfgPath}"
       fi
-    '';
+    '');
   mutableDottext =
-    cfgDir: cfgFile: text:
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      if [ ! -f "$HOME/${cfgDir}/${cfgFile}" ]; then
+    cfgPath: text:
+    let
+      cfgDir = builtins.dirOf cfgPath;
+    in
+    (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      if [ ! -f "$HOME/${cfgPath}" ]; then
         mkdir -p "$HOME/${cfgDir}"
-        echo "${text}" > "$HOME/${cfgDir}/${cfgFile}"
+        echo "${text}" > "$HOME/${cfgPath}"
       fi
-    '';
+    '');
   replaceFile =
-    cfgDir: cfgFile: file:
+    cfgPath: file:
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      if [ -f "$HOME/${cfgDir}/${cfgFile}" ]; then
-        if [ ! -f "$HOME/${cfgDir}/${cfgFile}.bak" ]; then
-          mv "$HOME/${cfgDir}/${cfgFile}" "$HOME/${cfgDir}/${cfgFile}.bak"
+      if [ -f "$HOME/${cfgPath}" ]; then
+        if [ ! -f "$HOME/${cfgPath}.bak" ]; then
+          mv "$HOME/${cfgPath}" "$HOME/${cfgPath}.bak"
         fi
-        cp "${file}" "$HOME/${cfgDir}/${cfgFile}"
-        chmod 755 "$HOME/${cfgDir}/${cfgFile}"
+        cp "${file}" "$HOME/${cfgPath}"
+        chmod 755 "$HOME/${cfgPath}"
       fi
     '';
 

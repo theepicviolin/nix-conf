@@ -17,8 +17,6 @@ with flake.lib;
 
   config = {
     # nixpkgs.overlays = [ (import ../overlays/frescobaldi.nix) ];
-    # home.username = settings.username;
-    # home.homeDirectory = settings.homedir;
 
     ar =
       let
@@ -55,14 +53,15 @@ with flake.lib;
           email = settings.email;
         };
         games = enabled;
-        gnome.enable = settings.desktop-environment == "gnome";
-        plasma.enable = settings.desktop-environment == "plasma";
         hw_rgb = enabled;
+        libation = enabled;
         musescore = enabled;
+        onlyoffice = enabled;
         orcaslicer = {
           enable = true;
           pkgsOverride = pkgs-stable;
         };
+        qbittorrent = enabled;
         rclone = enabled;
         shells = {
           enable = true;
@@ -89,6 +88,8 @@ with flake.lib;
           };
         };
         vscodium = enabled;
+        gnome.enable = settings.desktop-environment == "gnome";
+        plasma.enable = settings.desktop-environment == "plasma";
       };
 
     home.packages = with pkgs; [
@@ -98,7 +99,6 @@ with flake.lib;
       protonmail-desktop
       proton-pass
       obsidian
-      onlyoffice-desktopeditors
       vlc
       discord
       signal-desktop
@@ -127,35 +127,12 @@ with flake.lib;
       blender
 
       # other
-      qbittorrent
       nomachine-client
-      libation
       grayjay
     ];
 
-    home.activation = {
-      onlyOfficeCfg =
-        mutableDottext ".config/onlyoffice" "DesktopEditors.conf"
-          "[General]\nUITheme=theme-dark\nsavePath=${config.home.homeDirectory}/Proton/Documents";
-      qbittorrentCfg = mutableDottext ".config/qBittorrent" "qBittorrent.conf" ''
-        [BitTorrent]
-        Session\GlobalMaxInactiveSeedingMinutes=180
-        Session\GlobalMaxRatio=1
-        Session\GlobalMaxSeedingMinutes=180
-        Session\Interface=proton0
-        Session\InterfaceName=proton0
-        [LegalNotice]
-        Accepted=true
-        [Preferences]
-        General\Locale=en
-        General\PreventFromSuspendWhenDownloading=true
-      '';
-    };
-
     home.file = {
       "Templates/New ASCII File".text = "";
-      ".local/share/Libation/appsettings.json".text =
-        "{\"LibationFiles\": \"${config.home.homeDirectory}/Proton/Music/Libation/\"}";
     };
 
     systemd.user.targets.user-sleep.Unit.Description = "User pre-sleep target";
