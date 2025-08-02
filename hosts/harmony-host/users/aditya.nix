@@ -36,6 +36,7 @@ with flake.lib;
         };
         syncthing = {
           enable = true;
+          publicGui = true;
           proton = {
             enable = true;
             folder = "${config.home.homeDirectory}/Proton";
