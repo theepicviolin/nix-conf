@@ -124,6 +124,7 @@ let
   ########################################################
   customTypes = [
     (makeCustomMime "Nix source code" "*.nix")
+    (makeCustomMime "CSS stylesheet" "*.css")
   ];
 in
 {
@@ -171,6 +172,7 @@ in
         "codium.desktop" = [
           "application/xml"
           "text/x-nix-source-code"
+          "text/x-css-stylesheet"
         ];
         "org.gnome.FileRoller.desktop" = [
           "application/zip"

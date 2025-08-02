@@ -56,6 +56,7 @@ with flake.lib;
         hw_rgb = enabled;
         libation = enabled;
         musescore = enabled;
+        obsidian = enabled;
         onlyoffice = enabled;
         orcaslicer = {
           enable = true;
@@ -98,7 +99,7 @@ with flake.lib;
       brave
       protonmail-desktop
       proton-pass
-      obsidian
+      # obsidian
       vlc
       discord
       signal-desktop
