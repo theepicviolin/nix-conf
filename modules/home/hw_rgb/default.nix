@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  # settings,
+  osConfig,
   ...
 }:
 with lib;
@@ -15,6 +15,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = osConfig.services.hardware.openrgb.enable;
+        message = "osConfig must enable openrgb for hw_rgb to function";
+      }
+    ];
     systemd.user.services.hw_rgb = {
       Unit = {
         Description = "Control RGB lights with OpenRGB based on the CPU and GPU status";

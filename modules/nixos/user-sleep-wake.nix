@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   flake,
   ...
 }:
@@ -14,11 +13,12 @@ let
   notifyUserTarget =
     {
       name,
+      username,
       delay,
     }:
     pkgs.writeShellScript "notify-${name}" ''
       set -e
-      _USER="${cfg.username}"  # Change if needed
+      _USER="${username}"  # Change if needed
       _UID=$(id -u "$_USER")
       export XDG_RUNTIME_DIR="/run/user/$_UID"
 
@@ -30,39 +30,54 @@ let
 in
 {
   options.ar.user-sleep-wake = {
-    enable = mkEnableOption "Enable systemd services that trigger a user target when the system sleeps or wakes";
-    username = mkOption { type = types.str; };
+    enable = mkOption {
+      type = types.bool;
+      default = (length cfg.usernames) > 0;
+      description = "Whether to enable systemd services that trigger a user target when the system sleeps or wakes";
+    };
+    usernames = mkOption { type = types.listOf types.str; };
   };
 
   config = mkIf cfg.enable {
-    systemd.services.user-sleep-hook = {
-      description = "Notify user session of sleep";
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${
-          notifyUserTarget {
-            name = "user-sleep";
-            delay = "0";
-          }
-        } %i";
-      };
-      wantedBy = [ "sleep.target" ];
-      before = [ "sleep.target" ];
-    };
 
-    systemd.services.user-wake-hook = {
-      description = "Notify user session of wake";
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${
-          notifyUserTarget {
-            name = "user-wake";
-            delay = "1";
-          }
-        } %i";
-      };
-      wantedBy = [ "sleep.target" ];
-      after = [ "sleep.target" ];
-    };
+    systemd.services =
+      let
+        mkSleep = username: {
+          description = "Notify user session of sleep";
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${
+              notifyUserTarget {
+                name = "user-sleep";
+                inherit username;
+                delay = "0";
+              }
+            } %i";
+          };
+          wantedBy = [ "sleep.target" ];
+          before = [ "sleep.target" ];
+        };
+        mkWake = username: {
+          description = "Notify user session of wake";
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${
+              notifyUserTarget {
+                name = "user-wake";
+                inherit username;
+                delay = "1";
+              }
+            } %i";
+          };
+          wantedBy = [ "sleep.target" ];
+          after = [ "sleep.target" ];
+        };
+      in
+      listToAttrs (
+        concatMap (username: [
+          (nameValuePair ("user-sleep-hook-${username}") (mkSleep username))
+          (nameValuePair ("user-wake-hook-${username}") (mkWake username))
+        ]) cfg.usernames
+      );
   };
 }

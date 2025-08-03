@@ -1,9 +1,6 @@
 {
-  config,
   pkgs,
-  #pkgs-stable,
   lib,
-  # settings,
   hostName,
   flake,
   inputs,
@@ -20,7 +17,7 @@ with flake.lib;
 
   home-manager.users = lib.mkForce { }; # use standalone home-manager
 
-  networking.hostName = builtins.baseNameOf ./.;
+  networking.hostName = hostName;
 
   ar =
     let
@@ -40,16 +37,14 @@ with flake.lib;
         enable = true;
         displayname = "Numerical Nexus";
       };
+      orcaslicer.openPorts = true;
       protonvpn = enabled;
       proxmox = disabled;
       virtualisation = enabled;
       printer = enabled;
       solaar = enabled;
       sound = enabled;
-      user-sleep-wake = {
-        enable = true;
-        username = "aditya";
-      };
+      user-sleep-wake.usernames = [ "aditya" ];
       gnome.enable = (settings.desktop-environment == "gnome");
       plasma.enable = (settings.desktop-environment == "plasma");
     };
@@ -76,11 +71,6 @@ with flake.lib;
   environment.systemPackages = with pkgs; [
     gparted
     openssl
-  ];
-
-  networking.firewall.allowedUDPPorts = [
-    1900 # orcaslicer
-    2021 # orcaslicer
   ];
 
   system.stateVersion = "25.05"; # Don't change this unless you know what you're doing!

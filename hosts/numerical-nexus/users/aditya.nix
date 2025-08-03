@@ -3,11 +3,9 @@
   pkgs,
   pkgs-stable,
   lib,
-  # settings,
-  # host,
-  # hostName,
+  hostName,
+  osConfig,
   flake,
-  inputs,
   ...
 }:
 with lib;
@@ -21,9 +19,7 @@ with flake.lib;
     ar =
       let
         settings = {
-          desktop-environment = "gnome";
           dotdir = config.home.homeDirectory + "/.dotfiles";
-          hostName = builtins.baseNameOf ../.;
           fullname = "Aditya Ramanathan";
           email = "dev@adityarama.com";
         };
@@ -31,7 +27,7 @@ with flake.lib;
       {
         backup = {
           enable = true;
-          path = "/run/media/${config.home.username}/Seagate Expansion Drive/Linux/backup-${settings.hostName}-${config.home.username}";
+          path = "/run/media/${config.home.username}/Seagate Expansion Drive/Linux/backup-${hostName}-${config.home.username}";
           label = "Seagate Expansion Drive";
           name = "Numerical Nexus";
           # shuf -er -n6  {a..f} {0..9} | tr -d '\n'
@@ -58,10 +54,7 @@ with flake.lib;
         musescore = enabled;
         obsidian = enabled;
         onlyoffice = enabled;
-        orcaslicer = {
-          enable = true;
-          pkgsOverride = pkgs-stable;
-        };
+        orcaslicer = enabled;
         qbittorrent = enabled;
         rclone = enabled;
         shells = {
@@ -88,9 +81,10 @@ with flake.lib;
             folder = "${config.home.homeDirectory}/Videos/Media";
           };
         };
+        user-sleep-wake = enabled;
         vscodium = enabled;
-        gnome.enable = settings.desktop-environment == "gnome";
-        plasma.enable = settings.desktop-environment == "plasma";
+        gnome.enable = osConfig.ar.gnome.enable;
+        plasma.enable = osConfig.ar.plasma.enable;
       };
 
     home.packages = with pkgs; [
@@ -135,9 +129,6 @@ with flake.lib;
     home.file = {
       "Templates/New ASCII File".text = "";
     };
-
-    systemd.user.targets.user-sleep.Unit.Description = "User pre-sleep target";
-    systemd.user.targets.user-wake.Unit.Description = "User post-wake target";
 
     home.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
   };

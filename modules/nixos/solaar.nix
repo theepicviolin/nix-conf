@@ -14,7 +14,7 @@ in
 {
   imports = [ inputs.solaar.nixosModules.default ];
   options.ar.solaar = {
-    enable = mkEnableOption "Enable Solaar";
+    enable = mkEnableOption "Solaar";
   };
 
   config = mkIf cfg.enable {

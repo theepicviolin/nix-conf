@@ -2,8 +2,9 @@
   config,
   lib,
   pkgs,
+  pkgs-stable,
   flake,
-  #settings,
+  osConfig,
   ...
 }:
 with lib;
@@ -110,19 +111,21 @@ let
   # https://github.com/NixOS/nixpkgs/issues/345590
   # https://github.com/szymon-solak/nix-config/blob/main/home-manager/modules/orca-slicer.nix
   # https://github.com/SoftFever/OrcaSlicer/issues/7210
+  # https://github.com/NixOS/nixpkgs/issues/429433
 in
 {
   options.ar.orcaslicer = {
     enable = mkEnableOption "Enable OrcaSlicer";
-    pkgsOverride = mkOption { };
   };
 
   config = mkIf cfg.enable {
-
+    warnings = optional (
+      !osConfig.ar.orcaslicer.openPorts
+    ) "Firewall ports must be opened in orcaslicer osConfig to access 3d printer over LAN";
     home.activation = {
       orcaslicerCfg = mutableDotfile ".config/OrcaSlicer/OrcaSlicer.conf" ./OrcaSlicer.conf;
     };
-    home.packages = [ cfg.pkgsOverride.orca-slicer ];
+    home.packages = [ pkgs-stable.orca-slicer ];
     home.file =
       (
         with lib.attrsets;

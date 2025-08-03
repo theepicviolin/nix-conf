@@ -3,7 +3,7 @@
   lib,
   pkgs,
   flake,
-  # settings,
+  osConfig,
   ...
 }:
 with lib;
@@ -17,6 +17,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    warnings = optional (!osConfig.programs.steam.enable) "Steam is not enabled in osConfig";
 
     programs.lutris = enabled;
 
