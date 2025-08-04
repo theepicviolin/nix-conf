@@ -128,6 +128,8 @@ with flake.lib;
 
     home.file = {
       "Templates/New ASCII File".text = "";
+      "Pictures/Screenshots".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Proton/Pictures/Screenshots";
     };
 
     home.stateVersion = "25.05"; # Don't change this unless you know what you're doing!

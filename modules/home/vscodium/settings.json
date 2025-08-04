@@ -51,6 +51,6 @@
   "window.autoDetectColorScheme": true,
   "window.autoDetectHighContrast": false,
   "yaml.schemas": {
-    "file:///home/aditya/.vscode-oss/extensions/atlassian.atlascode-3.9.67-universal/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+    "file:///home/aditya/.vscode-oss/extensions/atlassian.atlascode-3.9.68-universal/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
   }
 }

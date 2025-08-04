@@ -23,7 +23,7 @@ in
       package = pkgs.vscodium;
       profiles.default = {
         extensions = with pkgs.nix-vscode-extensions.open-vsx; [
-          atlassian.atlascode
+          # atlassian.atlascode
           synedra.auto-run-command
           dbaeumer.vscode-eslint
           pkgs.nix-vscode-extensions.vscode-marketplace.github.copilot
@@ -41,7 +41,7 @@ in
           ms-python.debugpy
           msjsdiag.vscode-react-native
           coolbear.systemd-unit-file
-          redhat.vscode-yaml
+          # redhat.vscode-yaml
         ];
         userSettings = lib.importJSON ./settings.json;
       };
