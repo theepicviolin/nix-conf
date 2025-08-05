@@ -26,7 +26,7 @@ time source <(curl -s https://raw.githubusercontent.com/theepicviolin/nix-conf/r
 
 ### LibreWolf
 
-Open LibreWolf and enable all the extensions. Go to Userchrome's settings and enable Styles 2 and 3 and enable "Allow multiple styles to be active together"
+Open LibreWolf and enable all the extensions. Go to Userchrome's settings and enable Styles 2 and 3 and enable "Allow multiple styles to be active together". Set Style 1 default to be not toggled, and Style 2 default to be toggled. 
 
 Log into Firefox sync and in the LibreWolf Sidebery settings, go down to Sync and "View synced data" and import styles and settings. Optionally enable "Save settings to sync storage" and "Save styles to sync storage"
 
@@ -39,3 +39,15 @@ Sign into GitHub for write access and Copilot and GitLens. Ctrl+Shift+P and look
 ### Steam
 
 Enable Steam Play with Proton Experimental for all titles in Steam > Compatibility
+
+### GNOME
+
+Set desaturation to 1 for AppIndicator
+
+### Syncthing
+
+Update device ID and accept syncing for all the folders on all the clients
+
+### Backups
+
+Set new prefix and change locations and stuff

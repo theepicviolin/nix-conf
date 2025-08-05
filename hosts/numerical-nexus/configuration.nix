@@ -61,6 +61,8 @@ with flake.lib;
       "wheel"
     ];
   };
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "aditya"; # auto login since there's drive encryption
 
   # Enable networking
   networking.interfaces.eno1.wakeOnLan.enable = true; # Enable Wake-on-LAN for the wired ethernet interface

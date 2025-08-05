@@ -93,6 +93,7 @@ let
         DconfEditor = "ca.desrt.dconf-editor.desktop";
         DevToolbox = "me.iepure.devtoolbox.desktop";
         DiskUsageAnalyzer = "org.gnome.baobab.desktop";
+        Fish = "fish.desktop";
         Gparted = "gparted.desktop";
         Grayjay = "Grayjay.desktop";
         Lutris = "net.lutris.Lutris.desktop";

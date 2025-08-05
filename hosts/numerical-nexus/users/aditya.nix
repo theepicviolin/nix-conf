@@ -32,7 +32,7 @@ with flake.lib;
           name = "Numerical Nexus";
           # shuf -er -n6  {a..f} {0..9} | tr -d '\n'
           # to get a random 6 character hex prefix
-          prefix = "e60643-";
+          prefix = "af17dc-";
           patterns = [
             "R ${config.home.homeDirectory}"
             "- ${config.home.homeDirectory}/Games"
