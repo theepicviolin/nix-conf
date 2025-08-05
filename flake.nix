@@ -6,6 +6,7 @@
     ##### SWITCH SYSTEM DEFAULT WITH THESE TWO LINES #####
     ######################################################
     nixpkgs.url = "nixpkgs/nixos-unstable"; # "nixpkgs/nixos-25.05";
+    # nixpkgs.url = "nixpkgs/5a0711127cd8b916c3d3128f473388c8c79df0da"; # orca slicer works on this version
     home-manager.url = "github:nix-community/home-manager"; # "github:nix-community/home-manager/release-25.05"
 
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
