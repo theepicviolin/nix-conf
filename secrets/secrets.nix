@@ -1,12 +1,12 @@
 let
-  aditya-nn = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP8u4BKgvNoC0a9mjKOFvP0ez1CUH4BGrf5ua9aEdTev aditya@numerical-nexus";
+  aditya-nn = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINUcl7cT1diqdYv18XR+8yalmKyGmAKs+pPTdluc2Vru aditya@numerical-nexus";
   aditya-hh = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEApT3FGE82pvYdOtbsiIbv25wCsjpnuyldBlcVhSgn+ aditya@harmony-host";
   users = [
     aditya-nn
     aditya-hh
   ];
 
-  system-nn = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAeOLhKV8gfax9fByekBbllXMEemke+nybHzN8LbHrAk";
+  system-nn = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKmRoOr8H+fA8AcQSg/XxpU1m5LvU1mqHxGazp0J+tke";
   system-hh = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRfhi2V25A+vuydU3NUBt0y14bFTgZLAWKGZ3lGjPN7";
   systems = [
     system-nn

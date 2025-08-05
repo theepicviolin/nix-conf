@@ -10,6 +10,8 @@ with flake.lib;
 {
   imports = [
     ./hardware-configuration.nix
+    ./disk-config.nix
+    inputs.disko.nixosModules.disko
     inputs.nixos-hardware.nixosModules.gigabyte-b550
   ]
   ++ lib.attrsets.attrValues flake.nixosModules

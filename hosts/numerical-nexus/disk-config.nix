@@ -17,11 +17,11 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
-            luks = {
+            luks2 = {
               size = "100%";
               content = {
                 type = "luks";
-                name = "crypted";
+                name = "crypted2";
                 # extraOpenArgs = [ ];
                 passwordFile = "/tmp/secret.key";
                 settings = {
