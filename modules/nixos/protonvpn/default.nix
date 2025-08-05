@@ -10,13 +10,12 @@
 with lib;
 with flake.lib;
 let
-  secretsdir = ../../../secrets;
   cfg = config.ar.protonvpn;
 
   mkWgEntry = name: {
     name = "${name}.age";
     value = {
-      file = secretsdir + "/${name}.age";
+      file = secret name;
       path = "/etc/wireguard/${name}.conf";
       name = "${name}.conf";
       mode = "600";

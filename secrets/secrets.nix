@@ -31,4 +31,5 @@ in
   "NN-CA-1150.age".publicKeys = nn;
   "syncthing.age".publicKeys = all;
   "proton.age".publicKeys = all;
+  "borgmatic-nn.age".publicKeys = all;
 }

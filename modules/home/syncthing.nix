@@ -121,7 +121,7 @@ in
 
     age.secretsDir = "/run/user/1000/agenix";
     age.secrets.syncthing = {
-      file = ../../secrets/syncthing.age;
+      file = secret "syncthing";
       mode = "600";
     };
   };

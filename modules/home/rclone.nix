@@ -24,7 +24,7 @@ in
     };
 
     age.secrets.proton = {
-      file = ../../secrets/proton.age;
+      file = secret "proton";
       mode = "600";
     };
 

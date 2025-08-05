@@ -3,15 +3,16 @@
   lib,
   pkgs,
   inputs,
-  # settings,
+  flake,
   ...
 }:
 with lib;
+with flake.lib;
 let
   cfg = config.ar.backup;
 in
 {
-  imports = [ ];
+  imports = [ inputs.agenix.homeManagerModules.default ];
 
   options.ar.backup = {
     enable = mkEnableOption "Enable backups through borgmatic";
@@ -20,9 +21,15 @@ in
     label = mkOption { type = types.str; };
     prefix = mkOption { type = types.str; };
     patterns = mkOption { type = types.listOf types.str; };
+    passphraseAgeFilename = mkOption { type = types.str; };
   };
 
   config = mkIf cfg.enable {
+    age.secrets.${cfg.passphraseAgeFilename} = {
+      file = secret cfg.passphraseAgeFilename;
+      mode = "600";
+    };
+
     services.borgmatic.enable = true;
     services.borgmatic.frequency = "*-*-* 23:55:00";
     programs.borgmatic = {
@@ -36,6 +43,9 @@ in
             }
           ];
           patterns = cfg.patterns;
+        };
+        storage = {
+          encryptionPasscommand = "cat ${config.age.secrets.${cfg.passphraseAgeFilename}.path}";
         };
         retention = {
           keepDaily = 14;

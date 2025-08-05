@@ -39,6 +39,7 @@ with flake.lib;
             "- ${config.home.homeDirectory}/.cache"
             "- ${config.home.homeDirectory}/.local/share/Steam/steamapps/common"
           ];
+          passphraseAgeFilename = "borgmatic-nn";
         };
         common = enabled;
         default-apps = enabled;

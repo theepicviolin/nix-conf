@@ -66,6 +66,8 @@ in
       )
     ) { } (builtins.attrNames appMimeMap));
 
+  secret = name: ../secrets/${name}.age;
+
   enabled = {
     enable = true;
   };
