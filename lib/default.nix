@@ -1,23 +1,12 @@
 {
-  # This is the merged library containing your namespaced library as well as all libraries from
-  # your flake's inputs.
-  # lib,
   flake,
-
-  # Your flake inputs are also available.
   inputs,
   self,
-
-# The namespace used for your flake, defaulting to "internal" if not set.
-# namespace,
 }:
 let
-  # lib = flake.outputs.nixpkgs.lib;
   lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
-  # lib = inputs.home-manager.lib;
 in
 {
-  # hm = inputs.home-manager.lib.hm;
   mutableDotfile =
     cfgPath: templateFile:
     let
@@ -27,7 +16,7 @@ in
       if [ ! -f "$HOME/${cfgPath}" ]; then
         mkdir -p "$HOME/${cfgDir}"
         cp -r "${templateFile}" "$HOME/${cfgPath}"
-        chmod +w "$HOME/${cfgPath}"
+        chmod +w -R "$HOME/${cfgPath}"
       fi
     '');
   mutableDottext =

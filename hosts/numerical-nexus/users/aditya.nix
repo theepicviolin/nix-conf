@@ -50,6 +50,7 @@ with flake.lib;
           email = settings.email;
         };
         games = enabled;
+        grayjay = enabled;
         hw_rgb = enabled;
         libation = enabled;
         musescore = enabled;
@@ -123,7 +124,6 @@ with flake.lib;
 
       # other
       nomachine-client
-      grayjay
     ];
 
     home.file = {
