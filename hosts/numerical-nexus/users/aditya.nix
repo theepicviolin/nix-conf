@@ -94,7 +94,6 @@ with flake.lib;
       brave
       protonmail-desktop
       proton-pass
-      # obsidian
       vlc
       discord
       signal-desktop
@@ -131,7 +130,6 @@ with flake.lib;
       "Templates/New ASCII File".text = "";
       "Pictures/Screenshots".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Proton/Pictures/Screenshots";
-      ".face".source = ./R.png; # gnome profile picture
     };
 
     home.stateVersion = "25.05"; # Don't change this unless you know what you're doing!

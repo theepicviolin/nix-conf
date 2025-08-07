@@ -130,6 +130,8 @@ let
       "DELTARUNE.desktop"
       "Celeste.desktop"
       "Divinity Original Sin Enhanced Edition.desktop"
+      "Antichamber.desktop"
+      "GRIS.desktop"
     ];
     Other = [
       "org.gnome.Connections.desktop"
@@ -160,6 +162,11 @@ in
 
   config = mkIf cfg.enable {
     home.packages = extensions ++ [ pkgs.gnome-tweaks ]; # merges with packages from home.nix
+
+    home.file = {
+      ".face".source = ./R.png; # gnome profile picture
+      ".background-image".source = ./wallpaper.png; # wallpaper (I don't think this does anything but it might help the wallpaper to not get GC'ed)
+    };
 
     dconf.enable = true;
 
