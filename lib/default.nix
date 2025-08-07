@@ -13,7 +13,7 @@ in
       cfgDir = builtins.dirOf cfgPath;
     in
     (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      if [ ! -f "$HOME/${cfgPath}" ]; then
+      if [ ! -e "$HOME/${cfgPath}" ]; then
         mkdir -p "$HOME/${cfgDir}"
         cp -r "${templateFile}" "$HOME/${cfgPath}"
         chmod +w -R "$HOME/${cfgPath}"

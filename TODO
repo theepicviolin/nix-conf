@@ -2,5 +2,6 @@ install:
 add hostname option for initial nixos-rebuild switch 
 copy over disko settings, change copy dest for configurations
 figure out how to set up secrets again easily 
+add pinned nautilus folders to dconf settings
 
 Get spacemouse working for orca slicer? 

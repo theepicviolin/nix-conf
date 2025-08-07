@@ -53,6 +53,7 @@ with flake.lib;
         grayjay = enabled;
         hw_rgb = enabled;
         libation = enabled;
+        librewolf = enabled;
         musescore = enabled;
         obsidian = enabled;
         onlyoffice = enabled;
@@ -91,7 +92,6 @@ with flake.lib;
 
     home.packages = with pkgs; [
       # general productivity
-      librewolf
       brave
       protonmail-desktop
       proton-pass
