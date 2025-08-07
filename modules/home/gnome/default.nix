@@ -154,6 +154,16 @@ let
   };
 
   wallpaper = "file://" + builtins.toString ./wallpaper.png;
+
+  bookmarks = builtins.map (s: replaceStrings [ " " ] [ "%20" ] "file://${s}") [
+    "/home/aditya/Proton"
+    "/home/aditya/Proton/Projects/MusicWork"
+    "/home/aditya/Proton/Projects/3D Models"
+    "/home/aditya/Pictures/Phone Camera"
+    "/home/aditya/Programming"
+    "/home/aditya/Documents/Obsidian"
+    "/home/aditya/Downloads"
+  ];
 in
 {
   options.ar.gnome = {
@@ -166,6 +176,7 @@ in
     home.file = {
       ".face".source = ./R.png; # gnome profile picture
       ".background-image".source = ./wallpaper.png; # wallpaper (I don't think this does anything but it might help the wallpaper to not get GC'ed)
+      ".config/gtk-3.0/bookmarks".text = concatStringsSep "\n" bookmarks;
     };
 
     dconf.enable = true;

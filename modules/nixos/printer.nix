@@ -24,7 +24,14 @@ in
       enable = true;
       drivers = [
         pkgs.cups-brother-hll2340dw
+        pkgs.brlaser
+        pkgs.brgenml1lpr
+        pkgs.brgenml1cupswrapper
       ];
     };
+
+    services.avahi.enable = true;
+    services.avahi.nssmdns = true;
+    services.avahi.openFirewall = true;
   };
 }
