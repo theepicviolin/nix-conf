@@ -2,7 +2,6 @@
   config,
   lib,
   flake,
-  osConfig,
   ...
 }:
 with lib;

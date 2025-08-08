@@ -27,19 +27,17 @@ let
 
   apl-entry =
     with lib.hm.gvariant;
-    name:
-    (
-      position:
-      (mkDictionaryEntry [
-        name
-        (mkVariant [
-          (mkDictionaryEntry [
-            "position"
-            (mkVariant position)
-          ])
+    name: position:
+    mkDictionaryEntry [
+      name
+      (mkVariant [
+        (mkDictionaryEntry [
+          "position"
+          (mkVariant position)
         ])
       ])
-    );
+    ];
+
   dash = [
     "librewolf.desktop"
     "org.gnome.Nautilus.desktop"

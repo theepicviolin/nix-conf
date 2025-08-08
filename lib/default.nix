@@ -44,21 +44,18 @@ in
 
   mimeToAppMap =
     appMimeMap:
-    (builtins.foldl' (
-      acc: app:
-      acc
-      // builtins.listToAttrs (
-        map (mime: {
-          name = mime;
-          value = [ app ];
-        }) appMimeMap.${app}
-      )
-    ) { } (builtins.attrNames appMimeMap));
+    lib.foldlAttrs (
+      acc: app: mimes:
+      acc // lib.foldl (acc: mime: acc // { ${mime} = [ app ]; }) { } mimes
+    ) { } appMimeMap;
 
   secret = name: ../secrets/${name}.age;
 
-  getUser = name: lib.elemAt (lib.splitString "@" name) 0;
-  getHost = name: lib.elemAt (lib.splitString "@" name) 1;
+  thisSystemUsers =
+    hostName: system:
+    lib.filterAttrs (
+      name: _: lib.elemAt (lib.splitString "@" name) 1 == hostName
+    ) flake.outputs.legacyPackages.${system}.homeConfigurations;
 
   anyUser =
     {
@@ -66,12 +63,7 @@ in
       system,
       pred,
     }:
-    let
-      thisSystemUsers = lib.filterAttrs (
-        name: _: flake.lib.getHost name == hostName
-      ) flake.outputs.legacyPackages.${system}.homeConfigurations;
-    in
-    builtins.any (user: pred user.config) (builtins.attrValues thisSystemUsers);
+    lib.any (user: pred user.config) (lib.attrValues (flake.lib.thisSystemUsers hostName system));
 
   matchingUsers =
     {
@@ -79,13 +71,10 @@ in
       system,
       pred,
     }:
-    map (u: flake.lib.getUser u) (
-      lib.attrNames (
-        lib.filterAttrs (
-          name: value: ((flake.lib.getHost name) == hostName) && (pred value.config)
-        ) flake.outputs.legacyPackages.${system}.homeConfigurations
-      )
-    );
+    flake.lib.thisSystemUsers hostName system
+    |> lib.filterAttrs (name: value: (pred value.config))
+    |> lib.attrNames
+    |> map (u: lib.elemAt (lib.splitString "@" u) 0);
 
   enabled = {
     enable = true;

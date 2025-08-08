@@ -3,7 +3,6 @@
   lib,
   pkgs,
   inputs,
-  osConfig,
   flake,
   ...
 }:
@@ -11,7 +10,6 @@ with lib;
 with flake.lib;
 let
   cfg = config.ar.user-sleep-wake;
-  osCfg = osConfig.ar.user-sleep-wake;
 in
 {
   options.ar.user-sleep-wake = {
