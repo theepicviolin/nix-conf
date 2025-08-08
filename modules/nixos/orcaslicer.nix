@@ -2,6 +2,8 @@
   config,
   lib,
   flake,
+  hostName,
+  pkgs,
   ...
 }:
 with lib;
@@ -11,7 +13,15 @@ let
 in
 {
   options.ar.orcaslicer = {
-    openPorts = mkEnableOption "open firewall ports for access to 3d printer";
+    openPorts = mkOption {
+      type = types.bool;
+      default = anyUser {
+        inherit hostName;
+        inherit (pkgs) system;
+        pred = (u: u.ar.orcaslicer.enable);
+      };
+      description = "Whether or not to open firewall ports for access to 3d printer";
+    };
   };
 
   config = mkIf cfg.openPorts {

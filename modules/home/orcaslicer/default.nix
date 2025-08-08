@@ -4,7 +4,6 @@
   pkgs,
   pkgs-stable,
   flake,
-  osConfig,
   ...
 }:
 with lib;
@@ -119,46 +118,47 @@ in
   };
 
   config = mkIf cfg.enable {
-    warnings = optional (
-      !osConfig.ar.orcaslicer.openPorts
-    ) "Firewall ports must be opened in orcaslicer osConfig to access 3d printer over LAN";
     home.activation = {
       orcaslicerCfg = mutableDotfile ".config/OrcaSlicer/OrcaSlicer.conf" ./OrcaSlicer.conf;
     };
     home.packages = [ pkgs-stable.orca-slicer ];
     home.file =
-      (
-        with lib.attrsets;
-        mapAttrs' (
-          name: value:
+      let
+        addRest =
+          settings: list:
+          lib.foldl' (
+            acc: attr:
+            acc
+            // optionalAttrs (settings ? ${attr}) {
+              "${attr}" = builtins.toString settings.${attr};
+            }
+          ) { } list;
+        mkFilamentFile =
+          name: settings:
           nameValuePair (".config/OrcaSlicer/user/default/filament/${name}.json") ({
             text = builtins.toJSON ({
-              default_filament_colour = [ value.color ];
+              default_filament_colour = [ settings.color ];
               enable_pressure_advance = [
-                (if (hasAttrByPath [ "pressure_advance" ] value) then "1" else "0")
+                (if (settings ? "pressure_advance") then "1" else "0")
               ];
               filament_flow_ratio = [
-                (builtins.toString value.flow_ratio)
+                (builtins.toString settings.flow_ratio)
               ];
               filament_retract_when_changing_layer = [ "0" ];
               filament_settings_id = [ name ];
               filament_wipe = [ "0" ];
               from = "User";
-              inherits = value.inherits;
+              inherits = settings.inherits;
               is_custom_defined = "0";
               name = name;
               pressure_advance = [
-                (builtins.toString value.pressure_advance)
+                (builtins.toString settings.pressure_advance)
               ];
-              version = value.version;
+              version = settings.version;
             });
-          })
-        ) filaments
-      )
-      // (
-        with lib;
-        mapAttrs' (
-          name: value:
+          });
+        mkProcessFile =
+          name: settings:
           nameValuePair (".config/OrcaSlicer/user/default/process/${name}.json") ({
             text = builtins.toJSON (
               {
@@ -167,29 +167,20 @@ in
                 name = name;
                 print_settings_id = name;
               }
-              // mergeAttrsList (
-                map
-                  (
-                    attr:
-                    optionalAttrs (hasAttrByPath [ attr ] value) {
-                      "${attr}" = builtins.toString value.${attr};
-                    }
-                  )
-                  [
-                    "default_acceleration"
-                    "inherits"
-                    "outer_wall_acceleration"
-                    "outer_wall_speed"
-                    "prime_tower_width"
-                    "prime_volume"
-                    "sparse_infill_density"
-                    "sparse_infill_pattern"
-                    "version"
-                  ]
-              )
+              // addRest settings [
+                "default_acceleration"
+                "inherits"
+                "outer_wall_acceleration"
+                "outer_wall_speed"
+                "prime_tower_width"
+                "prime_volume"
+                "sparse_infill_density"
+                "sparse_infill_pattern"
+                "version"
+              ]
             );
-          })
-        ) processes
-      );
+          });
+      in
+      (mapAttrs' mkFilamentFile filaments) // (mapAttrs' mkProcessFile processes);
   };
 }

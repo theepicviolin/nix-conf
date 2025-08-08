@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  hostName,
   flake,
   ...
 }:
@@ -35,7 +36,14 @@ in
       default = (length cfg.usernames) > 0;
       description = "Whether to enable systemd services that trigger a user target when the system sleeps or wakes";
     };
-    usernames = mkOption { type = types.listOf types.str; };
+    usernames = mkOption {
+      type = types.listOf types.str;
+      default = matchingUsers {
+        inherit hostName;
+        inherit (pkgs) system;
+        pred = (u: u.ar.user-sleep-wake.enable);
+      };
+    };
   };
 
   config = mkIf cfg.enable {

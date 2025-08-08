@@ -19,16 +19,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = osCfg.enable;
-        message = "osConfig must enable user-sleep-wake module";
-      }
-      {
-        assertion = elem config.home.username osCfg.usernames;
-        message = "osConfig must include user ${config.home.username} in user-sleep-wake";
-      }
-    ];
     systemd.user.targets.user-sleep.Unit.Description = "User pre-sleep target";
     systemd.user.targets.user-wake.Unit.Description = "User post-wake target";
   };

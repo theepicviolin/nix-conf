@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  flake,
   osConfig,
   ...
 }:
@@ -43,6 +44,7 @@ in
       };
     };
 
+    ar.user-sleep-wake = flake.lib.enabled;
     systemd.user.services.stop-hwrgb-sleep = {
       Unit = {
         Description = "Stop OpenRGB lights before sleep";

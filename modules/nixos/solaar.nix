@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+  hostName,
   flake,
   ...
 }:
@@ -14,7 +15,15 @@ in
 {
   imports = [ inputs.solaar.nixosModules.default ];
   options.ar.solaar = {
-    enable = mkEnableOption "Solaar";
+    enable = mkOption {
+      type = types.bool;
+      default = anyUser {
+        inherit hostName;
+        inherit (pkgs) system;
+        pred = (u: u.ar.solaar.enable);
+      };
+      description = "Whether or not to enable Solaar";
+    };
   };
 
   config = mkIf cfg.enable {

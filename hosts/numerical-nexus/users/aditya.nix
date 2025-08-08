@@ -84,7 +84,6 @@ with flake.lib;
             folder = "${config.home.homeDirectory}/Videos/Media";
           };
         };
-        user-sleep-wake = enabled;
         vscodium = enabled;
         gnome.enable = osConfig.ar.gnome.enable;
         plasma.enable = osConfig.ar.plasma.enable;

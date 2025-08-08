@@ -1,7 +1,7 @@
 {
   flake,
   inputs,
-  self,
+  ... # self is the only other input
 }:
 let
   lib = inputs.nixpkgs.lib // inputs.home-manager.lib;
@@ -56,6 +56,36 @@ in
     ) { } (builtins.attrNames appMimeMap));
 
   secret = name: ../secrets/${name}.age;
+
+  getUser = name: lib.elemAt (lib.splitString "@" name) 0;
+  getHost = name: lib.elemAt (lib.splitString "@" name) 1;
+
+  anyUser =
+    {
+      hostName,
+      system,
+      pred,
+    }:
+    let
+      thisSystemUsers = lib.filterAttrs (
+        name: _: flake.lib.getHost name == hostName
+      ) flake.outputs.legacyPackages.${system}.homeConfigurations;
+    in
+    builtins.any (user: pred user.config) (builtins.attrValues thisSystemUsers);
+
+  matchingUsers =
+    {
+      hostName,
+      system,
+      pred,
+    }:
+    map (u: flake.lib.getUser u) (
+      lib.attrNames (
+        lib.filterAttrs (
+          name: value: ((flake.lib.getHost name) == hostName) && (pred value.config)
+        ) flake.outputs.legacyPackages.${system}.homeConfigurations
+      )
+    );
 
   enabled = {
     enable = true;

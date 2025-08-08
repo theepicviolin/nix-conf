@@ -16,12 +16,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = osConfig.services.solaar.enable;
-        message = "osConfig must enable Solaar";
-      }
-    ];
     home.file = {
       ".config/solaar/config.yaml".source = ./config.yaml;
       ".config/solaar/rules.yaml".source = ./rules.yaml;
