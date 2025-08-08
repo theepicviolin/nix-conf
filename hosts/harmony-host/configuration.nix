@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  settings,
   inputs,
   flake,
   hostName,
@@ -28,7 +27,7 @@ with flake.lib;
     common = enabled;
     proxmox = {
       enable = true;
-      system = "x86_64-linux"; # config.nixpkgs.hostPlatform;
+      system = config.nixpkgs.hostPlatform.system;
     };
   };
 
@@ -49,15 +48,6 @@ with flake.lib;
     enable = true;
     installPath = "$HOME/.vscodium-server";
   };
-
-  networking.firewall.allowedTCPPorts = [
-    8384 # syncthing
-    22000 # syncthing
-  ];
-  networking.firewall.allowedUDPPorts = [
-    22000 # syncthing
-    21027 # syncthing
-  ];
 
   system.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
 }
