@@ -85,8 +85,6 @@ with flake.lib;
           };
         };
         vscodium = enabled;
-        gnome.enable = osConfig.ar.gnome.enable;
-        plasma.enable = osConfig.ar.plasma.enable;
       };
 
     home.packages = with pkgs; [

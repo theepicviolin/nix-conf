@@ -24,6 +24,7 @@ with flake.lib;
         backup = disabled;
         common = enabled;
         rclone = disabled;
+        librewolf = enabled;
         git = {
           enable = true;
           name = settings.fullname;
@@ -55,9 +56,13 @@ with flake.lib;
         };
       };
 
+    programs.fish.shellAliases.start = mkForce "explorer.exe";
+    programs.bash.shellAliases.start = mkForce "explorer.exe";
+
     home.packages = with pkgs; [
       nil
       nixfmt-rfc-style
+      gparted
     ];
     home.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
   };

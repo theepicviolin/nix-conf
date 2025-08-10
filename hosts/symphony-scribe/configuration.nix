@@ -6,6 +6,7 @@
   inputs,
   ...
 }:
+with lib;
 with flake.lib;
 {
   imports = [
@@ -31,7 +32,7 @@ with flake.lib;
         # autoUpgrade = true;
         # autoGc = true;
       };
-      # _1password = enabled;
+      _1password = enabled;
       # sunshine = {
       #   enable = true;
       #   displayname = "Numerical Nexus";
@@ -46,7 +47,29 @@ with flake.lib;
 
   wsl.enable = true;
   wsl.defaultUser = "aditya";
+  wsl.startMenuLaunchers = true;
   programs.nix-ld.enable = true;
+
+  system.activationScripts = {
+    # https://github.com/nix-community/NixOS-WSL/blob/main/modules/wsl-distro.nix#L165-L181
+    # copy from home-manager as well
+    copy-more-launchers = (
+      stringAfter [ ] ''
+        for x in applications icons; do
+          echo "setting up /usr/share/''${x}..."
+          targets=()
+          if [[ -d "/home/aditya/.nix-profile/share/$x" ]]; then
+            targets+=("/home/aditya/.nix-profile/share/$x/.")
+          fi
+
+          if (( ''${#targets[@]} != 0 )); then
+            mkdir -p "/usr/share/$x"
+            ${pkgs.rsync}/bin/rsync --archive --copy-dirlinks --recursive "''${targets[@]}" "/usr/share/$x"
+          fi
+        done
+      ''
+    );
+  };
 
   environment.systemPackages = with pkgs; [
     openssl

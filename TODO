@@ -2,3 +2,4 @@ install:
 figure out how to set up secrets again easily 
 
 Get spacemouse working for orca slicer? 
+Fix vscode server with ld and symlinking nodejs a la https://github.com/K900/vscode-remote-workaround/blob/main/vscode.nix
