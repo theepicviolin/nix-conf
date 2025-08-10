@@ -45,9 +45,6 @@ in
 
   options.ar.proxmox = {
     enable = mkEnableOption "Enable Proxmox Hypervisor";
-    system = mkOption {
-      type = types.str;
-    };
   };
 
   config = mkIf cfg.enable {
@@ -73,7 +70,7 @@ in
         };
       };
     };
-    nixpkgs.overlays = [ inputs.proxmox-nixos.overlays.${cfg.system} ];
+    nixpkgs.overlays = [ inputs.proxmox-nixos.overlays.${config.nixpkgs.hostPlatform.system} ];
     # TODO: make this defined from a list alongside scsi
     systemd.services =
       mkImportService 100 0

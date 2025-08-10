@@ -3,7 +3,6 @@
   lib,
   pkgs,
   flake,
-  hostName,
   inputs,
   ...
 }:
@@ -15,8 +14,8 @@ with flake.lib;
     ar =
       let
         settings = {
-          desktop-environment = "";
           dotdir = config.home.homeDirectory + "/.dotfiles";
+          hostName = builtins.baseNameOf ../.;
           fullname = "Aditya Ramanathan";
           email = "dev@adityarama.com";
         };
@@ -24,7 +23,7 @@ with flake.lib;
       {
         backup = disabled;
         common = enabled;
-        rclone = enabled;
+        rclone = disabled;
         git = {
           enable = true;
           name = settings.fullname;
@@ -35,8 +34,8 @@ with flake.lib;
           dotdir = settings.dotdir;
         };
         syncthing = {
-          enable = true;
-          publicGui = true;
+          enable = false;
+          publicGui = false;
           proton = {
             enable = true;
             folder = "${config.home.homeDirectory}/Proton";
@@ -55,6 +54,11 @@ with flake.lib;
           };
         };
       };
+
+    home.packages = with pkgs; [
+      nil
+      nixfmt-rfc-style
+    ];
     home.stateVersion = "25.05"; # Don't change this unless you know what you're doing!
   };
 }

@@ -30,9 +30,11 @@ with flake.lib;
     {
       common = {
         enable = true;
+        boot = true;
         graphicalBoot = true;
         autoUpgrade = true;
         autoGc = true;
+        resolv = true;
       };
       _1password = enabled;
       sunshine = {

@@ -24,10 +24,17 @@ with flake.lib;
   boot.loader.efi.canTouchEfiVariables = lib.mkForce false; # otherwise installing bootloader fails
 
   ar = {
-    common = enabled;
+    common = {
+      enable = true;
+      boot = true;
+      graphicalBoot = false;
+      autoUpgrade = false;
+      autoGc = false;
+      resolv = true;
+    };
     proxmox = {
       enable = true;
-      system = config.nixpkgs.hostPlatform.system;
+      # system = config.nixpkgs.hostPlatform.system;
     };
   };
 

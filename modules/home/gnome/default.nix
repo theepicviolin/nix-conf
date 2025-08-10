@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  # settings,
+  osConfig,
   ...
 }:
 with lib;
@@ -165,7 +165,11 @@ let
 in
 {
   options.ar.gnome = {
-    enable = mkEnableOption "Configure custom GNOME settings";
+    enable = mkOption {
+      type = types.bool;
+      default = osConfig.ar.gnome.enable;
+      description = "Configure custom GNOME settings";
+    };
   };
 
   config = mkIf cfg.enable {

@@ -2,7 +2,7 @@
   config,
   pkgs,
   lib,
-  # system,
+  hostName,
   inputs,
   flake,
   perSystem,
@@ -12,20 +12,21 @@ with lib;
 with flake.lib;
 let
   cfg = config.ar.common;
-  # settings = inputs.settings;
 in
 {
   options.ar.common = {
     enable = mkEnableOption "Common";
+    boot = mkEnableOption "Generic systemd boot settings";
     graphicalBoot = mkEnableOption "Show boot splash screen";
     autoUpgrade = mkEnableOption "Automatically update flake daily";
     autoGc = mkEnableOption "Automatically collect garbage daily";
+    resolv = mkEnableOption "Resolvd and settings for local hostname dns resolution";
   };
 
-  config = {
+  config = mkIf cfg.enable {
     # Bootloader.
     boot = {
-      loader = {
+      loader = mkIf cfg.boot {
         systemd-boot.enable = true;
         systemd-boot.configurationLimit = 50;
         efi.canTouchEfiVariables = true; # otherwise installing bootloader fails
@@ -66,6 +67,7 @@ in
       auto-optimise-store = true; # nix store optimise
     };
 
+    networking.hostName = hostName;
     nixpkgs.config.allowUnfree = true;
 
     # networking.hostName = settings.hostname; # Define your hostname.
@@ -75,8 +77,10 @@ in
     networking.networkmanager = enabled;
 
     # Enable DNS to resolve local hostnames.
-    services.resolved = enabled;
-    environment.etc."resolv.conf".source = lib.mkForce "/run/systemd/resolve/resolv.conf";
+    services.resolved.enable = cfg.resolv;
+    environment.etc."resolv.conf".source = mkIf cfg.resolv (
+      lib.mkForce "/run/systemd/resolve/resolv.conf"
+    );
     networking.enableIPv6 = false;
 
     # Set your time zone.

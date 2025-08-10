@@ -2,8 +2,7 @@
   config,
   lib,
   inputs,
-  # pkgs,
-  # settings,
+  osConfig,
   ...
 }:
 with lib;
@@ -14,7 +13,12 @@ in
   imports = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
 
   options.ar.plasma = {
-    enable = mkEnableOption "Configure custom KDE Plasma settings";
+    enable = mkOption {
+      type = types.bool;
+      default = osConfig.ar.plasma.enable;
+      description = "Configure custom KDE Plasma settings";
+    };
+
   };
 
   config = mkIf cfg.enable {
