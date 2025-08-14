@@ -6,7 +6,7 @@
     ##### SWITCH SYSTEM DEFAULT WITH THESE TWO LINES #####
     ######################################################
     nixpkgs.url = "nixpkgs/nixos-unstable"; # "nixpkgs/nixos-25.05";
-    # nixpkgs.url = "nixpkgs/5a0711127cd8b916c3d3128f473388c8c79df0da"; # orca slicer works on this version
+    nixpkgs-orca.url = "nixpkgs/5a0711127cd8b916c3d3128f473388c8c79df0da"; # 5a0711127cd8b916c3d3128f473388c8c79df0da"; # orca slicer works on this version?
     home-manager.url = "github:nix-community/home-manager"; # "github:nix-community/home-manager/release-25.05"
 
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -50,7 +50,7 @@
       url = "github:NixOS/nixos-hardware/master";
     };
     nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/main"; 
+      url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

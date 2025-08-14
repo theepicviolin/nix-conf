@@ -4,6 +4,7 @@
   pkgs,
   pkgs-stable,
   flake,
+  inputs,
   ...
 }:
 with lib;
@@ -121,7 +122,9 @@ in
     home.activation = {
       orcaslicerCfg = mutableDotfile ".config/OrcaSlicer/OrcaSlicer.conf" ./OrcaSlicer.conf;
     };
-    home.packages = [ pkgs-stable.orca-slicer ];
+    # home.packages = [ pkgs-stable.orca-slicer ];
+    home.packages = [ pkgs.orca-slicer ];
+    # home.packages = [ inputs.nixpkgs-orca.legacyPackages."x86_64-linux".orca-slicer ];
     home.file =
       let
         addRest =

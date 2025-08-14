@@ -57,7 +57,7 @@ with flake.lib;
         musescore = enabled;
         obsidian = enabled;
         onlyoffice = enabled;
-        orcaslicer = enabled;
+        # orcaslicer = enabled;
         qbittorrent = enabled;
         rclone = enabled;
         shells = {

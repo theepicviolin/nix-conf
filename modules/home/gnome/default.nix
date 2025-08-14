@@ -3,9 +3,11 @@
   lib,
   pkgs,
   osConfig,
+  flake,
   ...
 }:
 with lib;
+with flake.lib;
 let
   cfg = config.ar.gnome;
   extensions = with pkgs.gnomeExtensions; [
@@ -178,7 +180,11 @@ in
     home.file = {
       ".face".source = ./R.png; # gnome profile picture
       ".background-image".source = ./wallpaper.png; # wallpaper (I don't think this does anything but it might help the wallpaper to not get GC'ed)
-      ".config/gtk-3.0/bookmarks".text = concatStringsSep "\n" bookmarks;
+      # ".config/gtk-3.0/bookmarks".text = concatStringsSep "\n" bookmarks;
+    };
+
+    home.activation = {
+      nautilusBookmarks = mutableDottext ".config/gtk-3.0/bookmarks" (concatStringsSep "\n" bookmarks);
     };
 
     dconf.enable = true;
